@@ -1,4 +1,5 @@
-﻿using AuthFlowMaui.Services;
+﻿using AuthFlowMaui.Pages;
+using AuthFlowMaui.Services;
 using Microsoft.Extensions.Logging;
 
 namespace AuthFlowMaui
@@ -20,6 +21,9 @@ namespace AuthFlowMaui
     		builder.Logging.AddDebug();
 #endif
             builder.Services.AddTransient<IAuthService, AuthService>();
+            builder.Services.AddTransient<LoadingPage>();
+            builder.Services.AddTransient<LoginPage>();
+
             return builder.Build();
         }
     }
