@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using AuthFlowMaui.Services;
+using Microsoft.Extensions.Logging;
 
 namespace AuthFlowMaui
 {
@@ -18,7 +19,7 @@ namespace AuthFlowMaui
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
-
+            builder.Services.AddTransient<IAuthService, AuthService>();
             return builder.Build();
         }
     }
