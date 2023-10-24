@@ -10,23 +10,28 @@
 
     <ShellContent
         Title="Loading"
-        ContentTemplate="{DataTemplate local:LoadingPage}"
-        Route="LoadingPage" />
+        ContentTemplate="{DataTemplate pages:LoadingPage}"
+        Route="LoadingPage" Shell.FlyoutBehavior="Disabled"
+        Shell.FlyoutItemIsVisible="False"/>
     <ShellContent
         Title="Login"
-        ContentTemplate="{DataTemplate local:LoginPage}"
-        Route="LoginPage" />    
-    <ShellContent
+        ContentTemplate="{DataTemplate pages:LoginPage}"
+        Route="LoginPage" Shell.FlyoutBehavior="Disabled"
+        Shell.FlyoutItemIsVisible="False"/>
+
+    <TabBar FlyoutDisplayOptions="AsMultipleItems">
+        <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate pages:MainPage}"
         Route="MainPage" />
-    <ShellContent
+        <ShellContent
         Title="Listing"
         ContentTemplate="{DataTemplate pages:ListingPage}"
         Route="ListingPage" />
-    <ShellContent
+        <ShellContent
         Title="Profile"
         ContentTemplate="{DataTemplate pages:ProfilePage}"
         Route="ProfilePage" />
+    </TabBar>
 
 </Shell>
