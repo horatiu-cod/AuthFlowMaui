@@ -3,10 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AuthFlowMaui.Pages.LoginPage"
              Title="LoginPage">
-    <VerticalStackLayout>
+    <VerticalStackLayout Padding="25"
+                         Spacing="25">
         <Label 
             Text="LoginPage"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
+        <Button Text="Login"
+                Clicked="Button_Clicked"/>
     </VerticalStackLayout>
 </ContentPage>
