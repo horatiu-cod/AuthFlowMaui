@@ -1,4 +1,4 @@
-﻿namespace AuthFlowMaui
+﻿namespace AuthFlowMaui.Pages
 {
     public partial class MainPage : ContentPage
     {
