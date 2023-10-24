@@ -8,5 +8,7 @@
             Text="Profile Page"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
+        <Button Text="Logout"
+                Clicked="Button_Clicked"/>
     </VerticalStackLayout>
 </ContentPage>
