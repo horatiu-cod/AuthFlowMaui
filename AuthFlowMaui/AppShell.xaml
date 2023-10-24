@@ -4,8 +4,8 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:AuthFlowMaui"
-    xmlns: pages="clr-namespace:AuthFlowMaui.Pages"
-    Shell.FlyoutBehavior="Disabled"
+    xmlns:pages="clr-namespace:AuthFlowMaui.Pages"
+    Shell.FlyoutBehavior="Flyout"
     Title="AuthFlowMaui">
 
     <ShellContent
@@ -18,15 +18,15 @@
         Route="LoginPage" />    
     <ShellContent
         Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
+        ContentTemplate="{DataTemplate pages:MainPage}"
         Route="MainPage" />
     <ShellContent
         Title="Listing"
-        ContentTemplate="{DataTemplate local:ListingPage}"
+        ContentTemplate="{DataTemplate pages:ListingPage}"
         Route="ListingPage" />
     <ShellContent
         Title="Profile"
-        ContentTemplate="{DataTemplate local:ProfilePage}"
+        ContentTemplate="{DataTemplate pages:ProfilePage}"
         Route="ProfilePage" />
 
 </Shell>
