@@ -18,14 +18,14 @@ public partial class LoadingPage : ContentPage
         {
             // user is logged in
             // redirect to mainpage
-            await Shell.Current.GoToAsync($"{nameof(MainPage)}");
+            await Shell.Current.GoToAsync($"//{nameof(MainPage)}");
 
         }
         else
         {
             // user is not logged in
             // redirect to loginpage
-            await Shell.Current.GoToAsync($"{nameof(LoginPage)}");
+            await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
         }
     }
 }
