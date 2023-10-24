@@ -21,8 +21,10 @@ namespace AuthFlowMaui
     		builder.Logging.AddDebug();
 #endif
             builder.Services.AddTransient<IAuthService, AuthService>();
+            builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<LoadingPage>();
             builder.Services.AddTransient<LoginPage>();
+            builder.Services.AddTransient<ProfilePage>();
 
             return builder.Build();
         }
