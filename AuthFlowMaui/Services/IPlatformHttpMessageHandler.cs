@@ -1,6 +1,6 @@
 ﻿namespace AuthFlowMaui.Services;
 
-public  interface IPlatformHttpMessageHandler
+public interface IPlatformHttpMessageHandler
 {
     HttpMessageHandler GetHttpMessageHandler();
 }
