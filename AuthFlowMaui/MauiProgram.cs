@@ -1,6 +1,8 @@
 ﻿using AuthFlowMaui.Pages;
 using AuthFlowMaui.Services;
 using Microsoft.Extensions.Logging;
+using AuthFlowMaui.Startup;
+
 
 namespace AuthFlowMaui
 {
@@ -16,7 +18,9 @@ namespace AuthFlowMaui
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
-
+            
+            builder.Services.AddCustomApiHttpClient();
+            builder.Services.AddKeycloakHttpClient();
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
