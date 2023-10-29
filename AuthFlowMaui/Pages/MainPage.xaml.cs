@@ -1,24 +1,28 @@
-﻿namespace AuthFlowMaui.Pages
+﻿using IdentityModel.Client;
+
+namespace AuthFlowMaui.Pages
 {
     public partial class MainPage : ContentPage
     {
-        int count = 0;
-
-        public MainPage()
+        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ClientCredentialsTokenRequest _clientCredentialsTokenRequest;
+        public MainPage(IHttpClientFactory httpClientFactory, ClientCredentialsTokenRequest clientCredentialsTokenRequest)
         {
             InitializeComponent();
+            _httpClientFactory = httpClientFactory;
+            _clientCredentialsTokenRequest = clientCredentialsTokenRequest;
         }
 
-        private void OnCounterClicked(object sender, EventArgs e)
+        private async void OnCounterClicked(object sender, EventArgs e)
         {
-            count++;
+            var httpClient = _httpClientFactory.CreateClient("maui-to-https-keycloak");
+            var response = await httpClient.RequestClientCredentialsTokenAsync(_clientCredentialsTokenRequest);
 
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
-            else
-                CounterBtn.Text = $"Clicked {count} times";
-
-            SemanticScreenReader.Announce(CounterBtn.Text);
+            if (!response.IsError)
+            {
+                var data = response.HttpResponse.Content.ReadAsStringAsync().Result;
+                apiResponse.Text = data;
+            }
         }
     }
 
