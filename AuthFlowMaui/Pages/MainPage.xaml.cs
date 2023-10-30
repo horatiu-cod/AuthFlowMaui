@@ -1,4 +1,5 @@
 ﻿using IdentityModel.Client;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace AuthFlowMaui.Pages
 {
@@ -17,11 +18,15 @@ namespace AuthFlowMaui.Pages
         {
             var httpClient = _httpClientFactory.CreateClient("maui-to-https-keycloak");
             var response = await httpClient.RequestClientCredentialsTokenAsync(_clientCredentialsTokenRequest);
-
+            
             if (!response.IsError)
             {
-                var data = response.HttpResponse.Content.ReadAsStringAsync().Result;
-                apiResponse.Text = data;
+                var rawToken = response.AccessToken;
+                var userName = await response.HttpResponse.Content.ReadAsStringAsync();
+                var handler = new JwtSecurityTokenHandler();
+                var token = handler.ReadJwtToken(rawToken);
+                var claim = token.Claims.FirstOrDefault(c => c.Type == "preferred_username")?.Value;
+                apiResponse.Text = claim;
             }
         }
     }
