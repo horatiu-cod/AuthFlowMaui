@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34212.112
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthFlowMaui", "AuthFlowMaui\AuthFlowMaui.csproj", "{E7108376-A74A-4E97-AF2C-1D4C563DFA3D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthFlowMaui", "AuthFlowMaui\AuthFlowMaui.csproj", "{E7108376-A74A-4E97-AF2C-1D4C563DFA3D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthFlowMaui.Api", "AuthFlowMaui.Api\AuthFlowMaui.Api.csproj", "{81C2F5FA-D021-406A-BD94-F12BF99D6352}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthFlowMaui.Shared", "AuthFlowMaui.Shared\AuthFlowMaui.Shared.csproj", "{11B9EB41-53C1-4251-8279-DD34BACCAC8F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,6 +21,14 @@ Global
 		{E7108376-A74A-4E97-AF2C-1D4C563DFA3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E7108376-A74A-4E97-AF2C-1D4C563DFA3D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E7108376-A74A-4E97-AF2C-1D4C563DFA3D}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{81C2F5FA-D021-406A-BD94-F12BF99D6352}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81C2F5FA-D021-406A-BD94-F12BF99D6352}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81C2F5FA-D021-406A-BD94-F12BF99D6352}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81C2F5FA-D021-406A-BD94-F12BF99D6352}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11B9EB41-53C1-4251-8279-DD34BACCAC8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11B9EB41-53C1-4251-8279-DD34BACCAC8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11B9EB41-53C1-4251-8279-DD34BACCAC8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11B9EB41-53C1-4251-8279-DD34BACCAC8F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

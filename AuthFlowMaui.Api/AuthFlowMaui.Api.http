@@ -1,0 +1,6 @@
+@AuthFlowMaui.Api_HostAddress = http://localhost:5220
+
+GET {{AuthFlowMaui.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
