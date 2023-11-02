@@ -5,9 +5,11 @@ VisualStudioVersion = 17.8.34212.112
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthFlowMaui", "AuthFlowMaui\AuthFlowMaui.csproj", "{E7108376-A74A-4E97-AF2C-1D4C563DFA3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthFlowMaui.Api", "AuthFlowMaui.Api\AuthFlowMaui.Api.csproj", "{81C2F5FA-D021-406A-BD94-F12BF99D6352}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthFlowMaui.Api", "AuthFlowMaui.Api\AuthFlowMaui.Api.csproj", "{81C2F5FA-D021-406A-BD94-F12BF99D6352}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthFlowMaui.Shared", "AuthFlowMaui.Shared\AuthFlowMaui.Shared.csproj", "{11B9EB41-53C1-4251-8279-DD34BACCAC8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthFlowMaui.Shared", "AuthFlowMaui.Shared\AuthFlowMaui.Shared.csproj", "{11B9EB41-53C1-4251-8279-DD34BACCAC8F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthFlowMaui.IdentityModel", "AuthFlowMaui.IdentityModel\AuthFlowMaui.IdentityModel.csproj", "{C185EB81-0604-4CB1-8F78-2A28AD5BFC99}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +31,12 @@ Global
 		{11B9EB41-53C1-4251-8279-DD34BACCAC8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11B9EB41-53C1-4251-8279-DD34BACCAC8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11B9EB41-53C1-4251-8279-DD34BACCAC8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C185EB81-0604-4CB1-8F78-2A28AD5BFC99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C185EB81-0604-4CB1-8F78-2A28AD5BFC99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C185EB81-0604-4CB1-8F78-2A28AD5BFC99}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{C185EB81-0604-4CB1-8F78-2A28AD5BFC99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C185EB81-0604-4CB1-8F78-2A28AD5BFC99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C185EB81-0604-4CB1-8F78-2A28AD5BFC99}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
