@@ -6,6 +6,9 @@ using System.Net;
 
 namespace AuthFlowMaui.Api.Controllers
 {
+    [ApiController]
+    [Route("api/user")]
+    [Produces("application/json")]
     public class UserController : Controller
     {
         private readonly IKeycloakTokenService _keycloakTokenService;
