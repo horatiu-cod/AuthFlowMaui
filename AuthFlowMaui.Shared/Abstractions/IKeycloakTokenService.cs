@@ -4,5 +4,5 @@ using AuthFlowMaui.Shared.TokenDtos;
 namespace AuthFlowMaui.Shared.Abstractions;
 public interface IKeycloakTokenService
 {
-    Task<KeycloakTokenResponseDtos?> GetTokenResponseAsync(KeycloakUserDtos keycloakUserDtos);
+    Task<KeycloakTokenResponseDto?> GetTokenResponseAsync(KeycloakUserDtos keycloakUserDtos);
 }

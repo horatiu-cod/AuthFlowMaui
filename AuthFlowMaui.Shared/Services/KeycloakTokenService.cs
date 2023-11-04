@@ -28,7 +28,7 @@ public class KeycloakTokenService : IKeycloakTokenService
             var tokenRequestBody = KeycloakTokenUtils.GetUserTokenRequestBody(keycloakTokenRequestDto);
             var response = await httpclient.PostAsync($"{keycloakSettings.BaseUrl}/token", tokenRequestBody);
             var responseJson = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-            var keycloakTokenResponseDto = JsonSerializer.Deserialize<KeycloakTokenResponseDtos>(responseJson);
+            var keycloakTokenResponseDto = JsonSerializer.Deserialize<KeycloakTokenResponseDto>(responseJson);
             return keycloakTokenResponseDto;
         }
     }
