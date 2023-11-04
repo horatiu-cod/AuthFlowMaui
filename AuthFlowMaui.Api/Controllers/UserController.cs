@@ -1,5 +1,5 @@
-﻿using AuthFlowMaui.Shared.Abstractions;
-using AuthFlowMaui.Shared.Dtos;
+﻿//using AuthFlowMaui.Shared.Abstractions;
+//using AuthFlowMaui.Shared.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -40,7 +40,7 @@ namespace AuthFlowMaui.Api.Controllers
         [HttpGet("check/authorization")]
         public IActionResult CheckAuthorization()
         {
-            return new OkObjectResult(HttpStatusCode.OK);
+            return new OkObjectResult($"{HttpStatusCode.OK} merge");
         }
     }
 }
