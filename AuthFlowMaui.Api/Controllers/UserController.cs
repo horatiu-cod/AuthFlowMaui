@@ -11,30 +11,30 @@ namespace AuthFlowMaui.Api.Controllers
     [Produces("application/json")]
     public class UserController : Controller
     {
-        private readonly IKeycloakTokenService _keycloakTokenService;
+        //private readonly IKeycloakTokenService _keycloakTokenService;
 
-        public UserController(IKeycloakTokenService keycloakTokenService)
-        {
-            _keycloakTokenService = keycloakTokenService;
-        }
+        //public UserController(IKeycloakTokenService keycloakTokenService)
+        //{
+        //    _keycloakTokenService = keycloakTokenService;
+        //}
 
-        [HttpPost("token")]
-        public async Task<IActionResult> AuthorizeAsync([FromBody] KeycloakUserDtos keycloakUserDtos)
-        {
-            try
-            {
-                var response = await _keycloakTokenService
-                    .GetTokenResponseAsync(keycloakUserDtos)
-                    .ConfigureAwait(false);
+        //[HttpPost("token")]
+        //public async Task<IActionResult> AuthorizeAsync([FromBody] KeycloakUserDtos keycloakUserDtos)
+        //{
+        //    try
+        //    {
+        //        var response = await _keycloakTokenService
+        //            .GetTokenResponseAsync(keycloakUserDtos)
+        //            .ConfigureAwait(false);
 
-                return new OkObjectResult(response);
-            }
-            catch (Exception)
-            {
+        //        return new OkObjectResult(response);
+        //    }
+        //    catch (Exception)
+        //    {
 
-                return BadRequest("Authorization failed");
-            }
-        }
+        //        return BadRequest("Authorization failed");
+        //    }
+        //}
 
         [Authorize]
         [HttpGet("check/authorization")]
