@@ -2,16 +2,17 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
-using System;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using AuthFlowMaui.Api.Settings;
 
 namespace AuthFlowMaui.Api.Extensions;
 
 public static class ApplicationBuilderExtensions
 {
-    public static void AddKeycloakSettings(this WebApplicationBuilder builder)
+    public static void AddJwtBearerConfig(this WebApplicationBuilder builder)
     {
-        var keycloakSettings = builder.Configuration.GetSection("Keycloak");
-        builder.Services.Configure<KeycloakSettings>(keycloakSettings);
+        var jwtBearerConfig = builder.Configuration.GetSection("JwtBearer");
+        builder.Services.Configure<JwtBearerConfig>(jwtBearerConfig);
     }
     public static void AddKeycloakAuthorization(this WebApplicationBuilder builder)
     {
