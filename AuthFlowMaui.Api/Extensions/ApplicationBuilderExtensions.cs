@@ -1,8 +1,8 @@
-﻿using AuthFlowMaui.Shared.Settings;
+﻿//using AuthFlowMaui.Shared.Settings;
+//using AuthFlowMaui.Api.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using AuthFlowMaui.Api.Settings;
 
 namespace AuthFlowMaui.Api.Extensions;
@@ -14,7 +14,7 @@ public static class ApplicationBuilderExtensions
         var jwtBearerConfig = builder.Configuration.GetSection("JwtBearer");
         builder.Services.Configure<JwtBearerConfig>(jwtBearerConfig);
     }
-    public static void AddKeycloakAuthorization(this WebApplicationBuilder builder)
+    public static void AddKeycloakAuthorization(this WebApplicationBuilder builder, JwtBearerConfig jwtBearerConfig)
     {
         IdentityModelEventSource.ShowPII = true;
 
@@ -24,22 +24,22 @@ public static class ApplicationBuilderExtensions
                 option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 option.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                
             })
             .AddJwtBearer(option =>
             {
-                option.Authority = "https://localhost:8843/realms/develop";// de verificat
-                option.SaveToken = false;
-                //RequireHttpsMetadata option was set to false only because the running environment is Development.
-                //In Production, this option is by default set as true.
-                option.RequireHttpsMetadata = false;
+                option.Authority = jwtBearerConfig.Authority;
+                option.SaveToken = jwtBearerConfig.SaveToken;
+                option.RequireHttpsMetadata = jwtBearerConfig.RequireHttpsMetadata;
 
                 option.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateIssuer = true,
-                    ValidateAudience = false,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = "https://localhost:8843/realms/dev"
+                    ValidateIssuer = jwtBearerConfig.ValidateIssuer,
+                    ValidateAudience = jwtBearerConfig.ValidateAudience,
+                    ValidAudience = jwtBearerConfig.ValidAudience,
+                    ValidateLifetime = jwtBearerConfig.ValidateLifetime,
+                    ValidateIssuerSigningKey = jwtBearerConfig.ValidateIssuerSigningKey,
+                    ValidIssuer = jwtBearerConfig.ValidIssuer
                 };
 
             });
