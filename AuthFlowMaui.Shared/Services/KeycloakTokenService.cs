@@ -10,23 +10,29 @@ namespace AuthFlowMaui.Shared.Services;
 
 public class KeycloakTokenService : IKeycloakTokenService
 {
-    private readonly IHttpClientFactory httpClientFactory;
-    private readonly KeycloakSettings keycloakSettings = new KeycloakSettings();
+    private readonly IHttpClientFactory _httpClientFactory;
+    private readonly KeycloakSettings _keycloakSettings;
 
-    public async Task<KeycloakTokenResponseDtos?> GetTokenResponseAsync(KeycloakUserDtos keycloakUserDtos)
+    public KeycloakTokenService(IHttpClientFactory httpClientFactory, KeycloakSettings keycloakSettings)
     {
-        using(var httpclient = httpClientFactory.CreateClient())
+        _httpClientFactory = httpClientFactory;
+        _keycloakSettings = keycloakSettings;
+    }
+
+    public async Task<KeycloakTokenResponseDto?> GetTokenResponseAsync(KeycloakUserDtos keycloakUserDtos)
+    {
+        using(var httpclient = _httpClientFactory.CreateClient())
         {
-            var keycloakTokenRequestDto = new KeycloakTokenRequestDtos
+            var keycloakTokenRequestDto = new KeycloakUserTokenRequestDtos
             {
-                GrantType = KeycloakAccessTokenConst.GrantType,
-                ClientId = keycloakSettings.ClientId,
-                ClientSecret = keycloakSettings.ClientSecret,
+                GrantType = KeycloakAccessTokenConst.GrantTypePassword,
+                ClientId = _keycloakSettings.ClientId,
+                ClientSecret = _keycloakSettings.ClientSecret,
                 Username = keycloakUserDtos.Username,
                 Password = keycloakUserDtos.Password
             };
             var tokenRequestBody = KeycloakTokenUtils.GetUserTokenRequestBody(keycloakTokenRequestDto);
-            var response = await httpclient.PostAsync($"{keycloakSettings.BaseUrl}/token", tokenRequestBody);
+            var response = await httpclient.PostAsync($"{_keycloakSettings.BaseUrl}/token", tokenRequestBody);
             var responseJson = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
             var keycloakTokenResponseDto = JsonSerializer.Deserialize<KeycloakTokenResponseDto>(responseJson);
             return keycloakTokenResponseDto;

@@ -17,17 +17,32 @@ namespace AuthFlowMaui.Pages
         private async void OnCounterClicked(object sender, EventArgs e)
         {
             var httpClient = _httpClientFactory.CreateClient("maui-to-https-keycloak");
-            var response = await httpClient.RequestClientCredentialsTokenAsync(_clientCredentialsTokenRequest);
             
-            if (!response.IsError)
-            {
-                var rawToken = response.AccessToken;
-                var userName = await response.HttpResponse.Content.ReadAsStringAsync();
-                var handler = new JwtSecurityTokenHandler();
-                var token = handler.ReadJwtToken(rawToken);
-                var claim = token.Claims.FirstOrDefault(c => c.Type == "preferred_username")?.Value;
-                apiResponse.Text = claim;
-            }
+                try
+                {
+                    var response =  await httpClient.RequestClientCredentialsTokenAsync(_clientCredentialsTokenRequest);
+                    if (response == null)
+                    {
+                        apiResponse.Text = "no connection";
+                    }
+                    if (!response.IsError)
+                    {
+                        var rawToken = response.AccessToken;
+                        var userName = await response.HttpResponse.Content.ReadAsStringAsync();
+                        var handler = new JwtSecurityTokenHandler();
+                        var token = handler.ReadJwtToken(rawToken);
+                        var claim = token.Claims.FirstOrDefault(c => c.Type == "preferred_username")?.Value;
+                        var res = response.HttpStatusCode;
+                        apiResponse.Text = res.ToString();
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    apiResponse.Text = ex.Message;
+                    throw;
+                };
+            
         }
     }
 

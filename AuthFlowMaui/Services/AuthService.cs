@@ -11,6 +11,7 @@ public class AuthService : IAuthService
         var authState = Preferences.Default.Get<bool>(_authState, false);
         return authState;
     }
+    public async Task Register() { }
     public void Login()
     {
         Preferences.Default.Set<bool>(_authState, true);
