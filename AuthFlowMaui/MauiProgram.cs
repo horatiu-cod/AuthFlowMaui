@@ -1,7 +1,7 @@
-﻿using AuthFlowMaui.Pages;
-using AuthFlowMaui.Services;
+﻿using AuthFlowMaui.Services;
 using Microsoft.Extensions.Logging;
-using AuthFlowMaui.Startup;
+using AuthFlowMaui.Extensions;
+using CommunityToolkit.Maui;
 
 
 namespace AuthFlowMaui
@@ -13,6 +13,7 @@ namespace AuthFlowMaui
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -20,14 +21,11 @@ namespace AuthFlowMaui
                 });
             
             builder.Services.AddKeycloakHttpClient();
+            builder.Services.RegisterViewWithViewModel();
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
             builder.Services.AddTransient<IAuthService, AuthService>();
-            builder.Services.AddTransient<MainPage>();
-            builder.Services.AddTransient<LoadingPage>();
-            builder.Services.AddTransient<LoginPage>();
-            builder.Services.AddTransient<ProfilePage>();
 
             return builder.Build();
         }
