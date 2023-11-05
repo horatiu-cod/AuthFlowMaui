@@ -5,17 +5,19 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:AuthFlowMaui"
     xmlns:pages="clr-namespace:AuthFlowMaui.Pages"
+    xmlns:loading="clr-namespace:AuthFlowMaui.Pages.AppStartUp"
+    xmlns:login="clr-namespace:AuthFlowMaui.Pages.UserLogin"
     Shell.FlyoutBehavior="Flyout"
     Title="AuthFlowMaui">
 
     <ShellContent
         Title="Loading"
-        ContentTemplate="{DataTemplate pages:LoadingPage}"
+        ContentTemplate="{DataTemplate loading:LoadingPage}"
         Route="LoadingPage" Shell.FlyoutBehavior="Disabled"
         Shell.FlyoutItemIsVisible="False"/>
     <ShellContent
         Title="Login"
-        ContentTemplate="{DataTemplate pages:LoginPage}"
+        ContentTemplate="{DataTemplate login:LoginPage}"
         Route="LoginPage" Shell.FlyoutBehavior="Disabled"
         Shell.FlyoutItemIsVisible="False"/>
 
@@ -24,10 +26,6 @@
         Title="Home"
         ContentTemplate="{DataTemplate pages:MainPage}"
         Route="MainPage" />
-        <ShellContent
-        Title="Listing"
-        ContentTemplate="{DataTemplate pages:ListingPage}"
-        Route="ListingPage" />
         <ShellContent
         Title="Profile"
         ContentTemplate="{DataTemplate pages:ProfilePage}"
