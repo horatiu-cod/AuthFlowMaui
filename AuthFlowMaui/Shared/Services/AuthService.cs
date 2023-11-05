@@ -1,4 +1,4 @@
-﻿namespace AuthFlowMaui.Services;
+﻿namespace AuthFlowMaui.Shared.Services;
 
 public class AuthService : IAuthService
 {
@@ -8,18 +8,18 @@ public class AuthService : IAuthService
     {
         await Task.Delay(2000);
         // get the value of the specific key and return it, with the default value if key is not set
-        var authState = Preferences.Default.Get<bool>(_authState, false);
+        var authState = Preferences.Default.Get(_authState, false);
         return authState;
     }
-    public async Task Register() { }
+    //public async Task Register() { }
     public void Login()
     {
-        Preferences.Default.Set<bool>(_authState, true);
+        Preferences.Default.Set(_authState, true);
     }
     public void Logout()
     {
 
-       Preferences.Default.Remove(_authState);
+        Preferences.Default.Remove(_authState);
     }
 
 }

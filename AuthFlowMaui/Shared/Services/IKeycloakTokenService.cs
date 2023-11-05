@@ -1,7 +1,7 @@
 ﻿using AuthFlowMaui.Shared.Dtos;
 using AuthFlowMaui.Shared.TokenDtos;
 
-namespace AuthFlowMaui.Services
+namespace AuthFlowMaui.Shared.Services
 {
     internal interface IKeycloakTokenService
     {

@@ -5,7 +5,7 @@ using AuthFlowMaui.Shared.TokenDtos;
 using AuthFlowMaui.Shared.Utils;
 using System.Text.Json;
 
-namespace AuthFlowMaui.Services;
+namespace AuthFlowMaui.Shared.Services;
 
 internal class KeycloakTokenService : IKeycloakTokenService
 {

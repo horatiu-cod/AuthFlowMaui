@@ -1,4 +1,4 @@
-﻿namespace AuthFlowMaui.Services;
+﻿namespace AuthFlowMaui.Shared.Services;
 
 public interface IPlatformHttpMessageHandler
 {
