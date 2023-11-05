@@ -5,7 +5,7 @@ namespace AuthFlowMaui.Shared.Utils;
 
 public static class KeycloakTokenUtils
 {
-    public static FormUrlEncodedContent GetUserTokenRequestBody(KeycloakUserTokenRequestDtos tokenRequestDtos)
+    public static FormUrlEncodedContent GetUserTokenRequestBody(KeycloakUserTokenRequestDto tokenRequestDtos)
     {
         //to request token we need FormUrlEncodedContentType, we create a list of
         var keyValuePairs = new List<KeyValuePair<string, string>>()
@@ -26,6 +26,16 @@ public static class KeycloakTokenUtils
             new KeyValuePair<string, string>(KeycloakAccessTokenConst.ClientId, tokenRequestDto.ClientId),
             new KeyValuePair<string, string>(KeycloakAccessTokenConst.ClientSecret, tokenRequestDto.ClientSecret)
 
+        };
+        return new FormUrlEncodedContent(keyValuePairs);
+    }
+    public static FormUrlEncodedContent GetUserTokenWithRefreshTokenRequestBody(KeycloakUserTokenWithRefreshTokenRequestDto tokenRequestDto)
+    {
+        var keyValuePairs = new List<KeyValuePair<string, string>>()
+        {
+            new KeyValuePair<string, string>(KeycloakAccessTokenConst.GrantType, tokenRequestDto.GrantType),
+            new KeyValuePair<string, string>(KeycloakAccessTokenConst.ClientId, tokenRequestDto.ClientId),
+            new KeyValuePair<string, string>(KeycloakAccessTokenConst.ClientSecret, tokenRequestDto.ClientSecret)
         };
         return new FormUrlEncodedContent(keyValuePairs);
     }
