@@ -5,9 +5,9 @@ namespace AuthFlowMaui.Shared.TokenDtos;
 public class KeycloakClientTokenRequestDto
 {
     [JsonPropertyName("grant_type")]
-    public string GrantType { get; set; }
+    public string? GrantType { get; set; }
     [JsonPropertyName("client_id")]
-    public string ClientId { get; set; }
+    public string? ClientId { get; set; }
     [JsonPropertyName("client_secret")]
-    public string ClientSecret { get; set; }
+    public string? ClientSecret { get; set; }
 }
