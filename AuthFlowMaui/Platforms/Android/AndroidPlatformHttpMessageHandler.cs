@@ -1,4 +1,4 @@
-﻿using AuthFlowMaui.Services;
+﻿using AuthFlowMaui.Shared.Services;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using Xamarin.Android.Net;

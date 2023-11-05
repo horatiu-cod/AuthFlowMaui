@@ -1,4 +1,4 @@
-﻿using AuthFlowMaui.Services;
+﻿using AuthFlowMaui.Shared.Services;
 using Security;
 
 namespace AuthFlowMaui.Platforms.iOS;
