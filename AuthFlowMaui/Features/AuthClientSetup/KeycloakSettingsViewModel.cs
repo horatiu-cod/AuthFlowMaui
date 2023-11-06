@@ -2,13 +2,20 @@
 using AuthFlowMaui.Pages;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.Maui.Storage;
 using AuthFlowMaui.Pages.UserLogin;
+using AuthFlowMaui.Shared.Services;
 
 namespace AuthFlowMaui.Features.AuthClientSetup;
 
 public partial class KeycloakSettingsViewModel : ObservableObject
 {
+    private readonly IStorageService _storageService;
+
+    public KeycloakSettingsViewModel(IStorageService storageService)
+    {
+        _storageService = storageService;
+    }
+
     [ObservableProperty]
     private string _clientId;
     [ObservableProperty]
@@ -25,9 +32,8 @@ public partial class KeycloakSettingsViewModel : ObservableObject
             ClientId = this.ClientId,
             ClientSecret = this.ClientSecret,
         };
-        await SecureStorage.Default.SetAsync("settings", secretSettings.ToJson());
-        var setts = await SecureStorage.Default.GetAsync("settings");
-        if (setts is not null)
+        var result = await _storageService.SetClientSecret(secretSettings.ToJson());
+        if (result.IsSuccess)
         {
             await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
         }
