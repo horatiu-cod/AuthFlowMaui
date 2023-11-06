@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace AuthFlowMaui.Shared.Settings;
@@ -15,6 +14,9 @@ public record KeycloakSettings()
     public string ToJson() => 
         JsonSerializer.Serialize(this);
     public KeycloakSettings? FromJson(string keycloakSettings) =>
-        JsonSerializer.Deserialize<KeycloakSettings>(keycloakSettings);
-
+        JsonSerializer.Deserialize<KeycloakSettings>(keycloakSettings,JsonSerializerOptions);
+    readonly JsonSerializerOptions JsonSerializerOptions = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+    };
 }
