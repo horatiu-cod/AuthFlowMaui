@@ -17,27 +17,27 @@ public class StorageService : IStorageService
     /// </summary>
     /// <param name="secretValue"></param>
     /// <returns>MethodResult.Success or MethodResult.Fail</returns>
-    public async Task<MethodResult> SetUserCredentials(string secretValue)
+    public async Task<MethodResult> SetUserCredentialsAsync(string secretValue)
     {
         return await SetSecret(Credentials, secretValue);
     }
-    public async Task<MethodDataResult<string>> GetUserCredentials()
+    public async Task<MethodDataResult<string>> GetUserCredentialsAsync()
     {
         return await GetSecret(Credentials);
     }
-    public async Task<MethodResult> RemoveUserCredentials()
+    public async Task<MethodResult> RemoveUserCredentialsAsync()
     {
         return await RemoveSecret(Credentials);
     }
-    public async Task<MethodResult> SetClientSecret(string secretValue)
+    public async Task<MethodResult> SetClientSecretAsync(string secretValue)
     {
         return await SetSecret(ClientSettings, secretValue);
     }
-    public async Task<MethodDataResult<string>> GetClientSecret()
+    public async Task<MethodDataResult<string>> GetClientSecretAsync()
     {
         return await GetSecret(ClientSettings);
     }
-    public async Task<MethodResult> RemoveClientSecret()
+    public async Task<MethodResult> RemoveClientSecretAsync()
     {
         return await RemoveSecret(ClientSettings);
     }

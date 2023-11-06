@@ -4,10 +4,10 @@ namespace AuthFlowMaui.Shared.Services;
 
 public interface IStorageService
 {
-    Task<MethodDataResult<string>> GetClientSecret();
-    Task<MethodDataResult<string>> GetUserCredentials();
-    Task<MethodResult> RemoveClientSecret();
-    Task<MethodResult> RemoveUserCredentials();
-    Task<MethodResult> SetClientSecret(string secretValue);
-    Task<MethodResult> SetUserCredentials(string secretValue);
+    Task<MethodDataResult<string>> GetClientSecretAsync();
+    Task<MethodDataResult<string>> GetUserCredentialsAsync();
+    Task<MethodResult> RemoveClientSecretAsync();
+    Task<MethodResult> RemoveUserCredentialsAsync();
+    Task<MethodResult> SetClientSecretAsync(string secretValue);
+    Task<MethodResult> SetUserCredentialsAsync(string secretValue);
 }
