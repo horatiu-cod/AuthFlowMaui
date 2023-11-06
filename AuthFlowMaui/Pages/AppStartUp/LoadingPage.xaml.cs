@@ -1,25 +1,25 @@
 using AuthFlowMaui.Pages.UserLogin;
-using AuthFlowMaui.Services;
+using AuthFlowMaui.Shared.Services;
 
 namespace AuthFlowMaui.Pages.AppStartUp;
 
 public partial class LoadingPage : ContentPage
 {
 	private readonly IAuthService _authService;
-    private readonly ISecureStorage secureStorage;
-    public LoadingPage(IAuthService authService, LoadingPageViewModel loadingPageViewModel)
+    private readonly IStorageService _secureStorage;
+    public LoadingPage(IAuthService authService, LoadingPageViewModel loadingPageViewModel, IStorageService secureStorage)
     {
         InitializeComponent();
         BindingContext = loadingPageViewModel;
         _authService = authService;
-        secureStorage = SecureStorage.Default;
+        _secureStorage = secureStorage;
     }
 
     protected async override void OnNavigatedTo(NavigatedToEventArgs args)
     {
-        //secureStorage.Remove("settings");
-        var setts = await secureStorage.GetAsync("settings");
-        if ( setts == null)
+        await _secureStorage.RemoveClientSecret();
+        var result = await _secureStorage.GetClientSecret();
+        if ( result.IsSuccess)
         {
             ActivityIndicator.IsRunning = false;
             testlabel.IsVisible = false;
