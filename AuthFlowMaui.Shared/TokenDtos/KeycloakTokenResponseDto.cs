@@ -1,4 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using AuthFlowMaui.Shared.Settings;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace AuthFlowMaui.Shared.TokenDtos;
 
@@ -14,4 +16,14 @@ public class KeycloakTokenResponseDto
     public string? RefreshToken { get; set; }
     [JsonPropertyName("token_type")]
     public string? TokenType { get; set; }
+
+    public string ToJson() =>
+    JsonSerializer.Serialize(this);
+    public KeycloakTokenResponseDto? FromJson(string keycloakTokenResponseDto) =>
+        JsonSerializer.Deserialize<KeycloakTokenResponseDto>(keycloakTokenResponseDto, JsonSerializerOptions);
+    readonly JsonSerializerOptions JsonSerializerOptions = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+    };
+
 }
