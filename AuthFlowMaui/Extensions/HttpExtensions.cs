@@ -1,5 +1,5 @@
-﻿using AuthFlowMaui.Services;
-using AuthFlowMaui.Shared.Dtos;
+﻿using AuthFlowMaui.Shared.Dtos;
+using AuthFlowMaui.Shared.Services;
 using IdentityModel.Client;
 
 
