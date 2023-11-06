@@ -9,6 +9,7 @@ public static class ServiceExtensions
         services.AddSingleton<IKeycloakTokenService, KeycloakTokenService>();
         services.AddTransient<IAuthService, AuthService>();
         services.AddTransient<IStorageService, StorageService>();
+        services.AddTransient<ITokenService, TokenService>();
 
         return services;
     }
