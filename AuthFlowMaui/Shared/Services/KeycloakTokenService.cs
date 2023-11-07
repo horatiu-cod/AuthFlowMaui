@@ -7,7 +7,7 @@ using System.Text.Json;
 
 namespace AuthFlowMaui.Shared.Services;
 
-internal class KeycloakTokenService : IKeycloakTokenService
+public class KeycloakTokenService : IKeycloakTokenService
 {
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly KeycloakSettings _keycloakSettings;
