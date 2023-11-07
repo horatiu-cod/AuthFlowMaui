@@ -10,4 +10,5 @@ public static class KeycloakAccessTokenConst
     public static string ClientSecret => "client_secret";
     public static string Username => "username";
     public static string Password => "password";
+    public static string RefreshToken => "refresh_token";
 }
