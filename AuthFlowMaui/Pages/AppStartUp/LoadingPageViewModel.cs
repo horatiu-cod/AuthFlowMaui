@@ -11,10 +11,4 @@ public partial class LoadingPageViewModel : ObservableObject
     {
         KeycloakSettingsViewModel = keycloakSettingsViewModel;
     }
-    //[ObservableProperty]
-    //private bool _isInnerViewVisible;
-    //[ObservableProperty]
-    //private bool _isBusy;
-    //[ObservableProperty]
-    //private bool _isLabelVisible;
 }
