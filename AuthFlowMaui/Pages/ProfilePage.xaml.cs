@@ -1,4 +1,5 @@
-using AuthFlowMaui.Services;
+using AuthFlowMaui.Pages.UserLogin;
+using AuthFlowMaui.Shared.Services;
 
 namespace AuthFlowMaui.Pages;
 
@@ -13,7 +14,7 @@ public partial class ProfilePage : ContentPage
 
     private void Button_Clicked(object sender, EventArgs e)
     {
-        _authService.Logout();
+        //_authService.Logout();
         Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
     }
 }
