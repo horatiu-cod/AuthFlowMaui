@@ -12,7 +12,7 @@ public partial class LoginPage : ContentPage
     }
     private async void Button_Clicked(object sender, EventArgs e)
 	{
-        _authService.Login();
+        //_authService.Login();
 		await Shell.Current.GoToAsync($"//{nameof(MainPage)}");
 	}
 
