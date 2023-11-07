@@ -37,7 +37,7 @@ public class ConnectivityTest
                     break;
                 case ConnectionProfile.Ethernet: Console.WriteLine("Ethernet");
                     break;
-                case ConnectionProfile.WiFi: Console.WriteLine("Wifi");
+                case ConnectionProfile.WiFi: Console.WriteLine("WiFi");
                     break;
                 default:
                     break;
