@@ -17,16 +17,17 @@ public partial class LoadingPage : ContentPage
 
     protected async override void OnNavigatedTo(NavigatedToEventArgs args)
     {
-        await _secureStorage.RemoveClientSecret();
-        var result = await _secureStorage.GetClientSecret();
+        await _secureStorage.RemoveClientSecretAsync();
+        var result = await _secureStorage.GetClientSecretAsync();
         if ( result.IsSuccess)
         {
             ActivityIndicator.IsRunning = false;
             testlabel.IsVisible = false;
             Settings.IsVisible = true;
         }
-        else { 
-            if (await _authService.IsAuthenticatedAsync()) 
+        else {
+            var response = await _authService.IsAuthenticatedAsync();
+            if (result.IsSuccess) 
             {
                 // user is logged in
                 // redirect to mainpage
