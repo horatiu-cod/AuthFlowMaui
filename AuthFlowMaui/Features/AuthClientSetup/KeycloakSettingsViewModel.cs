@@ -32,7 +32,7 @@ public partial class KeycloakSettingsViewModel : ObservableObject
             ClientId = this.ClientId,
             ClientSecret = this.ClientSecret,
         };
-        var result = await _storageService.SetClientSecret(secretSettings.ToJson());
+        var result = await _storageService.SetClientSecretAsync(secretSettings.ToJson());
         if (result.IsSuccess)
         {
             await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
