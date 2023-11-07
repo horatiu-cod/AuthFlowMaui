@@ -19,7 +19,7 @@ public partial class LoadingPage : ContentPage
     {
         await _secureStorage.RemoveClientSecretAsync();
         var result = await _secureStorage.GetClientSecretAsync();
-        if ( result.IsSuccess)
+        if ( !result.IsSuccess)
         {
             ActivityIndicator.IsRunning = false;
             testlabel.IsVisible = false;
