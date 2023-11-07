@@ -12,7 +12,7 @@ public class KeycloakTokenService : IKeycloakTokenService
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly KeycloakSettings _keycloakSettings;
 
-    public KeycloakTokenService(IHttpClientFactory httpClientFactory, KeycloakSettings keycloakSettings)
+    public KeycloakTokenService(IHttpClientFactory httpClientFactory)
     {
         _httpClientFactory = httpClientFactory;
         _keycloakSettings = keycloakSettings;
