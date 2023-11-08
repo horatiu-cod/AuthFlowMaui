@@ -1,9 +1,10 @@
-﻿namespace AuthFlowMaui.Shared.Services
+﻿using AuthFlowMaui.Shared.TokenDtos;
+using AuthFlowMaui.Shared.Utils;
+
+namespace AuthFlowMaui.Shared.Services
 {
     public interface IAuthService
     {
-        Task<bool> IsAuthenticatedAsync();
-        void Login();
-        void Logout();
+        Task<MethodDataResult<KeycloakTokenResponseDto>> IsAuthenticatedAsync();
     }
 }
