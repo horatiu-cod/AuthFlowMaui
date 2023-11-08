@@ -1,4 +1,4 @@
-﻿using AuthFlowMaui.Shared.Constants;
+﻿ using AuthFlowMaui.Shared.Constants;
 using AuthFlowMaui.Shared.Dtos;
 using AuthFlowMaui.Shared.Settings;
 using AuthFlowMaui.Shared.TokenDtos;
@@ -39,11 +39,11 @@ public class KeycloakTokenService : IKeycloakTokenService
         }
         else
         {
-        var responseJson = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-        var keycloakTokenResponseDto = JsonSerializer.Deserialize<KeycloakTokenResponseDto>(responseJson);
+            var responseJson = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var keycloakTokenResponseDto = JsonSerializer.Deserialize<KeycloakTokenResponseDto>(responseJson);
 
             return MethodDataResult<KeycloakTokenResponseDto>.Success(keycloakTokenResponseDto);
-    }
+        }
 
     }
     public async Task<MethodDataResult<KeycloakTokenResponseDto>> GetClientTokenResponseAsync(KeycloakSettings keycloakSettings)
@@ -67,8 +67,8 @@ public class KeycloakTokenService : IKeycloakTokenService
         }
         else
         {
-        var responseJson = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-        var keycloakTokenResponseDto = JsonSerializer.Deserialize<KeycloakTokenResponseDto>(responseJson);
+            var responseJson = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var keycloakTokenResponseDto = JsonSerializer.Deserialize<KeycloakTokenResponseDto>(responseJson);
 
             return MethodDataResult<KeycloakTokenResponseDto>.Success(keycloakTokenResponseDto);
         }
@@ -95,8 +95,8 @@ public class KeycloakTokenService : IKeycloakTokenService
         }
         else
         {
-        var responseJson = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-        var keycloakTokenResponseDto = JsonSerializer.Deserialize<KeycloakTokenResponseDto>(responseJson);
+            var responseJson = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var keycloakTokenResponseDto = JsonSerializer.Deserialize<KeycloakTokenResponseDto>(responseJson);
 
             return MethodDataResult<KeycloakTokenResponseDto>.Success(keycloakTokenResponseDto);
         }
