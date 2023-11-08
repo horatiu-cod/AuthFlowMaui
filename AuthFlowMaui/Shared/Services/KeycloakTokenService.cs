@@ -28,7 +28,17 @@ public class KeycloakTokenService : IKeycloakTokenService
             Password = keycloakUserDtos.Password
         };
         var tokenRequestBody = KeycloakTokenUtils.GetUserTokenRequestBody(keycloakTokenRequestDto);
-        var response = await httpclient.PostAsync($"{keycloakSettings.BaseUrl}/token", tokenRequestBody);
+        var response = await httpclient.PostAsync("/realms/dev/protocol/openid-connect/token", tokenRequestBody);
+        if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+        {
+            return MethodDataResult<KeycloakTokenResponseDto>.Fail("You are unauthorized", null);
+        }
+        else if (!response.IsSuccessStatusCode)
+        {
+            return MethodDataResult<KeycloakTokenResponseDto>.Fail($"{response.StatusCode} {response.ReasonPhrase}", null);
+        }
+        else
+        {
         var responseJson = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
         var keycloakTokenResponseDto = JsonSerializer.Deserialize<KeycloakTokenResponseDto>(responseJson);
 
@@ -46,7 +56,17 @@ public class KeycloakTokenService : IKeycloakTokenService
             ClientSecret = keycloakSettings.ClientSecret,
         };
         var tokenRequestBody = KeycloakTokenUtils.GetClientTokenRequestBody(keycloakTokenRequestDto);
-        var response = await httpClient.PostAsync($"{keycloakSettings.BaseUrl}/token", tokenRequestBody);
+        var response = await httpClient.PostAsync("/realms/dev/protocol/openid-connect/token", tokenRequestBody);
+        if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+        {
+            return MethodDataResult<KeycloakTokenResponseDto>.Fail("You are unauthorized", null);
+        }
+        else if (!response.IsSuccessStatusCode)
+        {
+            return MethodDataResult<KeycloakTokenResponseDto>.Fail($"{response.StatusCode} {response.ReasonPhrase}", null);
+        }
+        else
+        {
         var responseJson = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
         var keycloakTokenResponseDto = JsonSerializer.Deserialize<KeycloakTokenResponseDto>(responseJson);
 
@@ -64,7 +84,17 @@ public class KeycloakTokenService : IKeycloakTokenService
             RefreshToken = refreshToken
         };
         var tokenRequestBody = KeycloakTokenUtils.GetUserTokenWithRefreshTokenRequestBody(keycloakUserTokenWithRefreshTokenRequestDto);
-        var response = await httpClient.PostAsync($"{keycloakSettings.BaseUrl}/token", tokenRequestBody);
+        var response = await httpClient.PostAsync("/realms/dev/protocol/openid-connect/token", tokenRequestBody);
+        if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+        {
+            return MethodDataResult<KeycloakTokenResponseDto>.Fail("You are unauthorized", null);
+        }
+        else if (!response.IsSuccessStatusCode)
+        {
+            return MethodDataResult<KeycloakTokenResponseDto>.Fail($"{response.StatusCode} {response.ReasonPhrase}", null);
+        }
+        else
+        {
         var responseJson = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
         var keycloakTokenResponseDto = JsonSerializer.Deserialize<KeycloakTokenResponseDto>(responseJson);
 
