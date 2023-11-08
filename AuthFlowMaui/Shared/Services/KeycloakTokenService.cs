@@ -18,7 +18,7 @@ public class KeycloakTokenService : IKeycloakTokenService
 
     public async Task<MethodDataResult<KeycloakTokenResponseDto>> GetUserTokenResponseAsync(KeycloakUserDtos keycloakUserDtos, KeycloakSettings keycloakSettings)
     {
-        var httpclient = _httpClientFactory.CreateClient();
+        var httpclient = _httpClientFactory.CreateClient("maui-to-https-keycloak");
         var keycloakTokenRequestDto = new KeycloakUserTokenRequestDto
         {
             GrantType = KeycloakAccessTokenConst.GrantTypePassword,
@@ -38,7 +38,7 @@ public class KeycloakTokenService : IKeycloakTokenService
     }
     public async Task<MethodDataResult<KeycloakTokenResponseDto>> GetClientTokenResponseAsync(KeycloakSettings keycloakSettings)
     {
-        var httpClient = _httpClientFactory.CreateClient();
+        var httpClient = _httpClientFactory.CreateClient("maui-to-https-keycloak");
         var keycloakTokenRequestDto = new KeycloakClientTokenRequestDto
         {
             GrantType = KeycloakAccessTokenConst.GrantTypeCredentials,
@@ -55,7 +55,7 @@ public class KeycloakTokenService : IKeycloakTokenService
     }
     public async Task<MethodDataResult<KeycloakTokenResponseDto>> GetUserTokenByRefreshTokenResponseAsync(KeycloakSettings keycloakSettings, string refreshToken)
     {
-        var httpClient = _httpClientFactory.CreateClient();
+        var httpClient = _httpClientFactory.CreateClient("maui-to-https-keycloak");
         var keycloakUserTokenWithRefreshTokenRequestDto = new KeycloakUserTokenWithRefreshTokenRequestDto
         {
             GrantType = KeycloakAccessTokenConst.GrantTypeRefreshToken,
