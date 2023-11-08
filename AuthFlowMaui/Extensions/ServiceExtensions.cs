@@ -10,6 +10,7 @@ public static class ServiceExtensions
         services.AddTransient<IAuthService, AuthService>();
         services.AddTransient<IStorageService, StorageService>();
         services.AddTransient<ITokenService, TokenService>();
+        services.AddTransient<IKeycloakApiService, KeycloakApiService>();
 
         return services;
     }
