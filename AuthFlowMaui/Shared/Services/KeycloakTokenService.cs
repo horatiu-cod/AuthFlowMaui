@@ -16,7 +16,7 @@ public class KeycloakTokenService : IKeycloakTokenService
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<KeycloakTokenResponseDto> GetUserTokenResponseAsync(KeycloakUserDtos keycloakUserDtos, KeycloakSettings keycloakSettings)
+    public async Task<MethodDataResult<KeycloakTokenResponseDto>> GetUserTokenResponseAsync(KeycloakUserDtos keycloakUserDtos, KeycloakSettings keycloakSettings)
     {
         var httpclient = _httpClientFactory.CreateClient();
         var keycloakTokenRequestDto = new KeycloakUserTokenRequestDto
@@ -31,9 +31,12 @@ public class KeycloakTokenService : IKeycloakTokenService
         var response = await httpclient.PostAsync($"{keycloakSettings.BaseUrl}/token", tokenRequestBody);
         var responseJson = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
         var keycloakTokenResponseDto = JsonSerializer.Deserialize<KeycloakTokenResponseDto>(responseJson);
-        return keycloakTokenResponseDto;
+
+            return MethodDataResult<KeycloakTokenResponseDto>.Success(keycloakTokenResponseDto);
     }
-    public async Task<KeycloakTokenResponseDto> GetClientTokenResponseAsync(KeycloakSettings keycloakSettings)
+
+    }
+    public async Task<MethodDataResult<KeycloakTokenResponseDto>> GetClientTokenResponseAsync(KeycloakSettings keycloakSettings)
     {
         var httpClient = _httpClientFactory.CreateClient();
         var keycloakTokenRequestDto = new KeycloakClientTokenRequestDto
@@ -46,9 +49,11 @@ public class KeycloakTokenService : IKeycloakTokenService
         var response = await httpClient.PostAsync($"{keycloakSettings.BaseUrl}/token", tokenRequestBody);
         var responseJson = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
         var keycloakTokenResponseDto = JsonSerializer.Deserialize<KeycloakTokenResponseDto>(responseJson);
-        return keycloakTokenResponseDto;
+
+            return MethodDataResult<KeycloakTokenResponseDto>.Success(keycloakTokenResponseDto);
+        }
     }
-    public async Task<KeycloakTokenResponseDto> GetUserTokenByRefreshTokenResponseAsync(KeycloakSettings keycloakSettings, string refreshToken)
+    public async Task<MethodDataResult<KeycloakTokenResponseDto>> GetUserTokenByRefreshTokenResponseAsync(KeycloakSettings keycloakSettings, string refreshToken)
     {
         var httpClient = _httpClientFactory.CreateClient();
         var keycloakUserTokenWithRefreshTokenRequestDto = new KeycloakUserTokenWithRefreshTokenRequestDto
@@ -62,6 +67,8 @@ public class KeycloakTokenService : IKeycloakTokenService
         var response = await httpClient.PostAsync($"{keycloakSettings.BaseUrl}/token", tokenRequestBody);
         var responseJson = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
         var keycloakTokenResponseDto = JsonSerializer.Deserialize<KeycloakTokenResponseDto>(responseJson);
-        return keycloakTokenResponseDto;
+
+            return MethodDataResult<KeycloakTokenResponseDto>.Success(keycloakTokenResponseDto);
+        }
     }
 }
