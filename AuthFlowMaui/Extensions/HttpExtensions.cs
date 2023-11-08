@@ -19,30 +19,6 @@ namespace AuthFlowMaui.Extensions
                 return new Platforms.Windows.WindowsHttpMessageHandler();
 #endif
             });
-            services.AddScoped(_ =>
-            {
-                return new ClientCredentialsTokenRequest
-                {
-                    Address = $"/realms/dev/protocol/openid-connect/token",
-                    ClientId = "demo-client",
-                    ClientSecret = "lbkw1L58R8qvmRNRpAmu5zLxVtI3PJx4"
-                };
-            });
-            services.AddTransient(_ =>
-            {
-                var keycloakUserDtos = new KeycloakUserDtos();
-                return new PasswordTokenRequest
-                {
-                    Address = $"/realms/dev/protocol/openid-connect/token",
-
-                    ClientId = "demo-client",
-                    ClientSecret = "lbkw1L58R8qvmRNRpAmu5zLxVtI3PJx4",
-
-                    UserName = keycloakUserDtos.Username,
-                    Password = keycloakUserDtos.Password
-
-                };
-            });
             services.AddHttpClient("maui-to-https-keycloak", httpClient =>
             {
                 var baseUrl =
