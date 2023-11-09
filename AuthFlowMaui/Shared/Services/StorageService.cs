@@ -66,9 +66,10 @@ public class StorageService : IStorageService
     {
         try
         {
-            if (!string.IsNullOrEmpty(secretKey))
+            var secretValue = await _secureStorage.GetAsync(secretKey);
+
+            if (!string.IsNullOrEmpty( secretValue))
             {
-                var secretValue = await _secureStorage.GetAsync(secretKey);
                 return MethodDataResult<string>.Success(secretValue);
             }
             else
@@ -82,24 +83,26 @@ public class StorageService : IStorageService
             return MethodDataResult<string>.Fail($"Secure Storage cannot be accessed, {ex.Message}", null);
         }
     }
-    private Task<MethodResult> RemoveSecret(string secretKey)
+    private async Task<MethodResult> RemoveSecret(string secretKey)
     {
         try
         {
-            if (!string.IsNullOrEmpty(secretKey))
+            _secureStorage.Remove(secretKey);
+            var sec = await _secureStorage.GetAsync(secretKey);
+
+            if (sec == null)
             {
-                _secureStorage.Remove(secretKey);
-                return Task.FromResult(MethodResult.Success());
+                return MethodResult.Success();
             }
             else
             {
-                return Task.FromResult(MethodResult.Fail("Key couldn't been found"));
+                return (MethodResult.Fail("Key couldn't been removed"));
             }
 
         }
         catch (Exception ex)
         {
-            return Task.FromResult(MethodResult.Fail($"Secure Storage cannot be accessed, {ex.Message}"));
+            return MethodResult.Fail($"Secure Storage cannot be accessed, {ex.Message}");
         }
 
     }
