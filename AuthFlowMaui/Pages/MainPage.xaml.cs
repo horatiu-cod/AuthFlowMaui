@@ -17,8 +17,11 @@ namespace AuthFlowMaui.Pages
 
         private async void OnCounterClicked(object sender, EventArgs e)
         {
-            var httpClient = _httpClientFactory.CreateClient("maui-to-https-keycloak");
-            
+            var keycloakSettings = new KeycloakSettings();
+            var clientSettings = await _storageService.GetClientSecretAsync();
+            if (clientSettings.IsSuccess) 
+            {
+                keycloakSettings = keycloakSettings.FromJson(clientSettings.Data);
                 try
                 {
                     var response =  await httpClient.RequestClientCredentialsTokenAsync(_clientCredentialsTokenRequest);
