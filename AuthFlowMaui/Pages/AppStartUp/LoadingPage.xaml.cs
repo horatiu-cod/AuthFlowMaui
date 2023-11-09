@@ -17,7 +17,7 @@ public partial class LoadingPage : ContentPage
 
     protected async override void OnNavigatedTo(NavigatedToEventArgs args)
     {
-        await _secureStorage.RemoveClientSecretAsync();
+        //await _secureStorage.RemoveClientSecretAsync();
         var result = await _secureStorage.GetClientSecretAsync();
         if ( !result.IsSuccess)
         {
@@ -27,18 +27,20 @@ public partial class LoadingPage : ContentPage
         }
         else {
             var response = await _authService.IsAuthenticatedAsync();
-            if (result.IsSuccess) 
+            if (response.IsSuccess) 
             {
                 // user is logged in
                 // redirect to mainpage
-                await Shell.Current.GoToAsync($"//{nameof(MainPage)}");
+                var state = DeviceInfo.Platform == DevicePlatform.Android ? $"//{nameof(MainPage)}" : $"{nameof(MainPage)}";
+                await Shell.Current.GoToAsync(state);
 
             }
             else
             {
                 // user is not logged in
                 // redirect to loginpage
-                await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
+                var state = DeviceInfo.Platform == DevicePlatform.Android ? $"//{nameof(LoginPage)}" : $"{nameof(LoginPage)}";
+                await Shell.Current.GoToAsync(state);
             }
         }
     }
