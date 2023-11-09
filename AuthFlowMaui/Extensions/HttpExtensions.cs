@@ -1,6 +1,4 @@
-﻿using AuthFlowMaui.Shared.Dtos;
-using AuthFlowMaui.Shared.Services;
-using IdentityModel.Client;
+﻿using AuthFlowMaui.Shared.Services;
 
 
 namespace AuthFlowMaui.Extensions
