@@ -24,20 +24,20 @@ namespace AuthFlowMaui.Pages
                 keycloakSettings = keycloakSettings.FromJson(clientSettings.Data);
                 try
                 {
-                    var response =  await httpClient.RequestClientCredentialsTokenAsync(_clientCredentialsTokenRequest);
-                    if (response == null)
+                    var response = await _keycloakTokenService.GetClientTokenResponseAsync(keycloakSettings);
+                    if (response.IsSuccess)
                     {
-                        apiResponse.Text = "no connection";
-                    }
-                    if (!response.IsError)
-                    {
-                        var rawToken = response.AccessToken;
-                        var userName = await response.HttpResponse.Content.ReadAsStringAsync();
+                        var rawToken = response.Data.AccessToken;
+                        //var userName = await response.Data.HttpResponse.Content.ReadAsStringAsync();
                         var handler = new JwtSecurityTokenHandler();
                         var token = handler.ReadJwtToken(rawToken);
                         var claim = token.Claims.FirstOrDefault(c => c.Type == "preferred_username")?.Value;
-                        var res = response.HttpStatusCode;
-                        apiResponse.Text = res.ToString();
+                        //var res = response.;
+                        apiResponse.Text = $"{claim} merge";
+                    }
+                    else
+                    {
+                        apiResponse.Text = response.Error;
                     }
 
                 }
@@ -46,7 +46,10 @@ namespace AuthFlowMaui.Pages
                     apiResponse.Text = ex.Message;
                     throw;
                 };
-            
+
+
+            }
+
         }
     }
 
