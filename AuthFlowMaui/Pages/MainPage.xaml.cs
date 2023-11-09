@@ -1,17 +1,18 @@
-﻿using IdentityModel.Client;
+﻿using AuthFlowMaui.Shared.Services;
+using AuthFlowMaui.Shared.Settings;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace AuthFlowMaui.Pages
 {
     public partial class MainPage : ContentPage
     {
-        private readonly IHttpClientFactory _httpClientFactory;
-        private readonly ClientCredentialsTokenRequest _clientCredentialsTokenRequest;
-        public MainPage(IHttpClientFactory httpClientFactory, ClientCredentialsTokenRequest clientCredentialsTokenRequest)
+        private readonly IKeycloakTokenService _keycloakTokenService;
+        private readonly IStorageService _storageService;
+        public MainPage(IKeycloakTokenService keycloakTokenService, IStorageService storageService)
         {
             InitializeComponent();
-            _httpClientFactory = httpClientFactory;
-            _clientCredentialsTokenRequest = clientCredentialsTokenRequest;
+            _keycloakTokenService = keycloakTokenService;
+            _storageService = storageService;
         }
 
         private async void OnCounterClicked(object sender, EventArgs e)
