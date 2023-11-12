@@ -16,7 +16,7 @@ public class KeycloakTokenService : IKeycloakTokenService
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<MethodDataResult<KeycloakTokenResponseDto>> GetUserTokenResponseAsync(KeycloakUserDtos keycloakUserDtos, KeycloakSettings keycloakSettings)
+    public async Task<MethodDataResult<KeycloakTokenResponseDto>> GetUserTokenResponseAsync(KeycloakUserDto keycloakUserDtos, KeycloakSettings keycloakSettings)
     {
         var httpclient = _httpClientFactory.CreateClient("maui-to-https-keycloak");
         var keycloakTokenRequestDto = new KeycloakUserTokenRequestDto
@@ -24,7 +24,7 @@ public class KeycloakTokenService : IKeycloakTokenService
             GrantType = KeycloakAccessTokenConst.GrantTypePassword,
             ClientId = keycloakSettings.ClientId,
             ClientSecret = keycloakSettings.ClientSecret,
-            Username = keycloakUserDtos.Username,
+            Username = keycloakUserDtos.UserName,
             Password = keycloakUserDtos.Password
         };
         var tokenRequestBody = KeycloakTokenUtils.GetUserTokenRequestBody(keycloakTokenRequestDto);
