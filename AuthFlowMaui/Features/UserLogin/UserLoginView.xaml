@@ -2,10 +2,19 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AuthFlowMaui.Features.UserLogin.UserLoginView">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+    <VerticalStackLayout Padding="25"
+                         Spacing="25"
+                         VerticalOptions="Center"
+                         HorizontalOptions="Center">
+        <VerticalStackLayout>
+            <Label Text="User Name"/>
+            <Entry x:Name="userName" Text="{Binding UserName}"/>
+            <Label Text="Password"/>
+            <Entry IsPassword="True" x:Name="Password" Text="{Binding Password}"/>
+        </VerticalStackLayout>
+        <VerticalStackLayout>
+            <Button Text="Login"
+                    Command="{Binding LoginUserCommand}"/>
+        </VerticalStackLayout>
     </VerticalStackLayout>
 </ContentView>
