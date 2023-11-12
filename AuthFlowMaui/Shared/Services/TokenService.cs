@@ -29,7 +29,24 @@ public class TokenService : ITokenService
         var tokenHandler = new JwtSecurityTokenHandler();
         var validationParameter = new TokenValidationParameters
         {
+            ValidateIssuer = true,
+
+#if ANDROID
+            ValidIssuer = "https://10.0.2.2:8843/realms/dev",
+#else
+            ValidIssuer = "https://localhost:8843/realms/dev",
+#endif
+            ValidateAudience = false,
+            ValidAudience = "demo-client",
             ValidateLifetime = true,
+            ValidateIssuerSigningKey = false,
+            SignatureValidator = delegate (string token, TokenValidationParameters parameters)
+            {
+                var jwt = new JwtSecurityToken(token);
+
+                return jwt;
+            }
+
         };
         try
         {
