@@ -20,7 +20,7 @@ public class AuthService : IAuthService
     /// 
     /// </summary>
     /// <returns></returns>
-    public async Task<MethodDataResult<KeycloakTokenResponseDto>> IsAuthenticatedAsync()
+    public async Task<MethodDataResult<KeycloakTokenResponseDto>> CheckIfIsAuthenticatedAsync()
     {
         var keycloakTokenResponseDto = new KeycloakTokenResponseDto();
         try

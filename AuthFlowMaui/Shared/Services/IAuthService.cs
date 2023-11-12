@@ -5,6 +5,6 @@ namespace AuthFlowMaui.Shared.Services
 {
     public interface IAuthService
     {
-        Task<MethodDataResult<KeycloakTokenResponseDto>> IsAuthenticatedAsync();
+        Task<MethodDataResult<KeycloakTokenResponseDto>> CheckIfIsAuthenticatedAsync();
     }
 }
