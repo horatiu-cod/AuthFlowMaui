@@ -17,11 +17,10 @@ namespace AuthFlowMaui.Pages
 
         private async void OnCounterClicked(object sender, EventArgs e)
         {
-            var keycloakSettings = new KeycloakSettings();
             var clientSettings = await _storageService.GetClientSecretAsync();
             if (clientSettings.IsSuccess) 
             {
-                keycloakSettings = keycloakSettings.FromJson(clientSettings.Data);
+                var keycloakSettings = clientSettings.Data;
                 try
                 {
                     var response = await _keycloakTokenService.GetClientTokenResponseAsync(keycloakSettings);
