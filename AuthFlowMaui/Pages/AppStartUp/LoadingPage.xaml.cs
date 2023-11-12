@@ -26,7 +26,7 @@ public partial class LoadingPage : ContentPage
             Settings.IsVisible = true;
         }
         else {
-            var response = await _authService.IsAuthenticatedAsync();
+            var response = await _authService.CheckIfIsAuthenticatedAsync();
             if (response.IsSuccess) 
             {
                 // user is logged in
