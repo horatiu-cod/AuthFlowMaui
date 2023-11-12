@@ -26,7 +26,7 @@ public class ConnectivityTest : IConnectivityTest
             Console.WriteLine("Internet access is available but is limited");
         else if (e.NetworkAccess == NetworkAccess.Local)
             Console.WriteLine("Only local internet is available");
-        else if (e.NetworkAccess != NetworkAccess.Internet) 
+        else if (e.NetworkAccess != NetworkAccess.Internet)
             Console.WriteLine("Internet access has been lost");
 
         // log each active connection
@@ -35,33 +35,37 @@ public class ConnectivityTest : IConnectivityTest
         {
             switch (item)
             {
-                case ConnectionProfile.Bluetooth: 
-                    Console.WriteLine("Bluetooth"); 
+                case ConnectionProfile.Bluetooth:
+                    Console.WriteLine("Bluetooth");
                     break;
-                case ConnectionProfile.Cellular: Console.WriteLine("Cell");
+                case ConnectionProfile.Cellular:
+                    Console.WriteLine("Cell");
                     break;
-                case ConnectionProfile.Ethernet: Console.WriteLine("Ethernet");
+                case ConnectionProfile.Ethernet:
+                    Console.WriteLine("Ethernet");
                     break;
-                case ConnectionProfile.WiFi: Console.WriteLine("WiFi");
+                case ConnectionProfile.WiFi:
+                    Console.WriteLine("WiFi");
                     break;
                 default:
                     break;
             }
         }
     }
-    public void CheckConnectivity()
+    public bool CheckConnectivity()
     {
         if (accessType == NetworkAccess.Internet)
         {
-            // Connection to internet is available
+            if (profiles.Contains(ConnectionProfile.Cellular) || profiles.Contains(ConnectionProfile.WiFi))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
         }
-        if (profiles.Contains(ConnectionProfile.Cellular))
-        {
-            // Active Cellular connection
-        }
-        if (profiles.Contains(ConnectionProfile.WiFi))  
-        {
-            // Active WiFi conection
-        }
+        return false;
     }
 }
