@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:login="clr-namespace:AuthFlowMaui.Features.UserLogin"
              x:Class="AuthFlowMaui.Pages.UserLogin.LoginPage"
              Title="LoginPage">
     <VerticalStackLayout Padding="25"
                          Spacing="25"
                          VerticalOptions="Center"
                          HorizontalOptions="Center">
-        <Label Text="User Name"/>
-        <Entry x:Name="username"/>
-        <Label Text="Password"/>
-        <Entry IsPassword="True" x:Name="Password" />
-        <Button Text="Login"
-                Clicked="Button_Clicked"/>
+        <login:UserLoginView x:Name="UserLogin" BindingContext="{Binding UserLoginViewModel}"/>
     </VerticalStackLayout>
+
 </ContentPage>
