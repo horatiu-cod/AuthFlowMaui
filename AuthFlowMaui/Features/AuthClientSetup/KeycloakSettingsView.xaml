@@ -11,6 +11,6 @@
         <Entry x:Name="clientId" Text="{Binding ClientId}" />
         <Label Text="Client Secret"/>
         <Entry x:Name="clientSecret" Text="{Binding ClientSecret}"/>
-        <Button Text="Save Sttings" Command="{Binding SetSettingsCommand }"/>
+        <Button Text="Save Settings" Command="{Binding SetSettingsCommand }"/>
     </VerticalStackLayout>
 </ContentView>
