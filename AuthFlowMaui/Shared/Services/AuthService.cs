@@ -111,7 +111,7 @@ public class AuthService : IAuthService
         }
         else
         {
-            return MethodDataResult<KeycloakSettings>.Success(clientSettings.FromJson(result.Data));
+            return MethodDataResult<KeycloakSettings>.Success(result.Data);
         }
     }
 }
