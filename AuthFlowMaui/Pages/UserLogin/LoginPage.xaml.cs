@@ -1,19 +1,10 @@
-using AuthFlowMaui.Shared.Services;
-
 namespace AuthFlowMaui.Pages.UserLogin;
 
 public partial class LoginPage : ContentPage
 {
-	private readonly IAuthService _authService;
-    public LoginPage(IAuthService authService)
+    public LoginPage(LoginPageViewModel loginPageViewModel)
     {
         InitializeComponent();
-        _authService = authService;
+        BindingContext = loginPageViewModel;
     }
-    private async void Button_Clicked(object sender, EventArgs e)
-	{
-        //_authService.Login();
-		await Shell.Current.GoToAsync($"//{nameof(MainPage)}");
-	}
-
 }
