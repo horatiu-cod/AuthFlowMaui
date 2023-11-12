@@ -1,5 +1,10 @@
 ﻿namespace AuthFlowMaui.Shared.Utils;
 
+public interface IConnectivityTest
+{
+    bool CheckConnectivity();
+}
+
 
 // if Android update:
 // Platforms/Android/MainApplication.cs
@@ -7,7 +12,7 @@
 // or
 // Platforms/Android/AndroidManifest.xml
 // <users-permission android: name="android:permission.ACCESS_NETWORK_STATE />
-public class ConnectivityTest
+public class ConnectivityTest : IConnectivityTest
 {
     public ConnectivityTest() => Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
     ~ConnectivityTest() => Connectivity.ConnectivityChanged -= Connectivity_ConnectivityChanged;
