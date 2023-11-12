@@ -57,6 +57,7 @@ public class AuthService : IAuthService
         // if access_token and refresh_token are expired
         if (!accessToken.IsSuccess && !refreshToken.IsSuccess)
         {
+            await _storage.RemoveUserCredentialsAsync();
             return MethodDataResult<KeycloakTokenResponseDto>.Fail($"{accessToken.Error} {refreshToken.Error} the token and the refresh token are not valid", null);
         }
         // if access_token is expired
@@ -103,7 +104,6 @@ public class AuthService : IAuthService
     /// <returns></returns>
     private async Task<MethodDataResult<KeycloakSettings>> GetClientSettings()
     {
-        var clientSettings = new KeycloakSettings();
         var result = await _storage.GetClientSecretAsync();
         if (!result.IsSuccess)
         {
