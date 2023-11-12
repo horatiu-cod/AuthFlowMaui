@@ -1,10 +1,11 @@
-﻿using AuthFlowMaui.Shared.Utils;
+﻿using AuthFlowMaui.Shared.Settings;
+using AuthFlowMaui.Shared.Utils;
 
 namespace AuthFlowMaui.Shared.Services;
 
 public interface IStorageService
 {
-    Task<MethodDataResult<string>> GetClientSecretAsync();
+    Task<MethodDataResult<KeycloakSettings>> GetClientSecretAsync();
     Task<MethodDataResult<string>> GetUserCredentialsAsync();
     Task<MethodResult> RemoveClientSecretAsync();
     Task<MethodResult> RemoveUserCredentialsAsync();
