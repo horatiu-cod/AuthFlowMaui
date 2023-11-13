@@ -1,10 +1,5 @@
 ﻿namespace AuthFlowMaui.Shared.Utils;
 
-public interface IConnectivityTest
-{
-    bool CheckConnectivity();
-}
-
 
 // if Android update:
 // Platforms/Android/MainApplication.cs
