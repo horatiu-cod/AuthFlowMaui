@@ -1,5 +1,6 @@
 using AuthFlowMaui.Pages.UserLogin;
 using AuthFlowMaui.Shared.Services;
+using AuthFlowMaui.Shared.Utils;
 
 namespace AuthFlowMaui.Pages.AppStartUp;
 
@@ -7,14 +8,16 @@ public partial class LoadingPage : ContentPage
 {
 	private readonly IAuthService _authService;
     private readonly IStorageService _secureStorage;
+    private readonly IMauiInterop _mauiInterop;
     private static readonly CancellationTokenSource s_tokenSource = new CancellationTokenSource();
 
-    public LoadingPage(IAuthService authService, LoadingPageViewModel loadingPageViewModel, IStorageService secureStorage)
+    public LoadingPage(IAuthService authService, LoadingPageViewModel loadingPageViewModel, IStorageService secureStorage, IMauiInterop mauiInterop)
     {
         InitializeComponent();
         BindingContext = loadingPageViewModel;
         _authService = authService;
         _secureStorage = secureStorage;
+        _mauiInterop = mauiInterop;
     }
 
     protected async override void OnNavigatedTo(NavigatedToEventArgs args)
@@ -38,15 +41,14 @@ public partial class LoadingPage : ContentPage
                 {
                     // user is logged in
                     // redirect to mainpage
-                    var state = DeviceInfo.Platform == DevicePlatform.Android ? $"//{nameof(MainPage)}" : $"{nameof(MainPage)}";
-                    s_tokenSource.Dispose();
+                    var state = _mauiInterop.SetState(nameof(MainPage));
                     await Shell.Current.GoToAsync(state);
                 }
                 else
                 {
                     // user is not logged in
                     // redirect to loginpage
-                    var state = DeviceInfo.Platform == DevicePlatform.Android ? $"//{nameof(LoginPage)}" : $"{nameof(LoginPage)}";
+                    var state = _mauiInterop.SetState(nameof(LoginPage));
                     s_tokenSource.Dispose();
                     await Shell.Current.GoToAsync(state);
                 }
@@ -54,9 +56,9 @@ public partial class LoadingPage : ContentPage
             catch (OperationCanceledException ex)
             {
                var cancelAction =  await DisplayAlert("Connection error", ex.Message, null, "Cancel");
-                var state = DeviceInfo.Platform == DevicePlatform.Android ? $"//{nameof(LoginPage)}" : $"{nameof(LoginPage)}";
                 if (!cancelAction)
                 {
+                    var state = _mauiInterop.SetState(nameof(LoginPage));
                     s_tokenSource.Dispose();
                     await Shell.Current.GoToAsync(state);
                 }
