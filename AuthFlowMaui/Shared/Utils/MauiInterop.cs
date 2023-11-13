@@ -1,7 +1,11 @@
-﻿namespace AuthFlowMaui.Shared.Utils;
+﻿using AuthFlowMaui.Pages;
+
+namespace AuthFlowMaui.Shared.Utils;
 
 public class MauiInterop : IMauiInterop
 {
+    public string SetState(string nameOfPage) => DeviceInfo.Platform == DevicePlatform.Android ? $"//{nameOfPage}" : nameOfPage;
+
     public async Task ShowErrorAlertAsync(string message, string? Title = "Error") =>
         await App.Current.MainPage.DisplayAlert(Title, message, "Ok");
 
