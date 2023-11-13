@@ -1,5 +1,6 @@
 ﻿using AuthFlowMaui.Shared.Services;
 using AuthFlowMaui.Shared.Utils;
+using CommunityToolkit.Maui;
 
 namespace AuthFlowMaui.Extensions;
 
@@ -14,6 +15,7 @@ public static class ServiceExtensions
         services.AddTransient<IKeycloakApiService, KeycloakApiService>();
 
         services.AddTransient<IConnectivityTest, ConnectivityTest>();
+        services.AddTransient<IMauiInterop,MauiInterop>();
 
         return services;
     }
