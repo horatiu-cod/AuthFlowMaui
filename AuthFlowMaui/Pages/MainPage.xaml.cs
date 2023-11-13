@@ -8,6 +8,7 @@ namespace AuthFlowMaui.Pages
     {
         private readonly IKeycloakTokenService _keycloakTokenService;
         private readonly IStorageService _storageService;
+        static readonly CancellationTokenSource s_tokenSource = new CancellationTokenSource();
         public MainPage(IKeycloakTokenService keycloakTokenService, IStorageService storageService)
         {
             InitializeComponent();
@@ -23,7 +24,8 @@ namespace AuthFlowMaui.Pages
                 var keycloakSettings = clientSettings.Data;
                 try
                 {
-                    var response = await _keycloakTokenService.GetClientTokenResponseAsync(keycloakSettings);
+                    s_tokenSource.CancelAfter(3500);
+                    var response = await _keycloakTokenService.GetClientTokenResponseAsync(keycloakSettings, s_tokenSource.Token);
                     if (response.IsSuccess)
                     {
                         var rawToken = response.Data.AccessToken;
@@ -40,10 +42,13 @@ namespace AuthFlowMaui.Pages
                     }
 
                 }
-                catch (Exception ex)
+                catch (Exception ex) when (ex is OperationCanceledException)
                 {
                     apiResponse.Text = ex.Message;
-                    throw;
+                }
+                finally
+                {
+                    s_tokenSource.Dispose();
                 };
 
 

@@ -7,6 +7,8 @@ public partial class LoadingPage : ContentPage
 {
 	private readonly IAuthService _authService;
     private readonly IStorageService _secureStorage;
+    private static readonly CancellationTokenSource s_tokenSource = new CancellationTokenSource();
+
     public LoadingPage(IAuthService authService, LoadingPageViewModel loadingPageViewModel, IStorageService secureStorage)
     {
         InitializeComponent();
@@ -25,22 +27,43 @@ public partial class LoadingPage : ContentPage
             testlabel.IsVisible = false;
             Settings.IsVisible = true;
         }
-        else {
-            var response = await _authService.CheckIfIsAuthenticatedAsync();
-            if (response.IsSuccess) 
+        else 
+        {
+            try
             {
-                // user is logged in
-                // redirect to mainpage
-                var state = DeviceInfo.Platform == DevicePlatform.Android ? $"//{nameof(MainPage)}" : $"{nameof(MainPage)}";
-                await Shell.Current.GoToAsync(state);
-
+                //await _secureStorage.RemoveUserCredentialsAsync();
+                s_tokenSource.CancelAfter(5000);
+                var response = await _authService.CheckIfIsAuthenticatedAsync(s_tokenSource.Token);
+                if (response.IsSuccess)
+                {
+                    // user is logged in
+                    // redirect to mainpage
+                    var state = DeviceInfo.Platform == DevicePlatform.Android ? $"//{nameof(MainPage)}" : $"{nameof(MainPage)}";
+                    s_tokenSource.Dispose();
+                    await Shell.Current.GoToAsync(state);
+                }
+                else
+                {
+                    // user is not logged in
+                    // redirect to loginpage
+                    var state = DeviceInfo.Platform == DevicePlatform.Android ? $"//{nameof(LoginPage)}" : $"{nameof(LoginPage)}";
+                    s_tokenSource.Dispose();
+                    await Shell.Current.GoToAsync(state);
+                }
             }
-            else
+            catch (OperationCanceledException ex)
             {
-                // user is not logged in
-                // redirect to loginpage
+               var cancelAction =  await DisplayAlert("Connection error", ex.Message, null, "Cancel");
                 var state = DeviceInfo.Platform == DevicePlatform.Android ? $"//{nameof(LoginPage)}" : $"{nameof(LoginPage)}";
-                await Shell.Current.GoToAsync(state);
+                if (!cancelAction)
+                {
+                    s_tokenSource.Dispose();
+                    await Shell.Current.GoToAsync(state);
+                }
+            }
+            finally
+            {
+                s_tokenSource.Dispose();
             }
         }
     }

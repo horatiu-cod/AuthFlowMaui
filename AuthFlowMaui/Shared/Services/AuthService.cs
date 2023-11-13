@@ -20,7 +20,7 @@ public class AuthService : IAuthService
     /// 
     /// </summary>
     /// <returns></returns>
-    public async Task<MethodDataResult<KeycloakTokenResponseDto>> CheckIfIsAuthenticatedAsync()
+    public async Task<MethodDataResult<KeycloakTokenResponseDto>> CheckIfIsAuthenticatedAsync(CancellationToken cancellationToken)
     {
         var keycloakTokenResponseDto = new KeycloakTokenResponseDto();
         try
@@ -36,7 +36,7 @@ public class AuthService : IAuthService
             }
             else
             {
-                return await TryAuthenticateAsync(keycloakTokenResponseDto);
+                return await TryAuthenticateAsync(keycloakTokenResponseDto, cancellationToken);
             }
         }
         catch (Exception ex)
@@ -49,7 +49,7 @@ public class AuthService : IAuthService
     /// </summary>
     /// <param name="keycloakTokenResponseDto"></param>
     /// <returns></returns>
-    private async Task<MethodDataResult<KeycloakTokenResponseDto>> TryAuthenticateAsync(KeycloakTokenResponseDto keycloakTokenResponseDto)
+    private async Task<MethodDataResult<KeycloakTokenResponseDto>> TryAuthenticateAsync(KeycloakTokenResponseDto keycloakTokenResponseDto, CancellationToken cancellationToken)
     {
         var accessToken = await _tokenService.ValidateTokenAsync(keycloakTokenResponseDto.AccessToken);
         var refreshToken = await _tokenService.ValidateTokenAsync(keycloakTokenResponseDto.RefreshToken);
@@ -65,7 +65,7 @@ public class AuthService : IAuthService
         {
             // try to get access_token using refresh_token
             // return result of operation
-            return await RefreshTokenAsync(keycloakTokenResponseDto.RefreshToken);
+            return await RefreshTokenAsync(keycloakTokenResponseDto.RefreshToken, cancellationToken);
         }
         else
         {
@@ -74,14 +74,14 @@ public class AuthService : IAuthService
        
     }
 
-    private async Task<MethodDataResult<KeycloakTokenResponseDto>> RefreshTokenAsync(string refreshToken)
+    private async Task<MethodDataResult<KeycloakTokenResponseDto>> RefreshTokenAsync(string refreshToken, CancellationToken cancellationToken)
     {
         var clientSettings = await GetClientSettings();
         if (!clientSettings.IsSuccess)
             return MethodDataResult<KeycloakTokenResponseDto>.Fail(clientSettings.Error, null);
         try
         {
-            var result = await _keycloakTokenService.GetUserTokenByRefreshTokenResponseAsync(clientSettings.Data, refreshToken);
+            var result = await _keycloakTokenService.GetUserTokenByRefreshTokenResponseAsync(clientSettings.Data, refreshToken, cancellationToken);
             if (!result.IsSuccess)
             {
                 return MethodDataResult<KeycloakTokenResponseDto>.Fail($"Please try again {result.Error}", null);

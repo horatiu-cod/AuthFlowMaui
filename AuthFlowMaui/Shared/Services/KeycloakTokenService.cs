@@ -16,7 +16,7 @@ public class KeycloakTokenService : IKeycloakTokenService
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<MethodDataResult<KeycloakTokenResponseDto>> GetUserTokenResponseAsync(KeycloakUserDto keycloakUserDtos, KeycloakSettings keycloakSettings)
+    public async Task<MethodDataResult<KeycloakTokenResponseDto>> GetUserTokenResponseAsync(KeycloakUserDto keycloakUserDtos, KeycloakSettings keycloakSettings, CancellationToken cancellationToken)
     {
         var httpclient = _httpClientFactory.CreateClient("maui-to-https-keycloak");
         var keycloakTokenRequestDto = new KeycloakUserTokenRequestDto
@@ -28,7 +28,7 @@ public class KeycloakTokenService : IKeycloakTokenService
             Password = keycloakUserDtos.Password
         };
         var tokenRequestBody = KeycloakTokenUtils.GetUserTokenRequestBody(keycloakTokenRequestDto);
-        var response = await httpclient.PostAsync("/realms/dev/protocol/openid-connect/token", tokenRequestBody);
+        var response = await httpclient.PostAsync("/realms/dev/protocol/openid-connect/token", tokenRequestBody, cancellationToken);
         if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
         {
             return MethodDataResult<KeycloakTokenResponseDto>.Fail("You are unauthorized", null);
@@ -46,7 +46,7 @@ public class KeycloakTokenService : IKeycloakTokenService
         }
 
     }
-    public async Task<MethodDataResult<KeycloakTokenResponseDto>> GetClientTokenResponseAsync(KeycloakSettings keycloakSettings)
+    public async Task<MethodDataResult<KeycloakTokenResponseDto>> GetClientTokenResponseAsync(KeycloakSettings keycloakSettings, CancellationToken cancellationToken)
     {
         var httpClient = _httpClientFactory.CreateClient("maui-to-https-keycloak");
         var keycloakTokenRequestDto = new KeycloakClientTokenRequestDto
@@ -56,7 +56,7 @@ public class KeycloakTokenService : IKeycloakTokenService
             ClientSecret = keycloakSettings.ClientSecret,
         };
         var tokenRequestBody = KeycloakTokenUtils.GetClientTokenRequestBody(keycloakTokenRequestDto);
-        var response = await httpClient.PostAsync("/realms/dev/protocol/openid-connect/token", tokenRequestBody);
+        var response = await httpClient.PostAsync("/realms/dev/protocol/openid-connect/token", tokenRequestBody, cancellationToken);
         if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
         {
             return MethodDataResult<KeycloakTokenResponseDto>.Fail("You are unauthorized", null);
@@ -73,7 +73,7 @@ public class KeycloakTokenService : IKeycloakTokenService
             return MethodDataResult<KeycloakTokenResponseDto>.Success(keycloakTokenResponseDto);
         }
     }
-    public async Task<MethodDataResult<KeycloakTokenResponseDto>> GetUserTokenByRefreshTokenResponseAsync(KeycloakSettings keycloakSettings, string refreshToken)
+    public async Task<MethodDataResult<KeycloakTokenResponseDto>> GetUserTokenByRefreshTokenResponseAsync(KeycloakSettings keycloakSettings, string refreshToken, CancellationToken cancellationToken)
     {
         var httpClient = _httpClientFactory.CreateClient("maui-to-https-keycloak");
         var keycloakUserTokenWithRefreshTokenRequestDto = new KeycloakUserTokenWithRefreshTokenRequestDto
@@ -84,7 +84,7 @@ public class KeycloakTokenService : IKeycloakTokenService
             RefreshToken = refreshToken
         };
         var tokenRequestBody = KeycloakTokenUtils.GetUserTokenWithRefreshTokenRequestBody(keycloakUserTokenWithRefreshTokenRequestDto);
-        var response = await httpClient.PostAsync("/realms/dev/protocol/openid-connect/token", tokenRequestBody);
+        var response = await httpClient.PostAsync("/realms/dev/protocol/openid-connect/token", tokenRequestBody, cancellationToken);
         if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
         {
             return MethodDataResult<KeycloakTokenResponseDto>.Fail("You are unauthorized", null);
