@@ -4,11 +4,11 @@
              xmlns:settings="clr-namespace:AuthFlowMaui.Features.AuthClientSetup"
              x:Class="AuthFlowMaui.Pages.AppStartUp.LoadingPage"
              Title="LoadingPage"
-             Shell.NavBarIsVisible="False">
+             Shell.NavBarIsVisible="False" >
     <VerticalStackLayout HorizontalOptions="Center"
                          VerticalOptions="Center">
-        <ActivityIndicator x:Name="ActivityIndicator" IsRunning="true"/>
-        <Label x:Name="testlabel" IsVisible="true" Text="Checking Authentication State ...."/>
-        <settings:KeycloakSettingsView x:Name="Settings" IsVisible="false" BindingContext="{Binding KeycloakSettingsViewModel}"/>
+        <ActivityIndicator x:Name="ActivityIndicator" IsRunning="{Binding IsBusy}"/>
+        <Label x:Name="testlabel" IsVisible="{Binding IsLabelVisible}" Text="Checking Authentication State ...."/>
+        <settings:KeycloakSettingsView x:Name="Settings" IsVisible="{Binding IsKeycloakSettingsViewVisible}" BindingContext="{Binding KeycloakSettingsViewModel}"/>
     </VerticalStackLayout>
 </ContentPage>
