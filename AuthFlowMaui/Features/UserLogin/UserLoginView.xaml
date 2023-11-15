@@ -6,6 +6,7 @@
                          Spacing="25"
                          VerticalOptions="Center"
                          HorizontalOptions="Center">
+        <ActivityIndicator x:Name="ActivityIndicator" IsRunning="{Binding IsBusy}"/>
         <VerticalStackLayout>
             <Label Text="User Name"/>
             <Entry x:Name="userName" Text="{Binding UserName}"/>
