@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using AuthFlowMaui.Extensions;
 using CommunityToolkit.Maui;
+using AuthFlowMaui.Shared.Extensions;
 
 
 namespace AuthFlowMaui
@@ -21,6 +22,7 @@ namespace AuthFlowMaui
             
             builder.Services.AddKeycloakHttpClient();
             builder.Services.RegisterViewWithViewModel();
+            builder.Services.AddKeycloakServices();
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
