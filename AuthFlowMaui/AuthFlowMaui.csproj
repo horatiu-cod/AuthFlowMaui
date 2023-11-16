@@ -57,6 +57,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Shared\Services\IKeycloakApiService.cs" />
+	  <Compile Remove="Shared\Services\IKeycloakTokenService.cs" />
+	  <Compile Remove="Shared\Services\ITokenService.cs" />
+	  <Compile Remove="Shared\Services\KeycloakApiService.cs" />
+	  <Compile Remove="Shared\Services\KeycloakTokenService.cs" />
+	  <Compile Remove="Shared\Services\TokenService.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Maui" Version="6.1.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
 		<PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
