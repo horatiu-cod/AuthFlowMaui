@@ -1,5 +1,7 @@
-﻿using AuthFlowMaui.Shared.Settings;
+﻿using AuthFlowMaui.Shared.KeycloakSettings;
 using AuthFlowMaui.Shared.Utils;
+
+
 
 namespace AuthFlowMaui.Shared.Services;
 
@@ -34,25 +36,25 @@ public class StorageService : IStorageService
     {
         return await SetSecret(ClientSettings, secretValue);
     }
-    public async Task<MethodDataResult<KeycloakSettings>> GetClientSecretAsync()
+    public async Task<MethodDataResult<KeycloakClientSettings>> GetClientSecretAsync()
     {
         var jsonResult =  await GetSecret(ClientSettings);
         if (jsonResult.IsSuccess)
         {
-            var keycloaksettings = new KeycloakSettings();
+            var keycloaksettings = new KeycloakClientSettings();
             keycloaksettings = keycloaksettings.FromJson(jsonResult.Data);
             if (keycloaksettings != null)
             {
-                return MethodDataResult<KeycloakSettings>.Success(keycloaksettings);
+                return MethodDataResult<KeycloakClientSettings>.Success(keycloaksettings);
             }
             else
             {
-                return MethodDataResult<KeycloakSettings>.Fail("", null);
+                return MethodDataResult<KeycloakClientSettings>.Fail("", null);
             }
         }
         else
         {
-            return MethodDataResult<KeycloakSettings>.Fail(jsonResult.Error, null);
+            return MethodDataResult<KeycloakClientSettings>.Fail(jsonResult.Error, null);
         }
 
     }

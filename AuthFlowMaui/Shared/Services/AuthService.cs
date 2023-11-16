@@ -1,6 +1,7 @@
-﻿using AuthFlowMaui.Shared.Settings;
-using AuthFlowMaui.Shared.TokenDtos;
+﻿using AuthFlowMaui.Shared.KeycloakServices;
 using AuthFlowMaui.Shared.Utils;
+using AuthFlowMaui.Shared.TokenDtos;
+using AuthFlowMaui.Shared.KeycloakSettings;
 
 namespace AuthFlowMaui.Shared.Services;
 
@@ -102,16 +103,16 @@ public class AuthService : IAuthService
     /// 
     /// </summary>
     /// <returns></returns>
-    private async Task<MethodDataResult<KeycloakSettings>> GetClientSettings()
+    private async Task<MethodDataResult<KeycloakClientSettings>> GetClientSettings()
     {
         var result = await _storage.GetClientSecretAsync();
         if (!result.IsSuccess)
         {
-            return MethodDataResult<KeycloakSettings>.Fail(result.Error, null);
+            return MethodDataResult<KeycloakClientSettings>.Fail(result.Error, null);
         }
         else
         {
-            return MethodDataResult<KeycloakSettings>.Success(result.Data);
+            return MethodDataResult<KeycloakClientSettings>.Success(result.Data);
         }
     }
 }
