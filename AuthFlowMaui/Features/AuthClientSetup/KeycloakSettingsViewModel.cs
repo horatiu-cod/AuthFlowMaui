@@ -1,4 +1,4 @@
-﻿using AuthFlowMaui.Shared.Settings;
+﻿using AuthFlowMaui.Shared.KeycloakSettings;
 using AuthFlowMaui.Pages;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -27,7 +27,7 @@ public partial class KeycloakSettingsViewModel : ObservableObject
     public async Task SetSettings()
     {
         IsBusy = true;
-        var secretSettings = new KeycloakSettings
+        var secretSettings = new KeycloakClientSettings
         {
             ClientId = this.ClientId,
             ClientSecret = this.ClientSecret,

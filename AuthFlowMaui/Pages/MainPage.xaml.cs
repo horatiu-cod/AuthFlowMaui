@@ -1,5 +1,5 @@
-﻿using AuthFlowMaui.Shared.Services;
-using AuthFlowMaui.Shared.Settings;
+﻿using AuthFlowMaui.Shared.KeycloakServices;
+using AuthFlowMaui.Shared.Services;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace AuthFlowMaui.Pages
