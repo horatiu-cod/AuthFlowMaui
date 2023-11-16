@@ -58,7 +58,7 @@ public partial class UserLoginViewModel : ObservableObject, IDisposable
                     {
                         await Toast.Make("You are logged in", CommunityToolkit.Maui.Core.ToastDuration.Short, 20).Show();
                         await _mauiInterop.ShowSuccessAlertAsync(loginResult.Data.AccessToken);
-                        var state = DeviceInfo.Platform == DevicePlatform.Android ? $"//{nameof(MainPage)}" : $"{nameof(MainPage)}";
+                        var state = _mauiInterop.SetState(nameof(MainPage));
                         await Shell.Current.GoToAsync(state);
                         Dispose();
                     }
