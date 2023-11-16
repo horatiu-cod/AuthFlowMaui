@@ -33,6 +33,8 @@ public partial class LoadingPageViewModel : ObservableObject
     public async Task CheckOnNavigate()
     {
         IsKeycloakSettingsViewVisible = false;
+        IsBusy = true;
+
         //await _secureStorage.RemoveClientSecretAsync();
         var result = await _secureStorage.GetClientSecretAsync();
         if (!result.IsSuccess)
@@ -76,6 +78,7 @@ public partial class LoadingPageViewModel : ObservableObject
             }
             finally
             {
+                IsBusy = false;
                 s_tokenSource.Dispose();
             }
         }
