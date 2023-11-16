@@ -1,9 +1,9 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace AuthFlowMaui.Shared.Settings;
+namespace AuthFlowMaui.Shared.KeycloakSettings;
 
-public record KeycloakSettings()
+public record KeycloakClientSettings()
 {
     [JsonPropertyName("client_id")]
     public string? ClientId { get; init; }
@@ -13,8 +13,8 @@ public record KeycloakSettings()
     public string? BaseUrl { get; set; }
     public string ToJson() => 
         JsonSerializer.Serialize(this);
-    public KeycloakSettings? FromJson(string keycloakSettings) =>
-        JsonSerializer.Deserialize<KeycloakSettings>(keycloakSettings,JsonSerializerOptions);
+    public KeycloakClientSettings? FromJson(string keycloakSettings) =>
+        JsonSerializer.Deserialize<KeycloakClientSettings>(keycloakSettings,JsonSerializerOptions);
     readonly JsonSerializerOptions JsonSerializerOptions = new()
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
