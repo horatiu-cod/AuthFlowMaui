@@ -1,9 +1,9 @@
-﻿using AuthFlowMaui.Shared.Utils;
+﻿using AuthFlowMaui.Shared.KeycloakUtils;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-namespace AuthFlowMaui.Shared.Services;
+namespace AuthFlowMaui.Shared.KeycloakServices;
 
 public class TokenService : ITokenService
 {
@@ -24,7 +24,7 @@ public class TokenService : ITokenService
             return null;
         }
     }
-    public async Task<MethodResult> ValidateTokenAsync(string token)
+    public async Task<Result> ValidateTokenAsync(string token)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var validationParameter = new TokenValidationParameters
@@ -53,17 +53,17 @@ public class TokenService : ITokenService
             var result = await tokenHandler.ValidateTokenAsync(token, validationParameter);
             if (result.IsValid)
             {
-                return MethodResult.Success();
+                return Result.Success();
             }
             else
             {
-                return MethodResult.Fail("");
+                return Result.Fail("");
             }
         }
         catch (Exception ex)
         {
 
-            return MethodResult.Fail($"{ex.Message}");
+            return Result.Fail($"{ex.Message}");
 
         }
 

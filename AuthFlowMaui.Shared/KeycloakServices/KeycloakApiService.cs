@@ -1,9 +1,9 @@
 ﻿using AuthFlowMaui.Shared.Dtos;
-using AuthFlowMaui.Shared.Utils;
+using AuthFlowMaui.Shared.KeycloakUtils;
 using System.Net.Http.Headers;
 using System.Text;
 
-namespace AuthFlowMaui.Shared.Services;
+namespace AuthFlowMaui.Shared.KeycloakServices;
 
 public class KeycloakApiService : IKeycloakApiService
 {
@@ -14,7 +14,7 @@ public class KeycloakApiService : IKeycloakApiService
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<MethodResult> RegisterKeycloakUser(KeycloakRegisterUserDto keycloakRegisterUserDto, string token)
+    public async Task<Result> RegisterKeycloakUser(KeycloakRegisterUserDto keycloakRegisterUserDto, string token)
     {
         var httpClient = _httpClientFactory.CreateClient("maui-to-https-keycloak");
         var RegisterUserBody = keycloakRegisterUserDto.ToJson();
@@ -25,15 +25,15 @@ public class KeycloakApiService : IKeycloakApiService
 
         if (result.StatusCode == System.Net.HttpStatusCode.Unauthorized)
         {
-            return MethodResult.Fail("You are unauthorized");
+            return Result.Fail("You are unauthorized");
         }
         else if (!result.IsSuccessStatusCode)
         {
-            return MethodResult.Fail($"{result.StatusCode} {result.ReasonPhrase}");
+            return Result.Fail($"{result.StatusCode} {result.ReasonPhrase}");
         }
         else
         {
-            return MethodResult.Success();
+            return Result.Success();
         }
     }
 }
