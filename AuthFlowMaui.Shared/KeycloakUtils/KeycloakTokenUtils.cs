@@ -1,7 +1,7 @@
 ﻿using AuthFlowMaui.Shared.Constants;
 using AuthFlowMaui.Shared.TokenDtos;
 
-namespace AuthFlowMaui.Shared.Utils;
+namespace AuthFlowMaui.Shared.KeycloakUtils;
 
 public static class KeycloakTokenUtils
 {
