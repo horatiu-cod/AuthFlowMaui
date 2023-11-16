@@ -69,7 +69,7 @@ public partial class UserLoginViewModel : ObservableObject, IDisposable
                 }
                 else
                 {
-                    await _mauiInterop.ShowErrorAlertAsync(loginResult.Error);
+                    await _mauiInterop.ShowErrorAlertAsync($"Invalid credentials {loginResult.Error}");
                 }
 
             }
