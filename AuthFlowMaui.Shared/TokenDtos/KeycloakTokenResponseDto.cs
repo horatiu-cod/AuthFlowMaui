@@ -1,4 +1,4 @@
-﻿using AuthFlowMaui.Shared.Settings;
+﻿using AuthFlowMaui.Shared.KeycloakSettings;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
