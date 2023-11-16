@@ -6,13 +6,18 @@ public partial class LoadingPage : ContentPage
 
     public LoadingPage( LoadingPageViewModel loadingPageViewModel)
     {
+        _loadingPage = loadingPageViewModel;
         InitializeComponent();
         BindingContext = loadingPageViewModel;
-        _loadingPage = loadingPageViewModel;
     }
 
-    protected async override void OnNavigatedTo(NavigatedToEventArgs args)
+    //protected async override void OnNavigatedTo(NavigatedToEventArgs args)
+    //{
+    //    await _loadingPage.CheckOnNavigate();
+    //}
+    protected async override void OnAppearing()
     {
+        Settings.IsVisible = false;
         await _loadingPage.CheckOnNavigate();
     }
 }
