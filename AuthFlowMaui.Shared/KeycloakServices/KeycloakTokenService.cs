@@ -84,21 +84,29 @@ public class KeycloakTokenService : IKeycloakTokenService
             RefreshToken = refreshToken
         };
         var tokenRequestBody = KeycloakTokenUtils.GetUserTokenWithRefreshTokenRequestBody(keycloakUserTokenWithRefreshTokenRequestDto);
-        var response = await httpClient.PostAsync("/realms/dev/protocol/openid-connect/token", tokenRequestBody, cancellationToken);
-        if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+        try
         {
-            return DataResult<KeycloakTokenResponseDto>.Fail("You are unauthorized", null);
-        }
-        else if (!response.IsSuccessStatusCode)
-        {
-            return DataResult<KeycloakTokenResponseDto>.Fail($"{response.StatusCode} {response.ReasonPhrase}", null);
-        }
-        else
-        {
-            var responseJson = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-            var keycloakTokenResponseDto = JsonSerializer.Deserialize<KeycloakTokenResponseDto>(responseJson);
+            var response = await httpClient.PostAsync("/realms/dev/protocol/openid-connect/token", tokenRequestBody, cancellationToken);
+            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                return DataResult<KeycloakTokenResponseDto>.Fail("You are unauthorized", null);
+            }
+            else if (!response.IsSuccessStatusCode)
+            {
+                return DataResult<KeycloakTokenResponseDto>.Fail($"{response.StatusCode} {response.ReasonPhrase}", null);
+            }
+            else
+            {
+                var responseJson = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                var keycloakTokenResponseDto = JsonSerializer.Deserialize<KeycloakTokenResponseDto>(responseJson);
 
-            return DataResult<KeycloakTokenResponseDto>.Success(keycloakTokenResponseDto);
+                return DataResult<KeycloakTokenResponseDto>.Success(keycloakTokenResponseDto);
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
         }
     }
 }
