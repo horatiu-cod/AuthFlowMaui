@@ -1,4 +1,5 @@
 ﻿using AuthFlowMaui.Shared.KeycloakUtils;
+using AuthFlowMaui.Shared.TokenDtos;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -24,20 +25,16 @@ public class TokenService : ITokenService
             return null;
         }
     }
-    public async Task<Result> ValidateTokenAsync(string token)
+    public async Task<Result> ValidateTokenAsync(string token, KeycloakTokenValidationParametersDto keycloakTokenValidationParametersDto)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var validationParameter = new TokenValidationParameters
         {
             ValidateIssuer = true,
 
-#if ANDROID
-            ValidIssuer = "https://10.0.2.2:8843/realms/dev",
-#else
-            ValidIssuer = "https://localhost:8843/realms/dev",
-#endif
-            ValidateAudience = false,
-            ValidAudience = "demo-client",
+            ValidIssuer = keycloakTokenValidationParametersDto.ValidIssuer,
+            ValidateAudience = true,
+            ValidAudiences = keycloakTokenValidationParametersDto.ValidAudiences,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = false,
             SignatureValidator = delegate (string token, TokenValidationParameters parameters)
@@ -68,4 +65,44 @@ public class TokenService : ITokenService
         }
 
     }
+    public async Task<Result> ValidateRefreshTokenAsync(string refreshTtoken, KeycloakTokenValidationParametersDto keycloakTokenValidationParametersDto)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var validationParameter = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = keycloakTokenValidationParametersDto.ValidIssuer,
+            ValidateAudience = true,
+            ValidAudience = keycloakTokenValidationParametersDto.ValidAudience,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = false,
+            SignatureValidator = delegate (string token, TokenValidationParameters parameters)
+            {
+                var jwt = new JwtSecurityToken(token);
+
+                return jwt;
+            }
+
+        };
+        try
+        {
+            var result = await tokenHandler.ValidateTokenAsync(refreshTtoken, validationParameter);
+            if (result.IsValid)
+            {
+                return Result.Success();
+            }
+            else
+            {
+                return Result.Fail("");
+            }
+        }
+        catch (Exception ex)
+        {
+
+            return Result.Fail($"{ex.Message}");
+
+        }
+
+    }
+
 }
