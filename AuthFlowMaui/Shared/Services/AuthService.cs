@@ -17,6 +17,19 @@ public class AuthService : IAuthService
         _tokenService = tokenService;
         _keycloakTokenService = keycloakTokenService;
     }
+    public KeycloakTokenValidationParametersDto keycloakTokenValidationParametersDto = new KeycloakTokenValidationParametersDto
+    {
+#if ANDROID
+        ValidIssuer = "https://10.0.2.2:8843/realms/dev",
+        ValidAudience = "https://10.0.2.2:8843/realms/dev",
+#else
+        ValidIssuer = "https://localhost:8843/realms/dev",
+        ValidAudience = "https://localhost:8843/realms/dev",
+
+#endif
+        ValidAudiences = ["demo-client","account"]
+    };
+
     /// <summary>
     /// 
     /// </summary>
@@ -30,7 +43,7 @@ public class AuthService : IAuthService
             if (!result.IsSuccess)
                 return MethodDataResult<KeycloakTokenResponseDto>.Fail($"{result.Error}, Please login", null);
             keycloakTokenResponseDto = keycloakTokenResponseDto.FromJson(result.Data);
-            var validCredentials = await _tokenService.ValidateTokenAsync(keycloakTokenResponseDto.AccessToken);
+            var validCredentials = await _tokenService.ValidateTokenAsync(keycloakTokenResponseDto.AccessToken, keycloakTokenValidationParametersDto);
             if (validCredentials.IsSuccess)
             {
                 return MethodDataResult<KeycloakTokenResponseDto>.Success(keycloakTokenResponseDto);
@@ -52,8 +65,8 @@ public class AuthService : IAuthService
     /// <returns></returns>
     private async Task<MethodDataResult<KeycloakTokenResponseDto>> TryAuthenticateAsync(KeycloakTokenResponseDto keycloakTokenResponseDto, CancellationToken cancellationToken)
     {
-        var accessToken = await _tokenService.ValidateTokenAsync(keycloakTokenResponseDto.AccessToken);
-        var refreshToken = await _tokenService.ValidateTokenAsync(keycloakTokenResponseDto.RefreshToken);
+        var accessToken = await _tokenService.ValidateTokenAsync(keycloakTokenResponseDto.AccessToken, keycloakTokenValidationParametersDto);
+        var refreshToken = await _tokenService.ValidateRefreshTokenAsync(keycloakTokenResponseDto.RefreshToken, keycloakTokenValidationParametersDto);
  
         // if access_token and refresh_token are expired
         if (!accessToken.IsSuccess && !refreshToken.IsSuccess)
