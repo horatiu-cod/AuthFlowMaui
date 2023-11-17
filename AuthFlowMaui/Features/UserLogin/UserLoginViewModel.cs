@@ -47,7 +47,7 @@ public partial class UserLoginViewModel : ObservableObject, IDisposable
         {
             try
             {
-                s_tokenSource.CancelAfter(TimeSpan.FromSeconds(5));
+                s_tokenSource.CancelAfter(TimeSpan.FromSeconds(5000));
                 IsBusy = true;
                 var loginResult = await _keycloakTokenService.GetUserTokenResponseAsync(user, clientSettings.Data, s_tokenSource.Token);
                 IsBusy = false;
@@ -69,6 +69,8 @@ public partial class UserLoginViewModel : ObservableObject, IDisposable
                 }
                 else
                 {
+                    UserName = String.Empty;
+                    Password = String.Empty;
                     await _mauiInterop.ShowErrorAlertAsync($"Invalid credentials {loginResult.Error}");
                 }
 
