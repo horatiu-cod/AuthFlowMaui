@@ -47,8 +47,9 @@ public partial class LoadingPageViewModel : ObservableObject
         {
             try
             {
+                IsBusy = true;
                 //await _secureStorage.RemoveUserCredentialsAsync();
-                s_tokenSource.CancelAfter(5000);
+                s_tokenSource.CancelAfter(10000);
                 var response = await _authService.CheckIfIsAuthenticatedAsync(s_tokenSource.Token);
                 if (response.IsSuccess)
                 {
@@ -61,6 +62,8 @@ public partial class LoadingPageViewModel : ObservableObject
                 {
                     // user is not logged in
                     // redirect to loginpage
+                    IsBusy = false;
+                    await _mauiInterop.ShowErrorAlertAsync(response.Error);
                     var state = _mauiInterop.SetState(nameof(LoginPage));
                     s_tokenSource.Dispose();
                     await Shell.Current.GoToAsync(state);
