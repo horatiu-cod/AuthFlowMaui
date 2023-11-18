@@ -2,6 +2,7 @@
 using AuthFlowMaui.Shared.Utils;
 using AuthFlowMaui.Shared.TokenDtos;
 using AuthFlowMaui.Shared.KeycloakSettings;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AuthFlowMaui.Shared.Services;
 
@@ -103,7 +104,9 @@ public class AuthService : IAuthService
     private async Task<MethodDataResult<KeycloakTokenResponseDto>> RefreshTokenAsync(string refreshToken, CancellationToken cancellationToken)
     {
         var httpClientName = "maui-to-https-keycloak";
-        var clientSettingsResponse = await GetClientSettings();
+        var clientSettingsResponse = await _storage.GetClientSecretAsync();
+        if (!clientSettingsResponse.IsSuccess)
+            return MethodDataResult<KeycloakTokenResponseDto>.Fail(clientSettingsResponse.Error, null);
         var clientSettings = clientSettingsResponse.Data;
         clientSettings.PostUrl = "/realms/dev/protocol/openid-connect";
         if (!clientSettingsResponse.IsSuccess)
@@ -125,22 +128,6 @@ public class AuthService : IAuthService
         catch (Exception ex)
         {
             return MethodDataResult<KeycloakTokenResponseDto>.Fail(ex.Message, null);
-        }
-    }
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <returns></returns>
-    private async Task<MethodDataResult<KeycloakClientSettings>> GetClientSettings()
-    {
-        var result = await _storage.GetClientSecretAsync();
-        if (!result.IsSuccess)
-        {
-            return MethodDataResult<KeycloakClientSettings>.Fail(result.Error, null);
-        }
-        else
-        {
-            return MethodDataResult<KeycloakClientSettings>.Success(result.Data);
         }
     }
 }
