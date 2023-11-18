@@ -29,7 +29,7 @@ public class AuthService : IAuthService
         ValidAudience = "https://localhost:8843/realms/dev",
 
 #endif
-        ValidAudiences = ["demo-client","account"]
+        ValidAudiences = ["demo-client", "account"],
     };
 
     /// <summary>
