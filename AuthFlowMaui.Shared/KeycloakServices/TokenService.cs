@@ -31,19 +31,12 @@ public class TokenService : ITokenService
         var validationParameter = new TokenValidationParameters
         {
             ValidateIssuer = true,
-
+            IssuerSigningKey = keycloakTokenValidationParametersDto.IssuerSigningKey,
             ValidIssuer = keycloakTokenValidationParametersDto.ValidIssuer,
             ValidateAudience = true,
             ValidAudiences = keycloakTokenValidationParametersDto.ValidAudiences,
             ValidateLifetime = true,
-            ValidateIssuerSigningKey = false,
-            SignatureValidator = delegate (string token, TokenValidationParameters parameters)
-            {
-                var jwt = new JwtSecurityToken(token);
-
-                return jwt;
-            }
-
+            ValidateIssuerSigningKey = true,
         };
         try
         {
