@@ -102,12 +102,12 @@ public class AuthService : IAuthService
 
     private async Task<MethodResult> RefreshTokenAsync(string refreshToken, CancellationToken cancellationToken)
     {
-        var httpClientName = "maui-to-https-keycloak";
+        var httpClientName = RealmConstants.HttpClientName;
         var clientSettingsResponse = await _storage.GetClientSecretAsync();
         if (!clientSettingsResponse.IsSuccess)
             return MethodResult.Fail(clientSettingsResponse.Error);
         var clientSettings = clientSettingsResponse.Data;
-        clientSettings.PostUrl = "/realms/dev/protocol/openid-connect";
+        clientSettings.PostUrl = RealmConstants.RealmUrl;
         if (!clientSettingsResponse.IsSuccess)
             return MethodResult.Fail(clientSettingsResponse.Error);
         try

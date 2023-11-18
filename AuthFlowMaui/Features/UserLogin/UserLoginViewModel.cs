@@ -1,4 +1,5 @@
-﻿using AuthFlowMaui.Pages;
+﻿using AuthFlowMaui.Constants;
+using AuthFlowMaui.Pages;
 using AuthFlowMaui.Shared.Dtos;
 using AuthFlowMaui.Shared.KeycloakServices;
 using AuthFlowMaui.Shared.Services;
@@ -37,10 +38,10 @@ public partial class UserLoginViewModel : ObservableObject, IDisposable
     [RelayCommand]
     private async Task LoginUser ()
     {
-        var httpClientName = "maui-to-https-keycloak";
+        var httpClientName = RealmConstants.HttpClientName;
         var clientSettingsResponse = await _storageService.GetClientSecretAsync();
         var clientSettings = clientSettingsResponse.Data;
-        clientSettings.PostUrl = "/realms/dev/protocol/openid-connect";
+        clientSettings.PostUrl = RealmConstants.RealmUrl;
         var user = new KeycloakUserDto
         {
             UserName = UserName,

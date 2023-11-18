@@ -1,4 +1,5 @@
-﻿using AuthFlowMaui.Shared.Services;
+﻿using AuthFlowMaui.Constants;
+using AuthFlowMaui.Shared.Services;
 
 
 namespace AuthFlowMaui.Extensions
@@ -17,12 +18,9 @@ namespace AuthFlowMaui.Extensions
                 return new Platforms.Windows.WindowsHttpMessageHandler();
 #endif
             });
-            services.AddHttpClient("maui-to-https-keycloak", httpClient =>
+            services.AddHttpClient(RealmConstants.HttpClientName, httpClient =>
             {
-                var baseUrl =
-                        DeviceInfo.Platform == DevicePlatform.Android
-                            ? "https://10.0.2.2:8843"
-                            : "https://localhost:8843";
+                var baseUrl = RealmConstants.BaseUrl;
                 httpClient.BaseAddress = new Uri(baseUrl);
 
             })

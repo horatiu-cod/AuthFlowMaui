@@ -18,12 +18,12 @@ namespace AuthFlowMaui.Pages
 
         private async void OnCounterClicked(object sender, EventArgs e)
         {
-            var httpClientName = "maui-to-https-keycloak";
+            var httpClientName = RealmConstants.HttpClientName;
             var clientSettings = await _storageService.GetClientSecretAsync();
             if (clientSettings.IsSuccess) 
             {
                 var keycloakSettings = clientSettings.Data;
-                keycloakSettings.PostUrl = "/realms/dev/protocol/openid-connect";
+                keycloakSettings.PostUrl = RealmConstants.RealmUrl;
                 try
                 {
                     s_tokenSource.CancelAfter(3500);

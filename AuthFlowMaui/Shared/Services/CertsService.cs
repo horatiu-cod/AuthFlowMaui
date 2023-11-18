@@ -41,8 +41,8 @@ public class CertsService : ICertsService
     private async Task<MethodDataResult<KeycloakKeysDto>> GetAndStoreRealmCertsAsync(CancellationToken cancellationToken)
     {
         var settings = await _storageService.GetClientSecretAsync();
-        var httpClientName = "maui-to-https-keycloak";
-        settings.Data.PostUrl = "/realms/dev/protocol/openid-connect";
+        var httpClientName = RealmConstants.HttpClientName;
+        settings.Data.PostUrl = RealmConstants.RealmUrl;
         try
         {
             var response = await _keycloakCertsService.GetClientCertsResponseAsync(settings.Data.PostUrl, httpClientName, cancellationToken);
