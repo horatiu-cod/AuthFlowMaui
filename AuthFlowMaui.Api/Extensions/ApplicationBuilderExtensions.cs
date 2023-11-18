@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using AuthFlowMaui.Api.Settings;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AuthFlowMaui.Api.Extensions;
 
@@ -43,5 +44,12 @@ public static class ApplicationBuilderExtensions
                 };
 
             });
+        builder.Services.AddAuthorization(option =>
+        {
+            option.DefaultPolicy = new AuthorizationPolicyBuilder()
+                .RequireAuthenticatedUser()
+                //.RequireClaim("email_verified", "true")
+                .Build();           
+        });
     }
 }
