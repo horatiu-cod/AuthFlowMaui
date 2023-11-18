@@ -14,14 +14,14 @@ public class KeycloakApiService : IKeycloakApiService
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<Result> RegisterKeycloakUser(KeycloakRegisterUserDto keycloakRegisterUserDto, string token)
+    public async Task<Result> RegisterKeycloakUser(KeycloakRegisterUserDto keycloakRegisterUserDto, string token, string httpClientName, string userUrl, CancellationToken cancellationToken)
     {
-        var httpClient = _httpClientFactory.CreateClient("maui-to-https-keycloak");
+        var httpClient = _httpClientFactory.CreateClient(httpClientName);
         var RegisterUserBody = keycloakRegisterUserDto.ToJson();
         var stringContent = new StringContent(RegisterUserBody, Encoding.UTF8, "application/json");
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        var result = await httpClient.PostAsync("/admin/realms/dev/users", stringContent);
+        var result = await httpClient.PostAsync(userUrl, stringContent, cancellationToken);
 
         if (result.StatusCode == System.Net.HttpStatusCode.Unauthorized)
         {
