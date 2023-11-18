@@ -28,7 +28,7 @@ public class KeycloakTokenService : IKeycloakTokenService
             Password = keycloakUserDtos.Password
         };
         var tokenRequestBody = KeycloakTokenUtils.GetUserTokenRequestBody(keycloakTokenRequestDto);
-        var response = await httpclient.PostAsync("/realms/dev/protocol/openid-connect/token", tokenRequestBody, cancellationToken);
+        var response = await httpclient.PostAsync($"{keycloakSettings.PostUrl}/token", tokenRequestBody, cancellationToken);
         if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
         {
             return DataResult<KeycloakTokenResponseDto>.Fail("You are unauthorized", null);
@@ -56,7 +56,7 @@ public class KeycloakTokenService : IKeycloakTokenService
             ClientSecret = keycloakSettings.ClientSecret,
         };
         var tokenRequestBody = KeycloakTokenUtils.GetClientTokenRequestBody(keycloakTokenRequestDto);
-        var response = await httpClient.PostAsync("/realms/dev/protocol/openid-connect/token", tokenRequestBody, cancellationToken);
+        var response = await httpClient.PostAsync($"{keycloakSettings.PostUrl}/token", tokenRequestBody, cancellationToken);
         if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
         {
             return DataResult<KeycloakTokenResponseDto>.Fail("You are unauthorized", null);
@@ -86,7 +86,7 @@ public class KeycloakTokenService : IKeycloakTokenService
         var tokenRequestBody = KeycloakTokenUtils.GetUserTokenWithRefreshTokenRequestBody(keycloakUserTokenWithRefreshTokenRequestDto);
         try
         {
-            var response = await httpClient.PostAsync("/realms/dev/protocol/openid-connect/token", tokenRequestBody, cancellationToken);
+            var response = await httpClient.PostAsync($"{keycloakSettings.PostUrl}/token", tokenRequestBody, cancellationToken);
             if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
             {
                 return DataResult<KeycloakTokenResponseDto>.Fail("You are unauthorized", null);
