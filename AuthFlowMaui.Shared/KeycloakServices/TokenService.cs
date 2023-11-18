@@ -8,23 +8,23 @@ namespace AuthFlowMaui.Shared.KeycloakServices;
 
 public class TokenService : ITokenService
 {
-    public ClaimsPrincipal ValidateToken(string token)
-    {
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var validationParameter = new TokenValidationParameters
-        {
-            ValidateLifetime = true,
-        };
-        try
-        {
-            return tokenHandler.ValidateToken(token, validationParameter, out _);
-        }
-        catch (Exception)
-        {
+    //public ClaimsPrincipal ValidateToken(string token)
+    //{
+    //    var tokenHandler = new JwtSecurityTokenHandler();
+    //    var validationParameter = new TokenValidationParameters
+    //    {
+    //        ValidateLifetime = true,
+    //    };
+    //    try
+    //    {
+    //        return tokenHandler.ValidateToken(token, validationParameter, out _);
+    //    }
+    //    catch (Exception)
+    //    {
 
-            return null;
-        }
-    }
+    //        return null;
+    //    }
+    //}
     public async Task<Result> ValidateTokenAsync(string token, KeycloakTokenValidationParametersDto keycloakTokenValidationParametersDto)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
