@@ -2,6 +2,7 @@
 using AuthFlowMaui.Extensions;
 using CommunityToolkit.Maui;
 using AuthFlowMaui.Shared.Extensions;
+using Microsoft.IdentityModel.Logging;
 
 
 namespace AuthFlowMaui
@@ -25,6 +26,7 @@ namespace AuthFlowMaui
             builder.Services.AddKeycloakServices();
 #if DEBUG
     		builder.Logging.AddDebug();
+            IdentityModelEventSource.ShowPII = true;
 #endif
             builder.Services.AddServices();
 
