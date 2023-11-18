@@ -10,6 +10,7 @@ public class StorageService : IStorageService
     private readonly ISecureStorage _secureStorage;
     private const string Credentials = "credentials";
     private const string ClientSettings = "settings";
+    private const string RealmCerts = "certs";
 
     public StorageService()
     {
