@@ -10,12 +10,14 @@ public class AuthService : IAuthService
     private readonly IStorageService _storage;
     private readonly ITokenService _tokenService;
     private readonly IKeycloakTokenService _keycloakTokenService;
+    private readonly ICertsService _certsService;
 
-    public AuthService(IStorageService storage, ITokenService tokenService, IKeycloakTokenService keycloakTokenService)
+    public AuthService(IStorageService storage, ITokenService tokenService, IKeycloakTokenService keycloakTokenService, ICertsService certsService)
     {
         _storage = storage;
         _tokenService = tokenService;
         _keycloakTokenService = keycloakTokenService;
+        _certsService = certsService;
     }
     public KeycloakTokenValidationParametersDto keycloakTokenValidationParametersDto = new KeycloakTokenValidationParametersDto
     {
