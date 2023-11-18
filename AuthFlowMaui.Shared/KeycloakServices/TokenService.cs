@@ -68,14 +68,13 @@ public class TokenService : ITokenService
             ValidateAudience = true,
             ValidAudience = keycloakTokenValidationParametersDto.ValidAudience,
             ValidateLifetime = true,
-            ValidateIssuerSigningKey = false,
-            SignatureValidator = delegate (string token, TokenValidationParameters parameters)
-            {
-                var jwt = new JwtSecurityToken(token);
+            ValidateIssuerSigningKey = true,
+            //SignatureValidator = delegate (string token, TokenValidationParameters parameters)
+            //{
+            //    var jwt = new JwtSecurityToken(token);
 
-                return jwt;
-            }
-
+            //    return jwt;
+            //}
         };
         try
         {
