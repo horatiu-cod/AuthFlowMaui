@@ -1,10 +1,9 @@
-﻿using AuthFlowMaui.Shared.TokenDtos;
-using AuthFlowMaui.Shared.Utils;
+﻿using AuthFlowMaui.Shared.Utils;
 
 namespace AuthFlowMaui.Shared.Services
 {
     public interface IAuthService
     {
-        Task<MethodDataResult<KeycloakTokenResponseDto>> CheckIfIsAuthenticatedAsync(CancellationToken cancellationToken);
+        Task<MethodResult> CheckIfIsAuthenticatedAsync(CancellationToken cancellationToken);
     }
 }

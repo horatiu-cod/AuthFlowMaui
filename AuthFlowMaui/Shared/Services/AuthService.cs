@@ -1,7 +1,6 @@
 ﻿using AuthFlowMaui.Shared.KeycloakServices;
 using AuthFlowMaui.Shared.Utils;
 using AuthFlowMaui.Shared.TokenDtos;
-using AuthFlowMaui.Shared.KeycloakSettings;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AuthFlowMaui.Shared.Services;
@@ -37,14 +36,14 @@ public class AuthService : IAuthService
     /// 
     /// </summary>
     /// <returns></returns>
-    public async Task<MethodDataResult<KeycloakTokenResponseDto>> CheckIfIsAuthenticatedAsync(CancellationToken cancellationToken)
+    public async Task<MethodResult> CheckIfIsAuthenticatedAsync(CancellationToken cancellationToken)
     {
         var keycloakTokenResponseDto = new KeycloakTokenResponseDto();
         try
         {
             var result = await _storage.GetUserCredentialsAsync();
             if (!result.IsSuccess)
-                return MethodDataResult<KeycloakTokenResponseDto>.Fail($"{result.Error}, Please login", null);
+                return MethodResult.Fail($"{result.Error}, Please login");
             keycloakTokenResponseDto = keycloakTokenResponseDto.FromJson(result.Data);
             var realmKey = await _certsService.GetRealmCertsAsync(cancellationToken);
             if (realmKey.IsSuccess)
@@ -54,12 +53,12 @@ public class AuthService : IAuthService
             }
             else 
             {
-                return MethodDataResult<KeycloakTokenResponseDto>.Fail($"Tokens cannot be validated, {realmKey.Error}", null);
+                return MethodResult.Fail($"Tokens cannot be validated, {realmKey.Error}");
             }
             var validCredentials = await _tokenService.ValidateTokenAsync(keycloakTokenResponseDto.AccessToken, keycloakTokenValidationParametersDto);
             if (validCredentials.IsSuccess)
             {
-                return MethodDataResult<KeycloakTokenResponseDto>.Success(keycloakTokenResponseDto);
+                return MethodResult.Success();
             }
             else
             {
@@ -68,7 +67,7 @@ public class AuthService : IAuthService
         }
         catch (Exception ex)
         {
-            return MethodDataResult<KeycloakTokenResponseDto>.Fail($"Something went wrong {ex.Message}", null);
+            return MethodResult.Fail($"Something went wrong {ex.Message}");
         }
     }
     /// <summary>
@@ -76,7 +75,7 @@ public class AuthService : IAuthService
     /// </summary>
     /// <param name="keycloakTokenResponseDto"></param>
     /// <returns></returns>
-    private async Task<MethodDataResult<KeycloakTokenResponseDto>> TryAuthenticateAsync(KeycloakTokenResponseDto keycloakTokenResponseDto, CancellationToken cancellationToken)
+    private async Task<MethodResult> TryAuthenticateAsync(KeycloakTokenResponseDto keycloakTokenResponseDto, CancellationToken cancellationToken)
     {
         var accessToken = await _tokenService.ValidateTokenAsync(keycloakTokenResponseDto.AccessToken, keycloakTokenValidationParametersDto);
         var refreshToken = await _tokenService.ValidateRefreshTokenAsync(keycloakTokenResponseDto.RefreshToken, keycloakTokenValidationParametersDto);
@@ -85,7 +84,7 @@ public class AuthService : IAuthService
         if (!accessToken.IsSuccess && !refreshToken.IsSuccess)
         {
             await _storage.RemoveUserCredentialsAsync();
-            return MethodDataResult<KeycloakTokenResponseDto>.Fail($"{accessToken.Error} {refreshToken.Error} the token and the refresh token are not valid", null);
+            return MethodResult.Fail($"{accessToken.Error} {refreshToken.Error} the token and the refresh token are not valid");
         }
         // if access_token is expired
         else if (!accessToken.IsSuccess && refreshToken.IsSuccess)
@@ -96,38 +95,38 @@ public class AuthService : IAuthService
         }
         else
         {
-            return MethodDataResult<KeycloakTokenResponseDto>.Success(keycloakTokenResponseDto);
+            return MethodResult.Success();
         }
        
     }
 
-    private async Task<MethodDataResult<KeycloakTokenResponseDto>> RefreshTokenAsync(string refreshToken, CancellationToken cancellationToken)
+    private async Task<MethodResult> RefreshTokenAsync(string refreshToken, CancellationToken cancellationToken)
     {
         var httpClientName = "maui-to-https-keycloak";
         var clientSettingsResponse = await _storage.GetClientSecretAsync();
         if (!clientSettingsResponse.IsSuccess)
-            return MethodDataResult<KeycloakTokenResponseDto>.Fail(clientSettingsResponse.Error, null);
+            return MethodResult.Fail(clientSettingsResponse.Error);
         var clientSettings = clientSettingsResponse.Data;
         clientSettings.PostUrl = "/realms/dev/protocol/openid-connect";
         if (!clientSettingsResponse.IsSuccess)
-            return MethodDataResult<KeycloakTokenResponseDto>.Fail(clientSettingsResponse.Error, null);
+            return MethodResult.Fail(clientSettingsResponse.Error);
         try
         {
             var result = await _keycloakTokenService.GetUserTokenByRefreshTokenResponseAsync(clientSettings, refreshToken,httpClientName , cancellationToken);
             if (!result.IsSuccess)
             {
-                return MethodDataResult<KeycloakTokenResponseDto>.Fail($"Please try again {result.Error}", null);
+                return MethodResult.Fail($"Please try again {result.Error}");
             }
             else
             {
                 await _storage.RemoveUserCredentialsAsync();
                 await _storage.SetUserCredentialsAsync(result.Data.ToJson());
-                return MethodDataResult<KeycloakTokenResponseDto>.Success(result.Data);
+                return MethodResult.Success();
             }
         }
         catch (Exception ex)
         {
-            return MethodDataResult<KeycloakTokenResponseDto>.Fail(ex.Message, null);
+            return MethodResult.Fail(ex.Message);
         }
     }
 }
