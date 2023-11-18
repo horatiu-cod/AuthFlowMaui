@@ -7,6 +7,6 @@ namespace AuthFlowMaui.Shared.KeycloakServices;
 public interface ITokenService
 {
     Task<Result> ValidateRefreshTokenAsync(string refreshTtoken, KeycloakTokenValidationParametersDto keycloakTokenValidationParametersDto);
-    ClaimsPrincipal ValidateToken(string token);
+    //ClaimsPrincipal ValidateToken(string token);
     Task<Result> ValidateTokenAsync(string token, KeycloakTokenValidationParametersDto keycloakTokenValidationParametersDto);
 }
