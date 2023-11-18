@@ -45,6 +45,16 @@ public class AuthService : IAuthService
             if (!result.IsSuccess)
                 return MethodDataResult<KeycloakTokenResponseDto>.Fail($"{result.Error}, Please login", null);
             keycloakTokenResponseDto = keycloakTokenResponseDto.FromJson(result.Data);
+            var realmKey = await _certsService.GetRealmCertsAsync(cancellationToken);
+            if (realmKey.IsSuccess)
+            {
+                var publicKey = realmKey.Data.ToJson();
+                keycloakTokenValidationParametersDto.IssuerSigningKey = new JsonWebKey(publicKey);
+            }
+            else 
+            {
+                return MethodDataResult<KeycloakTokenResponseDto>.Fail($"Tokens cannot be validated, {realmKey.Error}", null);
+            }
             var validCredentials = await _tokenService.ValidateTokenAsync(keycloakTokenResponseDto.AccessToken, keycloakTokenValidationParametersDto);
             if (validCredentials.IsSuccess)
             {
