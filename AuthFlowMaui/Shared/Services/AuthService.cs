@@ -110,7 +110,7 @@ public class AuthService : IAuthService
             return MethodDataResult<KeycloakTokenResponseDto>.Fail(clientSettingsResponse.Error, null);
         try
         {
-            var result = await _keycloakTokenService.GetUserTokenByRefreshTokenResponseAsync(clientSettings.Data, refreshToken, cancellationToken);
+            var result = await _keycloakTokenService.GetUserTokenByRefreshTokenResponseAsync(clientSettings, refreshToken,httpClientName , cancellationToken);
             if (!result.IsSuccess)
             {
                 return MethodDataResult<KeycloakTokenResponseDto>.Fail($"Please try again {result.Error}", null);
