@@ -103,10 +103,9 @@ public class KeycloakTokenService : IKeycloakTokenService
                 return DataResult<KeycloakTokenResponseDto>.Success(keycloakTokenResponseDto);
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-
-            throw;
+            return DataResult<KeycloakTokenResponseDto>.Fail($"{ex.Message}", null);
         }
     }
 }
