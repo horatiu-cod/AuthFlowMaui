@@ -37,7 +37,10 @@ public partial class UserLoginViewModel : ObservableObject, IDisposable
     [RelayCommand]
     private async Task LoginUser ()
     {
-        var clientSettings = await _storageService.GetClientSecretAsync();
+        var httpClientName = "maui-to-https-keycloak";
+        var clientSettingsResponse = await _storageService.GetClientSecretAsync();
+        var clientSettings = clientSettingsResponse.Data;
+        clientSettings.PostUrl = "/realms/dev/protocol/openid-connect";
         var user = new KeycloakUserDto
         {
             UserName = UserName,
@@ -49,7 +52,7 @@ public partial class UserLoginViewModel : ObservableObject, IDisposable
             {
                 s_tokenSource.CancelAfter(TimeSpan.FromSeconds(5000));
                 IsBusy = true;
-                var loginResult = await _keycloakTokenService.GetUserTokenResponseAsync(user, clientSettings.Data, s_tokenSource.Token);
+                var loginResult = await _keycloakTokenService.GetUserTokenResponseAsync(user, clientSettings, httpClientName, s_tokenSource.Token);
                 IsBusy = false;
                 if (loginResult.IsSuccess)
                 {
