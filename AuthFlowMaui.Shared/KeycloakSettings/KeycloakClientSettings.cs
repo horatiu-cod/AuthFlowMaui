@@ -10,7 +10,7 @@ public record KeycloakClientSettings()
     [JsonPropertyName("client_secret")]
     public string? ClientSecret { get; init; }
     [JsonIgnore]
-    public string? BaseUrl { get; set; }
+    public string? PostUrl { get; set; }
     public string ToJson() => 
         JsonSerializer.Serialize(this);
     public KeycloakClientSettings? FromJson(string keycloakSettings) =>
