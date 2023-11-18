@@ -16,9 +16,9 @@ public class KeycloakTokenService : IKeycloakTokenService
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<DataResult<KeycloakTokenResponseDto>> GetUserTokenResponseAsync(KeycloakUserDto keycloakUserDtos, KeycloakClientSettings keycloakSettings, CancellationToken cancellationToken)
+    public async Task<DataResult<KeycloakTokenResponseDto>> GetUserTokenResponseAsync(KeycloakUserDto keycloakUserDtos, KeycloakClientSettings keycloakSettings, string httpClientName, CancellationToken cancellationToken)
     {
-        var httpclient = _httpClientFactory.CreateClient("maui-to-https-keycloak");
+        var httpclient = _httpClientFactory.CreateClient(httpClientName);
         var keycloakTokenRequestDto = new KeycloakUserTokenRequestDto
         {
             GrantType = KeycloakAccessTokenConst.GrantTypePassword,
@@ -46,10 +46,10 @@ public class KeycloakTokenService : IKeycloakTokenService
         }
 
     }
-    public async Task<DataResult<KeycloakTokenResponseDto>> GetClientTokenResponseAsync(KeycloakClientSettings keycloakSettings, CancellationToken cancellationToken)
+    public async Task<DataResult<KeycloakTokenResponseDto>> GetClientTokenResponseAsync(KeycloakClientSettings keycloakSettings, string httpClientName, CancellationToken cancellationToken)
     {
-        var httpClient = _httpClientFactory.CreateClient("maui-to-https-keycloak");
-        var keycloakTokenRequestDto = new KeycloakClientTokenRequestDto
+        var httpClient = _httpClientFactory.CreateClient(httpClientName);
+        var keycloakTokenRequestDto = new KeycloakClientRequestDto
         {
             GrantType = KeycloakAccessTokenConst.GrantTypeCredentials,
             ClientId = keycloakSettings.ClientId,
@@ -73,9 +73,9 @@ public class KeycloakTokenService : IKeycloakTokenService
             return DataResult<KeycloakTokenResponseDto>.Success(keycloakTokenResponseDto);
         }
     }
-    public async Task<DataResult<KeycloakTokenResponseDto>> GetUserTokenByRefreshTokenResponseAsync(KeycloakClientSettings keycloakSettings, string refreshToken, CancellationToken cancellationToken)
+    public async Task<DataResult<KeycloakTokenResponseDto>> GetUserTokenByRefreshTokenResponseAsync(KeycloakClientSettings keycloakSettings, string refreshToken, string httpClientName, CancellationToken cancellationToken)
     {
-        var httpClient = _httpClientFactory.CreateClient("maui-to-https-keycloak");
+        var httpClient = _httpClientFactory.CreateClient(httpClientName);
         var keycloakUserTokenWithRefreshTokenRequestDto = new KeycloakUserTokenWithRefreshTokenRequestDto
         {
             GrantType = KeycloakAccessTokenConst.GrantTypeRefreshToken,
