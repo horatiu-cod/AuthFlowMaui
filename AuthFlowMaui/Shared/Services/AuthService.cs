@@ -2,6 +2,7 @@
 using AuthFlowMaui.Shared.Utils;
 using AuthFlowMaui.Shared.TokenDtos;
 using Microsoft.IdentityModel.Tokens;
+using AuthFlowMaui.Constants;
 
 namespace AuthFlowMaui.Shared.Services;
 
@@ -43,7 +44,7 @@ public class AuthService : IAuthService
         {
             var result = await _storage.GetUserCredentialsAsync();
             if (!result.IsSuccess)
-                return MethodResult.Fail($"{result.Error}, Please login");
+                return MethodResult.Fail($"{result.Error}, passed to GetUserCredentialsAsync in AuthService");
             keycloakTokenResponseDto = keycloakTokenResponseDto.FromJson(result.Data);
             var realmKey = await _certsService.GetRealmCertsAsync(cancellationToken);
             if (realmKey.IsSuccess)
@@ -53,7 +54,7 @@ public class AuthService : IAuthService
             }
             else 
             {
-                return MethodResult.Fail($"Tokens cannot be validated, {realmKey.Error}");
+                return MethodResult.Fail($"Passed from GetRealmCertsAsync to CheckIfIsAuthenticatedAsync in AuthService, {realmKey.Error}");
             }
             var validCredentials = await _tokenService.ValidateTokenAsync(keycloakTokenResponseDto.AccessToken, keycloakTokenValidationParametersDto);
             if (validCredentials.IsSuccess)
@@ -67,7 +68,7 @@ public class AuthService : IAuthService
         }
         catch (Exception ex)
         {
-            return MethodResult.Fail($"Something went wrong {ex.Message}");
+            return MethodResult.Fail($"Exception in CheckIfIsAuthenticatedAsync in AuthService {ex.Message}");
         }
     }
     /// <summary>
@@ -84,7 +85,7 @@ public class AuthService : IAuthService
         if (!accessToken.IsSuccess && !refreshToken.IsSuccess)
         {
             await _storage.RemoveUserCredentialsAsync();
-            return MethodResult.Fail($"{accessToken.Error} {refreshToken.Error} the token and the refresh token are not valid");
+            return MethodResult.Fail($"{accessToken.Error} {refreshToken.Error} the token and the refresh token are not valid from TryAuthenticateAsync in AuthService");
         }
         // if access_token is expired
         else if (!accessToken.IsSuccess && refreshToken.IsSuccess)
@@ -115,7 +116,7 @@ public class AuthService : IAuthService
             var result = await _keycloakTokenService.GetUserTokenByRefreshTokenResponseAsync(clientSettings, refreshToken,httpClientName , cancellationToken);
             if (!result.IsSuccess)
             {
-                return MethodResult.Fail($"Please try again {result.Error}");
+                return MethodResult.Fail($"Passed from GetUserTokenByRefreshTokenResponseAsync in AuthService {result.Error}");
             }
             else
             {
@@ -126,7 +127,7 @@ public class AuthService : IAuthService
         }
         catch (Exception ex)
         {
-            return MethodResult.Fail(ex.Message);
+            return MethodResult.Fail($"{ex.Message} Exception from RefreshTokenAsync in AuthService");
         }
     }
 }

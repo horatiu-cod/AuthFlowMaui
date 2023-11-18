@@ -42,7 +42,7 @@ public class StorageService : IStorageService
             }
             else
             {
-                return MethodDataResult<KeycloakClientSettings>.Fail("", null);
+                return MethodDataResult<KeycloakClientSettings>.Fail("JSON deserialize exception in GetClientSecretAsync", null);
             }
         }
         else
@@ -67,7 +67,7 @@ public class StorageService : IStorageService
             }
             else
             {
-                return MethodDataResult<KeycloakKeysDto>.Fail("", null);
+                return MethodDataResult<KeycloakKeysDto>.Fail("JSON deserialize exception in GetCertsSecretAsync", null);
             }
         }
         else
@@ -90,13 +90,13 @@ public class StorageService : IStorageService
             }
             else
             {
-                return MethodResult.Fail("Your secret is empty");
+                return MethodResult.Fail("Error Secret value is null from SetSecret");
             }
         }
         catch (Exception ex)
         {
 
-            return MethodResult.Fail($"Secure Storage cannot be accessed, {ex.Message}");
+            return MethodResult.Fail($"Exception {ex.Message} from SetSecret");
         }
     }
     private async Task<MethodDataResult<string>> GetSecret(string secretKey)
@@ -111,13 +111,13 @@ public class StorageService : IStorageService
             }
             else
             {
-                return MethodDataResult<string>.Fail("Your secret is empty", null);
+                return MethodDataResult<string>.Fail("Error Secret value is null from GetSecret", null);
             }
 
         }
         catch (Exception ex)
         {
-            return MethodDataResult<string>.Fail($"Secure Storage cannot be accessed, {ex.Message}", null);
+            return MethodDataResult<string>.Fail($"Exception {ex.Message} from GetSecret", null);
         }
     }
     private async Task<MethodResult> RemoveSecret(string secretKey)
@@ -133,13 +133,13 @@ public class StorageService : IStorageService
             }
             else
             {
-                return (MethodResult.Fail("Key couldn't been removed"));
+                return (MethodResult.Fail("Key couldn't been removed from RemoveSecret"));
             }
 
         }
         catch (Exception ex)
         {
-            return MethodResult.Fail($"Secure Storage cannot be accessed, {ex.Message}");
+            return MethodResult.Fail($"Exception {ex.Message} from RemoveSecret");
         }
 
     }

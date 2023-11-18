@@ -75,14 +75,14 @@ public partial class UserLoginViewModel : ObservableObject, IDisposable
                 {
                     UserName = String.Empty;
                     Password = String.Empty;
-                    await _mauiInterop.ShowErrorAlertAsync($"Invalid credentials {loginResult.Error}");
+                    await _mauiInterop.ShowErrorAlertAsync($"Invalid credentials {loginResult.Error} passed from GetUserTokenResponseAsync to LoginUser in UserLoginViewModel");
                 }
 
             }
             catch (OperationCanceledException ex)
             {
                 IsBusy = false;
-                await _mauiInterop.ShowErrorAlertAsync($"Error: {ex.Message}", "Connection error");
+                await _mauiInterop.ShowErrorAlertAsync($"Error: {ex.Message} from OperationCanceledException of GetUserTokenResponseAsync to LoginUser in UserLoginViewModel ", "Connection error");
             }
             finally
             {
@@ -91,7 +91,7 @@ public partial class UserLoginViewModel : ObservableObject, IDisposable
         }
         else
         {
-            await _mauiInterop.ShowErrorAlertAsync("No network connection");
+            await _mauiInterop.ShowErrorAlertAsync("No network connection from CheckConnectivity to LoginUser in UserLoginViewModel");
         }
     }
     public void Dispose()

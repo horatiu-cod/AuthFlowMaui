@@ -25,11 +25,11 @@ public class KeycloakApiService : IKeycloakApiService
 
         if (result.StatusCode == System.Net.HttpStatusCode.Unauthorized)
         {
-            return Result.Fail("You are unauthorized");
+            return Result.Fail($"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
         }
         else if (!result.IsSuccessStatusCode)
         {
-            return Result.Fail($"{result.StatusCode} {result.ReasonPhrase}");
+            return Result.Fail($"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
         }
         else
         {

@@ -1,4 +1,5 @@
-﻿using AuthFlowMaui.Shared.KeycloakServices;
+﻿using AuthFlowMaui.Constants;
+using AuthFlowMaui.Shared.KeycloakServices;
 using AuthFlowMaui.Shared.Services;
 using System.IdentityModel.Tokens.Jwt;
 
@@ -40,13 +41,13 @@ namespace AuthFlowMaui.Pages
                     }
                     else
                     {
-                        apiResponse.Text = response.Error;
+                        apiResponse.Text = $"{ response.Error} passed from GetClientTokenResponseAsync to OnCounterClicked in MainPage.xaml.cs";
                     }
 
                 }
                 catch (Exception ex) when (ex is OperationCanceledException)
                 {
-                    apiResponse.Text = ex.Message;
+                    apiResponse.Text = $"{ex.Message} OperationCanceledException from GetClientTokenResponseAsync to OnCounterClicked in MainPage.xaml.cs";
                 }
                 finally
                 {

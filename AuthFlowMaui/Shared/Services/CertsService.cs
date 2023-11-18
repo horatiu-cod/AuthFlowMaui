@@ -1,4 +1,5 @@
-﻿using AuthFlowMaui.Shared.KeycloakCertDtos;
+﻿using AuthFlowMaui.Constants;
+using AuthFlowMaui.Shared.KeycloakCertDtos;
 using AuthFlowMaui.Shared.KeycloakServices;
 using AuthFlowMaui.Shared.Utils;
 
@@ -28,7 +29,7 @@ public class CertsService : ICertsService
             }
             else
             {
-                return MethodDataResult<KeycloakKeyDto>.Fail("Are no Certs stored", null);
+                return MethodDataResult<KeycloakKeyDto>.Fail("Passed from GetCertsSecretAsync to GetRealmCertsAsync in CertService", null);
             }
         }
         else
@@ -51,20 +52,19 @@ public class CertsService : ICertsService
                 var result = await _storageService.SetCertsSecretAsync(response.Data.ToJson());
                 if (!result.IsSuccess)
                 {
-                    return MethodDataResult<KeycloakKeysDto>.Fail(result.Error, null);
+                    return MethodDataResult<KeycloakKeysDto>.Fail($"{result.Error} passed from SetCertsSecretAsync to GetAndStoreRealmCertsAsync in CertsService", null);
                 }
                 return MethodDataResult<KeycloakKeysDto>.Success(response.Data);
             }
             else
             {
-                return MethodDataResult<KeycloakKeysDto>.Fail(response.Error, null);
+                return MethodDataResult<KeycloakKeysDto>.Fail($"{response.Error} passed from GetClientCertsResponseAsync to GetAndStoreRealmCertsAsync in CertsService", null);
             }
 
         }
         catch (Exception ex)
         {
-            throw;
-            //return MethodDataResult<KeycloakKeysDto>.Fail(ex.Message, null);
+            return MethodDataResult<KeycloakKeysDto>.Fail($"{ex.Message} exception from GetAndStoreRealmCertsAsync in CertsService", null);
             
         }
     }

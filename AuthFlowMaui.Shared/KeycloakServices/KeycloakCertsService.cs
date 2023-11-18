@@ -27,11 +27,11 @@ public class KeycloakCertsService : IKeycloakCertsService
             var response = await httpClient.GetAsync($"{url}/certs", 0, cancellationToken);
             if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
             {
-                return DataResult<KeycloakKeysDto>.Fail("You are unauthorized", null);
+                return DataResult<KeycloakKeysDto>.Fail($"{response.StatusCode} {response.ReasonPhrase} You are unauthorized from GetClientCertsResponseAsync", null);
             }
             else if (!response.IsSuccessStatusCode)
             {
-                return DataResult<KeycloakKeysDto>.Fail($"{response.StatusCode} {response.ReasonPhrase}", null);
+                return DataResult<KeycloakKeysDto>.Fail($"{response.StatusCode} {response.ReasonPhrase} from GetClientCertsResponseAsync", null);
             }
             else
             {
@@ -44,7 +44,7 @@ public class KeycloakCertsService : IKeycloakCertsService
         }
         catch (Exception ex)
         {
-            return DataResult<KeycloakKeysDto>.Fail(ex.Message, null);
+            return DataResult<KeycloakKeysDto>.Fail($"{ex.Message} exception from from GetClientCertsResponseAsync", null);
         }
     }
 }

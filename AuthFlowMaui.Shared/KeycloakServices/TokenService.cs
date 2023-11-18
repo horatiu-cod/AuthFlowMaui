@@ -47,13 +47,13 @@ public class TokenService : ITokenService
             }
             else
             {
-                return Result.Fail("");
+                return Result.Fail($"{result.Exception.Message} Token validation inner Exception from ValidateTokenAsync");
             }
         }
         catch (Exception ex)
         {
 
-            return Result.Fail($"{ex.Message}");
+            return Result.Fail($"{ex.Message} Token validation Exception from ValidateTokenAsync");
 
         }
 
@@ -86,13 +86,13 @@ public class TokenService : ITokenService
             }
             else
             {
-                return Result.Fail("");
+                return Result.Fail($"{result.Exception.Message} Token validation inner Exception from ValidateRefreshTokenAsync");
             }
         }
         catch (Exception ex)
         {
 
-            return Result.Fail($"{ex.Message}");
+            return Result.Fail($"{ex.Message} Token validation Exception from ValidateRefreshTokenAsync");
 
         }
 
