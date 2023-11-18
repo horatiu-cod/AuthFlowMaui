@@ -2,7 +2,7 @@
 
 namespace AuthFlowMaui.Shared.TokenDtos;
 
-public class KeycloakClientTokenRequestDto
+public class KeycloakClientRequestDto
 {
     [JsonPropertyName("grant_type")]
     public string? GrantType { get; set; }

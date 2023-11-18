@@ -18,7 +18,7 @@ public static class KeycloakTokenUtils
         };
         return new FormUrlEncodedContent(keyValuePairs);
     }
-    public static FormUrlEncodedContent GetClientTokenRequestBody(KeycloakClientTokenRequestDto tokenRequestDto)
+    public static FormUrlEncodedContent GetClientTokenRequestBody(KeycloakClientRequestDto tokenRequestDto)
     {
         var keyValuePairs = new List<KeyValuePair<string, string>>()
         {
