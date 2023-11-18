@@ -10,6 +10,7 @@ public static class KeycloakServiceCollectionExtensions
         services.AddTransient<IKeycloakTokenService, KeycloakTokenService>();
         services.AddTransient<ITokenService, TokenService>();
         services.AddTransient<IKeycloakApiService, KeycloakApiService>();
+        services.AddTransient<IKeycloakCertsService, KeycloakCertsService>();
 
         return services;
     }
