@@ -102,9 +102,12 @@ public class AuthService : IAuthService
 
     private async Task<MethodDataResult<KeycloakTokenResponseDto>> RefreshTokenAsync(string refreshToken, CancellationToken cancellationToken)
     {
-        var clientSettings = await GetClientSettings();
-        if (!clientSettings.IsSuccess)
-            return MethodDataResult<KeycloakTokenResponseDto>.Fail(clientSettings.Error, null);
+        var httpClientName = "maui-to-https-keycloak";
+        var clientSettingsResponse = await GetClientSettings();
+        var clientSettings = clientSettingsResponse.Data;
+        clientSettings.PostUrl = "/realms/dev/protocol/openid-connect";
+        if (!clientSettingsResponse.IsSuccess)
+            return MethodDataResult<KeycloakTokenResponseDto>.Fail(clientSettingsResponse.Error, null);
         try
         {
             var result = await _keycloakTokenService.GetUserTokenByRefreshTokenResponseAsync(clientSettings.Data, refreshToken, cancellationToken);
