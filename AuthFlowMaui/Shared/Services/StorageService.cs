@@ -1,4 +1,5 @@
-﻿using AuthFlowMaui.Shared.KeycloakSettings;
+﻿using AuthFlowMaui.Shared.KeycloakCertDtos;
+using AuthFlowMaui.Shared.KeycloakSettings;
 using AuthFlowMaui.Shared.Utils;
 
 
@@ -21,18 +22,9 @@ public class StorageService : IStorageService
     /// </summary>
     /// <param name="secretValue"></param>
     /// <returns>MethodResult.Success or MethodResult.Fail</returns>
-    public async Task<MethodResult> SetUserCredentialsAsync(string secretValue)
-    {
-        return await SetSecret(Credentials, secretValue);
-    }
-    public async Task<MethodDataResult<string>> GetUserCredentialsAsync()
-    {
-        return await GetSecret(Credentials);
-    }
-    public async Task<MethodResult> RemoveUserCredentialsAsync()
-    {
-        return await RemoveSecret(Credentials);
-    }
+    public async Task<MethodResult> SetUserCredentialsAsync(string secretValue) => await SetSecret(Credentials, secretValue);
+    public async Task<MethodDataResult<string>> GetUserCredentialsAsync() => await GetSecret(Credentials);
+    public async Task<MethodResult> RemoveUserCredentialsAsync() => await RemoveSecret(Credentials);
     public async Task<MethodResult> SetClientSecretAsync(string secretValue)
     {
         return await SetSecret(ClientSettings, secretValue);
@@ -59,10 +51,33 @@ public class StorageService : IStorageService
         }
 
     }
-    public async Task<MethodResult> RemoveClientSecretAsync()
+    public async Task<MethodResult> RemoveClientSecretAsync() => await RemoveSecret(ClientSettings);
+
+    public async Task<MethodResult> SetCertsSecretAsync(string secretValue) => await SetSecret(RealmCerts, secretValue);
+    public async Task<MethodDataResult<KeycloakKeysDto>> GetCertsSecretAsync()
     {
-        return await RemoveSecret(ClientSettings);
+        var jsonResult = await GetSecret(RealmCerts);
+        if (jsonResult.IsSuccess)
+        {
+            var keycloaksettings = new KeycloakKeysDto();
+            keycloaksettings = keycloaksettings.FromJson(jsonResult.Data);
+            if (keycloaksettings != null)
+            {
+                return MethodDataResult<KeycloakKeysDto>.Success(keycloaksettings);
+            }
+            else
+            {
+                return MethodDataResult<KeycloakKeysDto>.Fail("", null);
+            }
+        }
+        else
+        {
+            return MethodDataResult<KeycloakKeysDto>.Fail(jsonResult.Error, null);
+        }
+
     }
+    public async Task<MethodResult> RemoveCertsSecretAsync() => await RemoveSecret(RealmCerts);
+
 
     private async Task<MethodResult> SetSecret(string secretKey, string secretValue)
     {
