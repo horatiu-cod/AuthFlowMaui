@@ -1,27 +1,36 @@
-﻿using AuthFlowMaui.Shared.Dtos;
-using AuthFlowMaui.Shared.KeycloakUtils;
+﻿using System.Text;
+using System.Net;
 using System.Net.Http.Headers;
-using System.Text;
+using AuthFlowMaui.Shared.Dtos;
+using AuthFlowMaui.Shared.KeycloakUtils;
+using AuthFlowMaui.Shared.KeycloakSettings;
 
 namespace AuthFlowMaui.Shared.KeycloakServices;
 
 public class KeycloakApiService : IKeycloakApiService
 {
     private IHttpClientFactory _httpClientFactory;
+    private IKeycloakTokenService _keycloakTokenService;
 
-    public KeycloakApiService(IHttpClientFactory httpClientFactory)
+    public KeycloakApiService(IHttpClientFactory httpClientFactory, IKeycloakTokenService keycloakTokenService)
     {
         _httpClientFactory = httpClientFactory;
+        _keycloakTokenService = keycloakTokenService;
     }
 
-    public async Task<Result> RegisterKeycloakUser(KeycloakRegisterUserDto keycloakRegisterUserDto, string token, string httpClientName, string userUrl, CancellationToken cancellationToken)
+    public async Task<Result> RegisterKeycloakUser(KeycloakRegisterUserDto keycloakRegisterUserDto, KeycloakClientSettings clientSettings, string httpClientName, CancellationToken cancellationToken)
     {
         var httpClient = _httpClientFactory.CreateClient(httpClientName);
+
+        var client = await _keycloakTokenService.GetClientTokenResponseAsync(clientSettings, httpClientName, cancellationToken);
+        if (!client.IsSuccess || client.HttpStatus != HttpStatusCode.Created)
+            return Result.Fail($"{client.Error}, Error from GetClientTokenResponseAsync passed to RegisterKeycloakUser in KeycloakApiService", client.HttpStatus);
+
         var RegisterUserBody = keycloakRegisterUserDto.ToJson();
         var stringContent = new StringContent(RegisterUserBody, Encoding.UTF8, "application/json");
-        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", client.Content.AccessToken);
 
-        var result = await httpClient.PostAsync(userUrl, stringContent, cancellationToken);
+        var result = await httpClient.PostAsync($"/admin/realms/{clientSettings.Realm}/users", stringContent, cancellationToken);
 
         if (result.StatusCode == System.Net.HttpStatusCode.Unauthorized)
         {
