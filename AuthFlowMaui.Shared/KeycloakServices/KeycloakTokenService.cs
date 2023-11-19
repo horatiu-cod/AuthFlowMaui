@@ -4,6 +4,7 @@ using AuthFlowMaui.Shared.KeycloakSettings;
 using AuthFlowMaui.Shared.TokenDtos;
 using AuthFlowMaui.Shared.KeycloakUtils;
 using System.Text.Json;
+using System.Net;
 
 namespace AuthFlowMaui.Shared.KeycloakServices;
 
@@ -31,7 +32,7 @@ public class KeycloakTokenService : IKeycloakTokenService
         try
         {
             var response = await httpclient.PostAsync($"{keycloakSettings.PostUrl}/token", tokenRequestBody, cancellationToken);
-            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
                 return DataResult<KeycloakTokenResponseDto>.Fail($"{response.StatusCode} {response.ReasonPhrase} You are unauthorized from GetUserTokenRequestBody", null);
             }
@@ -66,7 +67,7 @@ public class KeycloakTokenService : IKeycloakTokenService
         try
         {
             var response = await httpClient.PostAsync($"{keycloakSettings.PostUrl}/token", tokenRequestBody, cancellationToken);
-            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
                 return DataResult<KeycloakTokenResponseDto>.Fail($"{response.StatusCode} {response.ReasonPhrase}You are unauthorized from GetClientTokenResponseAsync", null);
             }
@@ -102,7 +103,7 @@ public class KeycloakTokenService : IKeycloakTokenService
         try
         {
             var response = await httpClient.PostAsync($"{keycloakSettings.PostUrl}/token", tokenRequestBody, cancellationToken);
-            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
                 return DataResult<KeycloakTokenResponseDto>.Fail($"{response.StatusCode} {response.ReasonPhrase}You are unauthorized from GetUserTokenByRefreshTokenResponseAsync", null);
             }
