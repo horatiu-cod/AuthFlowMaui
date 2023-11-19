@@ -10,13 +10,14 @@ namespace AuthFlowMaui.Shared.KeycloakUtils
         public static Result Fail(string? error, HttpStatusCode? httpStatus) => new(false, error, httpStatus);
     }
 
-    public record struct Result<TData>(TData? Content, bool IsSuccess, HttpStatusCode? HttpMessage, string? Error)
+    public record struct Result<TData>(TData? Content, bool IsSuccess, HttpStatusCode? HttpStatus, string? Error)
     {
         public static Result<TData> Success(TData content) => new(content, true, null, null);
-        public static Result<TData> Success(TData content, HttpStatusCode? message) => new(content, true, message, null);
-        public static Result<TData> Fail(HttpStatusCode? HttpMessage) => new(default, true, HttpMessage, null);
-        public static Result<TData> Fail(TData? content, HttpStatusCode? HttpMessage) => new(default, true, HttpMessage, null);
-        public static Result<TData> Fail(TData? content, string? Error) => new(default, true, null, Error);
+        public static Result<TData> Success(TData content, HttpStatusCode? HttpStatus) => new(content, true, HttpStatus, null);
+        public static Result<TData> Fail(HttpStatusCode HttpStatus) => new(default, true, HttpStatus, null);
+        public static Result<TData> Fail( HttpStatusCode HttpStatus, TData? content) => new(default, true, HttpStatus, null);
+        public static Result<TData> Fail(HttpStatusCode HttpStatus, TData? content, string? Error) => new(default, true, HttpStatus, Error);
+        public static Result<TData> Fail(string? Error, TData? content) => new(default, true, null, Error);
     }
 
     public class DataResult<TData>
@@ -40,5 +41,4 @@ namespace AuthFlowMaui.Shared.KeycloakUtils
         public static DataResult<TData> Fail(HttpStatusCode? httpStatusCode, string? error, TData? data) => new(false, error, httpStatusCode, default);
     }
 
-    public record HttpStatus(HttpStatusCode StatusCode, string? Message);
 }
