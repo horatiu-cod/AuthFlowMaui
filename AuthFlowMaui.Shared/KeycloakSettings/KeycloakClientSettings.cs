@@ -9,6 +9,8 @@ public record KeycloakClientSettings()
     public string? ClientId { get; init; }
     [JsonPropertyName("client_secret")]
     public string? ClientSecret { get; init; }
+    [JsonPropertyName("realm")]
+    public string? Realm {  get; init; }
     [JsonIgnore]
     public string? PostUrl { get; set; }
     public string ToJson() => 
