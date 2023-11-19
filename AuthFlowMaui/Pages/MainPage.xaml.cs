@@ -29,6 +29,7 @@ namespace AuthFlowMaui.Pages
                 {
                     s_tokenSource.CancelAfter(3500);
                     var response = await _keycloakTokenService.GetClientTokenResponseAsync(keycloakSettings, httpClientName, s_tokenSource.Token);
+                    s_tokenSource.TryReset();
                     if (response.IsSuccess)
                     {
                         var rawToken = response.Data.AccessToken;

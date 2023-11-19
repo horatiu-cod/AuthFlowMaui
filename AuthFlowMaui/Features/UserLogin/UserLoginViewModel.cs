@@ -54,6 +54,7 @@ public partial class UserLoginViewModel : ObservableObject, IDisposable
                 s_tokenSource.CancelAfter(TimeSpan.FromSeconds(5000));
                 IsBusy = true;
                 var loginResult = await _keycloakTokenService.GetUserTokenResponseAsync(user, clientSettings, httpClientName, s_tokenSource.Token);
+                s_tokenSource.TryReset();
                 IsBusy = false;
                 if (loginResult.IsSuccess)
                 {
