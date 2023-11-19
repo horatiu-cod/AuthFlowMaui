@@ -40,4 +40,14 @@ public static class KeycloakTokenUtils
         };
         return new FormUrlEncodedContent(keyValuePairs);
     }
+    public static FormUrlEncodedContent LogoutUserWithRefreshTokenRequestBody(KeycloakUserLogoutWithRefreshTokenRequestDto logoutRequestDto)
+    {
+        var keyValuePairs = new List<KeyValuePair<string, string>>()
+        {
+            new KeyValuePair<string, string>(KeycloakAccessTokenConst.ClientId, logoutRequestDto.ClientId),
+            new KeyValuePair<string, string> ( KeycloakAccessTokenConst.ClientSecret, logoutRequestDto.ClientSecret),
+            new KeyValuePair<string, string>(KeycloakAccessTokenConst.RefreshToken, logoutRequestDto.RefreshToken)
+        };
+        return new FormUrlEncodedContent(keyValuePairs);
+    }
 }
