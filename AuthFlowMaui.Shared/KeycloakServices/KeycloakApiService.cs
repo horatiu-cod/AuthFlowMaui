@@ -23,7 +23,7 @@ public class KeycloakApiService : IKeycloakApiService
         var httpClient = _httpClientFactory.CreateClient(httpClientName);
 
         var client = await _keycloakTokenService.GetClientTokenResponseAsync(clientSettings, httpClientName, cancellationToken);
-        if (!client.IsSuccess || client.HttpStatus != HttpStatusCode.Created)
+        if (!client.IsSuccess)
             return Result.Fail($"{client.Error}, Error from GetClientTokenResponseAsync passed to RegisterKeycloakUser in KeycloakApiService", client.HttpStatus);
 
         var RegisterUserBody = keycloakRegisterUserDto.ToJson();
