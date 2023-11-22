@@ -36,13 +36,17 @@ public class KeycloakApiService : IKeycloakApiService
         {
             return Result.Fail($"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
         }
-        else if (!result.IsSuccessStatusCode)
+        else if (!result.IsSuccessStatusCode )
+        {
+            return Result.Fail($"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
+        }
+        else if (result.StatusCode != HttpStatusCode.Created)
         {
             return Result.Fail($"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
         }
         else
         {
-            return Result.Success();
+            return Result.Success(result.StatusCode);
         }
     }
 }
