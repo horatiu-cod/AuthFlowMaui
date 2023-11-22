@@ -32,7 +32,7 @@ namespace AuthFlowMaui.Pages
                     s_tokenSource.TryReset();
                     if (response.IsSuccess)
                     {
-                        var rawToken = response.Data.AccessToken;
+                        var rawToken = response.Content.AccessToken;
                         //var userName = await response.Data.HttpResponse.Content.ReadAsStringAsync();
                         var handler = new JwtSecurityTokenHandler();
                         var token = handler.ReadJwtToken(rawToken);
@@ -50,14 +50,7 @@ namespace AuthFlowMaui.Pages
                 {
                     apiResponse.Text = $"{ex.Message} OperationCanceledException from GetClientTokenResponseAsync to OnCounterClicked in MainPage.xaml.cs";
                 }
-                finally
-                {
-                    s_tokenSource.Dispose();
-                };
-
-
             }
-
         }
     }
 
