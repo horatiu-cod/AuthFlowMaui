@@ -5,6 +5,7 @@ using AuthFlowMaui.Shared.TokenDtos;
 using AuthFlowMaui.Shared.KeycloakUtils;
 using System.Text.Json;
 using System.Net;
+using System.Net.Http.Json;
 
 namespace AuthFlowMaui.Shared.KeycloakServices;
 
@@ -42,8 +43,8 @@ public class KeycloakTokenService : IKeycloakTokenService
             }
             else
             {
-                var responseJson = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                var keycloakTokenResponseDto = JsonSerializer.Deserialize<KeycloakTokenResponseDto>(responseJson);
+                var keycloakTokenResponseDto = await response.Content.ReadFromJsonAsync<KeycloakTokenResponseDto>(); //.ReadAsStringAsync().ConfigureAwait(false);
+                //var keycloakTokenResponseDto = JsonSerializer.Deserialize<KeycloakTokenResponseDto>(responseJson);
 
                 return DataResult<KeycloakTokenResponseDto>.Success(keycloakTokenResponseDto);
             }
