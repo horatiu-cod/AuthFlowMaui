@@ -81,4 +81,36 @@ public class KeycloakApiService : IKeycloakApiService
             return Result<KeycloakUserDto>.Success(keycloakUserDto,result.StatusCode);
         }
     }
+    public async Task<Result<KeycloakUserDto>> UpdateKeycloakUser(KeycloakUserDto keycloakUserDto, KeycloakClientSettings clientSettings, string httpClientName, CancellationToken cancellationToken)
+    {
+        var httpClient = _httpClientFactory.CreateClient(httpClientName);
+
+        var client = await _keycloakTokenService.GetClientTokenResponseAsync(clientSettings, httpClientName, cancellationToken);
+        if (!client.IsSuccess)
+            return Result<KeycloakUserDto>.Fail(client.HttpStatus, null, $"{client.Error}, Error from GetClientTokenResponseAsync passed to RegisterKeycloakUser in KeycloakApiService");
+
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", client.Content.AccessToken);
+
+        var result = await httpClient.GetAsync($"/admin/realms/{clientSettings.Realm}/users/{keycloakUserDto.Id}", cancellationToken);
+
+        if (result.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+        {
+            return Result<KeycloakUserDto>.Fail(result.StatusCode, null, $"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
+        }
+        else if (!result.IsSuccessStatusCode)
+        {
+            return Result<KeycloakUserDto>.Fail(result.StatusCode, null, $"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
+        }
+        else if (result.StatusCode != HttpStatusCode.Created)
+        {
+            return Result<KeycloakUserDto>.Fail(result.StatusCode, null, $"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
+        }
+        else
+        {
+            keycloakUserDto = await result.Content.ReadFromJsonAsync<KeycloakUserDto>(cancellationToken);
+            return Result<KeycloakUserDto>.Success(keycloakUserDto, result.StatusCode);
+        }
+    }
+
+
 }
