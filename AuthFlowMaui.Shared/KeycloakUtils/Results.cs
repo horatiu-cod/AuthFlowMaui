@@ -15,8 +15,8 @@ namespace AuthFlowMaui.Shared.KeycloakUtils
         public static Result<TData> Success(TData content) => new(content, true, null, null);
         public static Result<TData> Success(TData content, HttpStatusCode? HttpStatus) => new(content, true, HttpStatus, null);
         public static Result<TData> Fail(HttpStatusCode HttpStatus) => new(default, true, HttpStatus, null);
-        public static Result<TData> Fail( HttpStatusCode HttpStatus, TData? content) => new(default, true, HttpStatus, null);
-        public static Result<TData> Fail(HttpStatusCode HttpStatus, TData? content, string? Error) => new(default, true, HttpStatus, Error);
+        public static Result<TData> Fail( HttpStatusCode? HttpStatus, TData? content) => new(default, true, HttpStatus, null);
+        public static Result<TData> Fail(HttpStatusCode? HttpStatus, TData? content, string? Error) => new(default, true, HttpStatus, Error);
         public static Result<TData> Fail(string? Error, TData? content) => new(default, true, null, Error);
     }
 
