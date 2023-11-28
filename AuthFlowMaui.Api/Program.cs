@@ -9,7 +9,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
-//builder.Services.AddServices();
 builder.AddJwtBearerConfig();
 var jwtBearerConfig =  builder.Configuration.GetSection("JwtBearer").Get<JwtBearerConfig>();
 
