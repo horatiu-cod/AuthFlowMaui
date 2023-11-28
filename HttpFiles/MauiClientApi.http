@@ -1,0 +1,26 @@
+@baseUrl = https://localhost:8843
+@realm = dev
+@maui_client_uuid = 749ee527-0032-43d1-9136-89436a89b8ae
+@client_secret = TrjsbbSMlygVkMuecdugXNE1mMy4Iny6
+@client_name = maui-client
+@username = tg@g.com
+@password = s3cr3te
+
+
+
+### Login user
+# @name user_token_request
+POST {{baseUrl}}/realms/{{realm}}/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password&client_id={{client_name}}&client_secret={{client_secret}}&username={{username}}&password={{password}}
+
+#### response
+@access_token = {{user_token_request.response.body.access_token}}
+@refresh_token = {{user_token_request.response.body.refresh_token}}
+
+### Check Api access
+GET https://localhost:7122/api/user/check/authorization
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+

@@ -41,3 +41,6 @@ POST {{baseUrl}}/realms/{{realm}}/protocol/openid-connect/token/introspect
 Content-Type: application/x-www-form-urlencoded
 
 client_id={{client_name}}&client_secret={{client_secret}}&token={{access_token}}
+
+### Realm keys request
+GET {{baseUrl}}/realms/{{realm}}/protocol/openid-connect/certs
