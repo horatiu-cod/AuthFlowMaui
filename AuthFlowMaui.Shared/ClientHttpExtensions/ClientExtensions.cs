@@ -7,7 +7,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 
-namespace AuthFlowMaui.Shared.Extensions.Client;
+namespace AuthFlowMaui.Shared.ClientHttpExtensions;
 
 public static class ClientExtensions
 {
