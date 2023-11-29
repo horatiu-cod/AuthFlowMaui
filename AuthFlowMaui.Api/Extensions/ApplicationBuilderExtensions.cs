@@ -46,10 +46,12 @@ public static class ApplicationBuilderExtensions
             });
         builder.Services.AddAuthorization(option =>
         {
-            option.DefaultPolicy = new AuthorizationPolicyBuilder()
-                .RequireAuthenticatedUser()
-                //.RequireClaim("email_verified", "true")
-                .Build();           
+            option.AddPolicy("RequireUserRole", policy =>
+                policy
+                    .RequireAuthenticatedUser()
+                    .RequireClaim("email_verified", "true")
+                    .RequireRole("user_role"));
         });
+
     }
 }

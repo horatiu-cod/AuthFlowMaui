@@ -9,7 +9,7 @@ namespace AuthFlowMaui.Api.Controllers
     [Produces("application/json")]
     public class UserController : Controller
     {
-        [Authorize]
+        [Authorize("RequireUserRole")]
         [HttpGet("check/authorization")]
         public IActionResult CheckAuthorization()
         {
