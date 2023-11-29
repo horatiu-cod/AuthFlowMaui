@@ -46,7 +46,7 @@ Authorization: Bearer {{client_access_token}}
 
 ### get the user representation
 # @name user_id_request
-GET {{baseUrl}}/admin/realms/{{realm}}/users/?username=tg@g.com
+GET {{baseUrl}}/admin/realms/{{realm}}/users/?username=hg@g.com
 Content-Type: application/json
 Authorization: Bearer {{client_access_token}}
 
