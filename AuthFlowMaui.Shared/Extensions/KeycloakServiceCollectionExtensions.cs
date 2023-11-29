@@ -1,4 +1,5 @@
 ﻿using AuthFlowMaui.Shared.KeycloakServices;
+using AuthFlowMaui.Shared.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AuthFlowMaui.Shared.Extensions;
@@ -9,7 +10,7 @@ public static class KeycloakServiceCollectionExtensions
     {
         services.AddTransient<IKeycloakTokenService, KeycloakTokenService>();
         services.AddTransient<ITokenService, TokenService>();
-        services.AddTransient<IKeycloakApiService, KeycloakApiService>();
+        services.AddTransient<IApiRepository, ApiRepository>();
         services.AddTransient<IKeycloakCertsService, KeycloakCertsService>();
 
         return services;
