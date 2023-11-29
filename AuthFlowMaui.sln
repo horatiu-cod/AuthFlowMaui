@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthFlowMaui.Api", "AuthFlo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthFlowMaui.Shared", "AuthFlowMaui.Shared\AuthFlowMaui.Shared.csproj", "{11B9EB41-53C1-4251-8279-DD34BACCAC8F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthFlowMaui.MinimalApi", "AuthFlowMaui.MinimalApi\AuthFlowMaui.MinimalApi.csproj", "{2E0E43FF-CAE4-4340-A067-95ACA9A7B0C5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{11B9EB41-53C1-4251-8279-DD34BACCAC8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11B9EB41-53C1-4251-8279-DD34BACCAC8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11B9EB41-53C1-4251-8279-DD34BACCAC8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E0E43FF-CAE4-4340-A067-95ACA9A7B0C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E0E43FF-CAE4-4340-A067-95ACA9A7B0C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E0E43FF-CAE4-4340-A067-95ACA9A7B0C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E0E43FF-CAE4-4340-A067-95ACA9A7B0C5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
