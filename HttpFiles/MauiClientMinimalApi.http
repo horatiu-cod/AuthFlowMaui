@@ -3,7 +3,7 @@
 @maui_client_uuid = 8eeaf694-956b-4e9f-998a-9aa7a42a604d
 @client_secret = 9DjYm7ykF2xAJhywouAjq484qNK21oRi
 @client_name = maui-client
-@username = tg@g.com
+@username = hg@g.com
 @password = s3cr3t
 
 
@@ -20,11 +20,7 @@ grant_type=password&client_id={{client_name}}&client_secret={{client_secret}}&us
 @refresh_token = {{user_token_request.response.body.refresh_token}}
 
 ### Check Api access
-GET https://localhost:7122/api/user/check/authorization
+GET https://localhost:7088/api/user/authorization
 Content-Type: application/json
 Authorization: Bearer {{access_token}}
 
-### get user info
-GET {{baseUrl}}/realms/{{realm}}/protocol/openid-connect/userinfo
-Content-Type: application/json
-Authorization: Bearer {{access_token}}

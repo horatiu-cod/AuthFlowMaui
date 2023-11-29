@@ -1,12 +1,11 @@
 @baseUrl = https://localhost:8843
 @realm = dev
-@api_client_uuid = 8e4c3af8-bbc1-4bd1-b9f1-aaf0a63b43a9
-@maui_client_uuid = 749ee527-0032-43d1-9136-89436a89b8ae
+@maui_client_uuid =
 ###@user_id = d9e05d87-b16f-4472-b5f3-66c9eb57555b
-@client_secret = TrjsbbSMlygVkMuecdugXNE1mMy4Iny6
+@client_secret = 9DjYm7ykF2xAJhywouAjq484qNK21oRi
 @client_name = maui-client
 @username = tg@g.com
-@password = s3cr3te
+@password = s3cr3t
 
 ### Login user
 # @name user_token_request
@@ -19,28 +18,44 @@ grant_type=password&client_id={{client_name}}&client_secret={{client_secret}}&us
 @access_token = {{user_token_request.response.body.access_token}}
 @refresh_token = {{user_token_request.response.body.refresh_token}}
 
+### Get Client access_token
+# @name client_token_request
+POST {{baseUrl}}/realms/{{realm}}/protocol/openid-connect/token HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=client_credentials&client_id={{client_name}}&client_secret={{client_secret}}
+
+#### response
+@client_access_token = {{client_token_request.response.body.access_token}}
+
+
 ### Refresh token
 # @name refresh_token_request
 POST {{baseUrl}}/realms/{{realm}}/protocol/openid-connect/token 
 Content-Type: application/x-www-form-urlencoded
 
 grant_type=refresh_token&client_id={{client_name}}&client_secret={{client_secret}}&refresh_token={{refresh_token}}
-
 #### response
 {{access_token}} = {{refresh_token_request.response.body.access_token}}
 {{refresh_token}} = {{refresh_token_request.response.body.refresh_token}}
 
+
 ### Logout user
+# @name logout_user_request
 POST {{baseUrl}}/realms/{{realm}}/protocol/openid-connect/logout
 Content-Type: application/x-www-form-urlencoded
 
 client_id={{client_name}}&client_secret={{client_secret}}&refresh_token={{refresh_token}}
 
+
 ### user info
+# @name user_info_request
 POST {{baseUrl}}/realms/{{realm}}/protocol/openid-connect/token/introspect
 Content-Type: application/x-www-form-urlencoded
 
 client_id={{client_name}}&client_secret={{client_secret}}&token={{access_token}}
 
+
 ### Realm keys request
+# @name realm_certs_request
 GET {{baseUrl}}/realms/{{realm}}/protocol/openid-connect/certs
