@@ -18,7 +18,7 @@ public class KeycloakCertsService : IKeycloakCertsService
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<DataResult<KeycloakKeysDto>> GetClientCertsResponseAsync( string httpClientName,string url, CancellationToken cancellationToken)
+    public async Task<DataResult<KeycloakKeysDto>> GetClientCertsResponseAsync( string url,string httpClientName, CancellationToken cancellationToken)
     {
         var httpClient = _httpClientFactory.CreateClient(httpClientName);
         try
