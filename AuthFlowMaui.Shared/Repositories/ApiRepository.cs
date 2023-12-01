@@ -72,7 +72,7 @@ public class ApiRepository : IApiRepository
         {
             return Result<KeycloakUserDto>.Fail(result.StatusCode, null, $"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
         }
-        else if (result.StatusCode != HttpStatusCode.Created)
+        else if (result.StatusCode != HttpStatusCode.OK)
         {
             return Result<KeycloakUserDto>.Fail(result.StatusCode, null, $"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
         }
