@@ -43,10 +43,10 @@ public class CertsService : ICertsService
     {
         var settings = await _storageService.GetClientSecretAsync();
         var httpClientName = RealmConstants.HttpClientName;
-        settings.Data.PostUrl = RealmConstants.RealmUrl;
+        settings.Data.RealmUrl = RealmConstants.RealmUrl;
         try
         {
-            var response = await _keycloakCertsService.GetClientCertsResponseAsync(settings.Data.PostUrl, httpClientName, cancellationToken);
+            var response = await _keycloakCertsService.GetClientCertsResponseAsync(settings.Data.RealmUrl, httpClientName, cancellationToken);
             if (response.IsSuccess)
             {
                 var result = await _storageService.SetCertsSecretAsync(response.Data.ToJson());

@@ -24,10 +24,10 @@ namespace AuthFlowMaui.Pages
             if (clientSettings.IsSuccess) 
             {
                 var keycloakSettings = clientSettings.Data;
-                keycloakSettings.PostUrl = RealmConstants.RealmUrl;
+                keycloakSettings.RealmUrl = RealmConstants.RealmUrl;
                 try
                 {
-                    s_tokenSource.CancelAfter(3500);
+                    s_tokenSource.CancelAfter(13500);
                     var response = await _keycloakTokenService.GetClientTokenResponseAsync(keycloakSettings, httpClientName, s_tokenSource.Token);
                     s_tokenSource.TryReset();
                     if (response.IsSuccess)

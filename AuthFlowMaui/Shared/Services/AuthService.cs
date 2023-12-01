@@ -108,7 +108,7 @@ public class AuthService : IAuthService
         if (!clientSettingsResponse.IsSuccess)
             return MethodResult.Fail(clientSettingsResponse.Error);
         var clientSettings = clientSettingsResponse.Data;
-        clientSettings.PostUrl = RealmConstants.RealmUrl;
+        clientSettings.RealmUrl = RealmConstants.RealmUrl;
         if (!clientSettingsResponse.IsSuccess)
             return MethodResult.Fail(clientSettingsResponse.Error);
         try

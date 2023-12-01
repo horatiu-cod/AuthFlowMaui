@@ -32,7 +32,7 @@ public class KeycloakTokenService : IKeycloakTokenService
         var tokenRequestBody = KeycloakTokenUtils.GetUserTokenRequestBody(keycloakTokenRequestDto);
         try
         {
-            var response = await httpclient.PostAsync($"{keycloakSettings.PostUrl}/token", tokenRequestBody, cancellationToken);
+            var response = await httpclient.PostAsync($"{keycloakSettings.RealmUrl}/token", tokenRequestBody, cancellationToken);
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
                 return DataResult<KeycloakTokenResponseDto>.Fail($"{response.StatusCode} {response.ReasonPhrase} You are unauthorized from GetUserTokenRequestBody", null);
@@ -67,7 +67,7 @@ public class KeycloakTokenService : IKeycloakTokenService
         var tokenRequestBody = KeycloakTokenUtils.GetClientTokenRequestBody(keycloakTokenRequestDto);
         try
         {
-            var response = await httpClient.PostAsync($"{keycloakSettings.PostUrl}/token", tokenRequestBody, cancellationToken);
+            var response = await httpClient.PostAsync($"{keycloakSettings.RealmUrl}/token", tokenRequestBody, cancellationToken);
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
                 return Result<KeycloakTokenResponseDto>.Fail(response.StatusCode,null, $"{response.StatusCode} {response.ReasonPhrase} from GetClientTokenResponseAsync");
@@ -103,7 +103,7 @@ public class KeycloakTokenService : IKeycloakTokenService
         var tokenRequestBody = KeycloakTokenUtils.GetUserTokenWithRefreshTokenRequestBody(keycloakUserTokenWithRefreshTokenRequestDto);
         try
         {
-            var response = await httpClient.PostAsync($"{keycloakSettings.PostUrl}/token", tokenRequestBody, cancellationToken);
+            var response = await httpClient.PostAsync($"{keycloakSettings.RealmUrl}/token", tokenRequestBody, cancellationToken);
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
                 return DataResult<KeycloakTokenResponseDto>.Fail($"{response.StatusCode} {response.ReasonPhrase}You are unauthorized from GetUserTokenByRefreshTokenResponseAsync", null);
