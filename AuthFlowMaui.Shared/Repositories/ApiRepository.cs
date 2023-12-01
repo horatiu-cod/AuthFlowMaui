@@ -109,7 +109,96 @@ public class ApiRepository : IApiRepository
         else
         {
             keycloakUserDto = await result.Content.ReadFromJsonAsync<KeycloakUserDto>(cancellationToken);
-            return Result<KeycloakUserDto>.Success(keycloakUserDto, result.StatusCode);
+            return Result.Success(result.StatusCode);
+        }
+    }
+    public async Task<Result> DeletKeycloakUser(KeycloakUserDto keycloakUserDto, KeycloakClientSettings clientSettings, string httpClientName, CancellationToken cancellationToken)
+    {
+        var httpClient = _httpClientFactory.CreateClient(httpClientName);
+
+        var client = await _keycloakTokenService.GetClientTokenResponseAsync(clientSettings, httpClientName, cancellationToken);
+        if (!client.IsSuccess)
+            return Result.Fail( $"{client.Error}, Error from GetClientTokenResponseAsync passed to RegisterKeycloakUser in KeycloakApiService", client.HttpStatus);
+
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", client.Content.AccessToken);
+
+        var result = await httpClient.DeleteAsync($"/admin/realms/{clientSettings.Realm}/users/{keycloakUserDto.Id}", cancellationToken);
+
+        if (result.StatusCode == HttpStatusCode.Unauthorized)
+        {
+            return Result.Fail( $"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser", result.StatusCode);
+        }
+        else if (!result.IsSuccessStatusCode)
+        {
+            return Result.Fail($"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser", result.StatusCode);
+        }
+        else if (result.StatusCode != HttpStatusCode.NoContent)
+        {
+            return Result.Fail($"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser", result.StatusCode);
+        }
+        else
+        {
+            keycloakUserDto = await result.Content.ReadFromJsonAsync<KeycloakUserDto>(cancellationToken);
+            return Result.Success(result.StatusCode);
+        }
+    }
+    public async Task<Result<KeycloakRoleDto>> GetKeycloakRealmRole(KeycloakRoleDto keycloakRoleDto, KeycloakClientSettings clientSettings, string httpClientName,string clientUuid, string roleName, CancellationToken cancellationToken)
+    {
+        var httpClient = _httpClientFactory.CreateClient(httpClientName);
+
+        var client = await _keycloakTokenService.GetClientTokenResponseAsync(clientSettings, httpClientName, cancellationToken);
+        if (!client.IsSuccess)
+            return Result<KeycloakRoleDto>.Fail(client.HttpStatus, null, $"{client.Error}, Error from GetClientTokenResponseAsync passed to RegisterKeycloakUser in KeycloakApiService");
+
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", client.Content.AccessToken);
+
+        var result = await httpClient.GetAsync($"/admin/realms/{clientSettings.Realm}/clients/{clientUuid}/roles/{roleName}", cancellationToken);
+
+        if (result.StatusCode == HttpStatusCode.Unauthorized)
+        {
+            return Result<KeycloakRoleDto>.Fail(result.StatusCode, null, $"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
+        }
+        else if (!result.IsSuccessStatusCode)
+        {
+            return Result<KeycloakRoleDto>.Fail(result.StatusCode, null, $"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
+        }
+        else if (result.StatusCode != HttpStatusCode.OK)
+        {
+            return Result<KeycloakRoleDto>.Fail(result.StatusCode, null, $"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
+        }
+        else
+        {
+            keycloakRoleDto = await result.Content.ReadFromJsonAsync<KeycloakRoleDto>(cancellationToken);
+            return Result<KeycloakRoleDto>.Success(keycloakRoleDto, result.StatusCode);
+        }
+    }
+    public async Task<Result> AsignRoleToKeycloakUser(KeycloakUserDto keycloakUserDto, KeycloakClientSettings clientSettings,KeycloakRoleDto keycloakRoleDto, string httpClientName,string clientUuid, CancellationToken cancellationToken)
+    {
+        var httpClient = _httpClientFactory.CreateClient(httpClientName);
+
+        var client = await _keycloakTokenService.GetClientTokenResponseAsync(clientSettings, httpClientName, cancellationToken);
+        if (!client.IsSuccess)
+            return Result.Fail($"{client.Error}, Error from GetClientTokenResponseAsync passed to RegisterKeycloakUser in KeycloakApiService", client.HttpStatus);
+
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", client.Content.AccessToken);
+
+        var result = await httpClient.PostAsJsonAsync($"/admin/realms/{clientSettings.Realm}/users/{keycloakUserDto.Id}/role-mapping/clients/{clientUuid}", keycloakRoleDto, cancellationToken);
+
+        if (result.StatusCode == HttpStatusCode.Unauthorized)
+        {
+            return Result.Fail($"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser", result.StatusCode);
+        }
+        else if (!result.IsSuccessStatusCode)
+        {
+            return Result.Fail($"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser", result.StatusCode);
+        }
+        else if (result.StatusCode != HttpStatusCode.NoContent)
+        {
+            return Result.Fail($"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser", result.StatusCode);
+        }
+        else
+        {
+            return Result.Success(result.StatusCode);
         }
     }
 
