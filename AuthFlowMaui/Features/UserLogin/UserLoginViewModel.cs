@@ -44,7 +44,14 @@ public partial class UserLoginViewModel : ObservableObject, IDisposable
             await _mauiInterop.ShowErrorAlertAsync($"Error: {clientSettingsResponse.Error} from GetClientSecretAsync", "SecureStorage error");
         var clientSettings = clientSettingsResponse.Data;
         clientSettings.RealmUrl = RealmConstants.RealmUrl;
-        var user = new KeycloakUserDto
+
+        // TODO add mapper
+        var user = new LoggedInUserModel
+        {
+            UserName = UserName,
+            Password = Password
+        };
+        var keycloakUserDto = new KeycloakUserDto
         {
             UserName = UserName,
             Password = Password
