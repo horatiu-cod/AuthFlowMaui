@@ -82,29 +82,29 @@ public class ApiRepository : IApiRepository
             return Result<KeycloakUserDto>.Success(keycloakUserDto, result.StatusCode);
         }
     }
-    public async Task<Result<KeycloakUserDto>> UpdateKeycloakUser(KeycloakUserDto keycloakUserDto, KeycloakClientSettings clientSettings, string httpClientName, CancellationToken cancellationToken)
+    public async Task<Result> UpdateKeycloakUser(KeycloakUserDto keycloakUserDto, KeycloakClientSettings clientSettings, string httpClientName, CancellationToken cancellationToken)
     {
         var httpClient = _httpClientFactory.CreateClient(httpClientName);
 
         var client = await _keycloakTokenService.GetClientTokenResponseAsync(clientSettings, httpClientName, cancellationToken);
         if (!client.IsSuccess)
-            return Result<KeycloakUserDto>.Fail(client.HttpStatus, null, $"{client.Error}, Error from GetClientTokenResponseAsync passed to RegisterKeycloakUser in KeycloakApiService");
+            return Result.Fail($"{client.Error}, Error from GetClientTokenResponseAsync passed to RegisterKeycloakUser in KeycloakApiService", client.HttpStatus);
 
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", client.Content.AccessToken);
 
-        var result = await httpClient.GetAsync($"/admin/realms/{clientSettings.Realm}/users/{keycloakUserDto.Id}", cancellationToken);
+        var result = await httpClient.PutAsJsonAsync($"/admin/realms/{clientSettings.Realm}/users/{keycloakUserDto.Id}", keycloakUserDto, cancellationToken);
 
         if (result.StatusCode == HttpStatusCode.Unauthorized)
         {
-            return Result<KeycloakUserDto>.Fail(result.StatusCode, null, $"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
+            return Result.Fail($"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser", result.StatusCode);
         }
         else if (!result.IsSuccessStatusCode)
         {
-            return Result<KeycloakUserDto>.Fail(result.StatusCode, null, $"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
+            return Result.Fail($"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser", result.StatusCode);
         }
-        else if (result.StatusCode != HttpStatusCode.Created)
+        else if (result.StatusCode != HttpStatusCode.NoContent)
         {
-            return Result<KeycloakUserDto>.Fail(result.StatusCode, null, $"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
+            return Result.Fail($"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser", result.StatusCode);
         }
         else
         {
