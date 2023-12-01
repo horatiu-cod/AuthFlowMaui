@@ -41,7 +41,7 @@ public partial class UserLoginViewModel : ObservableObject, IDisposable
         var httpClientName = RealmConstants.HttpClientName;
         var clientSettingsResponse = await _storageService.GetClientSecretAsync();
         var clientSettings = clientSettingsResponse.Data;
-        clientSettings.PostUrl = RealmConstants.RealmUrl;
+        clientSettings.RealmUrl = RealmConstants.RealmUrl;
         var user = new KeycloakUserDto
         {
             UserName = UserName,

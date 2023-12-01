@@ -13,6 +13,8 @@ public record KeycloakClientSettings()
     public string? ClientSecret { get; init; }
     [JsonPropertyName("realm")]
     public string? Realm {  get; init; }
+    [JsonIgnore]
+    public string RealmUrl { get; set; }
     public string ToJson() => 
         JsonSerializer.Serialize(this);
     public KeycloakClientSettings? FromJson(string keycloakSettings) =>
