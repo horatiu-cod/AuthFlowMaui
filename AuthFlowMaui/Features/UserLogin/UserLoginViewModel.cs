@@ -36,7 +36,7 @@ public partial class UserLoginViewModel : ObservableObject, IDisposable
     bool _isBusy;
 
     [RelayCommand]
-    private async Task LoginUser ()
+    private async Task LoginUser()
     {
         var httpClientName = RealmConstants.HttpClientName;
         var clientSettingsResponse = await _storageService.GetClientSecretAsync();
@@ -62,13 +62,14 @@ public partial class UserLoginViewModel : ObservableObject, IDisposable
             {
                 s_tokenSource.CancelAfter(TimeSpan.FromSeconds(5000));
                 IsBusy = true;
-                var loginResult = await _keycloakTokenService.GetUserTokenResponseAsync(user, clientSettings, httpClientName, s_tokenSource.Token);
+                var loginResult = await _keycloakTokenService.GetUserTokenResponseAsync(keycloakUserDto, clientSettings, httpClientName, s_tokenSource.Token);
                 s_tokenSource.TryReset();
                 IsBusy = false;
                 if (loginResult.IsSuccess)
                 {
                     var storeResult = await _storageService.SetUserCredentialsAsync(loginResult.Data.ToJson());
-                    if (storeResult.IsSuccess)
+                    var userStoreResult = await _storageService.SetUserSecretAsync(user.ToJson());
+                    if (storeResult.IsSuccess && userStoreResult.IsSuccess)
                     {
                         await Toast.Make("You are logged in", CommunityToolkit.Maui.Core.ToastDuration.Short, 20).Show();
                         await _mauiInterop.ShowSuccessAlertAsync(loginResult.Data.AccessToken);
