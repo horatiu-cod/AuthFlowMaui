@@ -1,5 +1,5 @@
 ﻿using AuthFlowMaui.Constants;
-using AuthFlowMaui.Shared.KeycloakCertDtos;
+using AuthFlowMaui.Shared.Dtos;
 using AuthFlowMaui.Shared.KeycloakServices;
 using AuthFlowMaui.Shared.Utils;
 

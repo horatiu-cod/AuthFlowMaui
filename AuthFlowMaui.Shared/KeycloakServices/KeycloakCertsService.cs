@@ -1,11 +1,11 @@
-﻿using AuthFlowMaui.Shared.KeycloakCertDtos;
-using AuthFlowMaui.Shared.KeycloakUtils;
+﻿using AuthFlowMaui.Shared.KeycloakUtils;
 using AuthFlowMaui.Shared.KeycloakSettings;
 using AuthFlowMaui.Shared.TokenDtos;
 using AuthFlowMaui.Shared.Constants;
 using System.Text.Json;
 using System.Net.Mime;
 using System.Text;
+using AuthFlowMaui.Shared.Dtos;
 
 namespace AuthFlowMaui.Shared.KeycloakServices;
 

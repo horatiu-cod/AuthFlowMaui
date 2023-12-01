@@ -1,4 +1,4 @@
-﻿using AuthFlowMaui.Shared.KeycloakCertDtos;
+﻿using AuthFlowMaui.Shared.Dtos;
 using AuthFlowMaui.Shared.KeycloakSettings;
 using AuthFlowMaui.Shared.Utils;
 
