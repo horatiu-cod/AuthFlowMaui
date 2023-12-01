@@ -38,6 +38,7 @@ public partial class LoadingPageViewModel : ObservableObject
         IsBusy = true;
 
         //await _secureStorage.RemoveClientSecretAsync();
+        //await _secureStorage.RemoveCertsSecretAsync();
         var result = await _secureStorage.GetClientSecretAsync();
         if (!result.IsSuccess)
         {
