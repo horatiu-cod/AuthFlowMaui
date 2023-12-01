@@ -17,9 +17,9 @@ public partial class KeycloakSettingsViewModel : ObservableObject
     }
 
     [ObservableProperty]
-    private string _clientId;
+    private string _clientId = "maui-client";
     [ObservableProperty]
-    private string _clientSecret;
+    private string _clientSecret = "9DjYm7ykF2xAJhywouAjq484qNK21oRi";
     [ObservableProperty]
     private bool _isBusy;
 
