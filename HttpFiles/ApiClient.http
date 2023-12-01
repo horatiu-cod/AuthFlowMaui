@@ -46,7 +46,7 @@ Authorization: Bearer {{client_access_token}}
 
 ### get the user representation
 # @name user_id_request
-GET {{baseUrl}}/admin/realms/{{realm}}/users/?username=hg@g.com
+GET {{baseUrl}}/admin/realms/{{realm}}/users/?username=tg@g.com
 Content-Type: application/json
 Authorization: Bearer {{client_access_token}}
 
@@ -82,21 +82,27 @@ Authorization: Bearer {{client_access_token}}
 
 {
 	"firstName": "hori",
-	"lastName": "cod",
-	"email": "tg@g.com",
-	"enabled": true,
-	"credentials": [{
-		"type": "password",
-		"value": "s3cr3t",
-		"temporary": false
-	}],
-	"username": "tg@g.com"
+	"lastName": "cod"
+	//"email": "tg@g.com",
+	//"enabled": true,
+	//"credentials": [{
+		//"type": "password",
+		//"value": "s3cr3t",
+		//"temporary": false
+	//}]
+	//"username": "tg@g.com"
 }
 
 ### verify-email action
 PUT {{baseUrl}}/admin/realms/{{realm}}/users/{{user_id}}/send-verify-email
 Content-Type: application/json
 Authorization: Bearer {{client_access_token}}
+
+
+{"https://localhost:7122/"}
+
+
+
 
 ### reset password email request
 PUT {{baseUrl}}/admin/realms/{{realm}}/users/{{user_id}}/execute-actions-email
@@ -113,9 +119,9 @@ Content-Type: application/json
 Authorization: Bearer {{client_access_token}}
 
 	{
-		"type": "password",
-    	"value": "s3cr3te",
-		"temporary": "false"
+		//"type": "password",
+    	"value": "s3cr3te"
+		//"temporary": "false"
 	}
 
 ### get user credentials request
