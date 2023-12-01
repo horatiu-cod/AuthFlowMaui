@@ -1,12 +1,12 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace AuthFlowMaui.Shared.KeycloakCertDtos;
+namespace AuthFlowMaui.Shared.Dtos;
 
 public class KeycloakKeysDto
 {
     [JsonPropertyName("keys")]
-    public IEnumerable<KeycloakKeyDto> ?KeycloakKeys { get; set; }
+    public IEnumerable<KeycloakKeyDto>? KeycloakKeys { get; set; }
     public string ToJson() =>
     JsonSerializer.Serialize(this);
 
