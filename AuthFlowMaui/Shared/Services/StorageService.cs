@@ -1,4 +1,5 @@
-﻿using AuthFlowMaui.Shared.Dtos;
+﻿using AuthFlowMaui.Features.UserLogin;
+using AuthFlowMaui.Shared.Dtos;
 using AuthFlowMaui.Shared.KeycloakSettings;
 using AuthFlowMaui.Shared.Utils;
 
@@ -12,6 +13,7 @@ public class StorageService : IStorageService
     private const string Credentials = "credentials";
     private const string ClientSettings = "settings";
     private const string RealmCerts = "certs";
+    private const string User = "user";
 
     public StorageService()
     {
@@ -25,10 +27,7 @@ public class StorageService : IStorageService
     public async Task<MethodResult> SetUserCredentialsAsync(string secretValue) => await SetSecret(Credentials, secretValue);
     public async Task<MethodDataResult<string>> GetUserCredentialsAsync() => await GetSecret(Credentials);
     public async Task<MethodResult> RemoveUserCredentialsAsync() => await RemoveSecret(Credentials);
-    public async Task<MethodResult> SetClientSecretAsync(string secretValue)
-    {
-        return await SetSecret(ClientSettings, secretValue);
-    }
+    public async Task<MethodResult> SetClientSecretAsync(string secretValue) => await SetSecret(ClientSettings, secretValue);
     public async Task<MethodDataResult<KeycloakClientSettings>> GetClientSecretAsync()
     {
         var jsonResult =  await GetSecret(ClientSettings);
@@ -78,6 +77,9 @@ public class StorageService : IStorageService
     }
     public async Task<MethodResult> RemoveCertsSecretAsync() => await RemoveSecret(RealmCerts);
 
+    public async Task<MethodResult> SetUserSecretAsync(string secretValue) => await SetSecret(User, secretValue);
+    public async Task<MethodDataResult<string>> GetUserSecretAsync() => await GetSecret(User);
+    public async Task<MethodResult> RemoveUserSecretAsync() => await RemoveSecret(User);
 
     private async Task<MethodResult> SetSecret(string secretKey, string secretValue)
     {
