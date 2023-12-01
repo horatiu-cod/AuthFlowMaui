@@ -5,7 +5,7 @@
 @client_secret = 9DjYm7ykF2xAJhywouAjq484qNK21oRi
 @client_name = maui-client
 @username = tg@g.com
-@password = s3cr3t
+@password = s3cr3te
 
 ### Login user
 # @name user_token_request
