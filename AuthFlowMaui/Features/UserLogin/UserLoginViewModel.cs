@@ -40,6 +40,8 @@ public partial class UserLoginViewModel : ObservableObject, IDisposable
     {
         var httpClientName = RealmConstants.HttpClientName;
         var clientSettingsResponse = await _storageService.GetClientSecretAsync();
+        if (!clientSettingsResponse.IsSuccess)
+            await _mauiInterop.ShowErrorAlertAsync($"Error: {clientSettingsResponse.Error} from GetClientSecretAsync", "SecureStorage error");
         var clientSettings = clientSettingsResponse.Data;
         clientSettings.RealmUrl = RealmConstants.RealmUrl;
         var user = new KeycloakUserDto
