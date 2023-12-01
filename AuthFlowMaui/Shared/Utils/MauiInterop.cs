@@ -1,7 +1,7 @@
 ﻿using AuthFlowMaui.Pages;
 
 namespace AuthFlowMaui.Shared.Utils;
-
+#pragma warning disable
 public class MauiInterop : IMauiInterop
 {
     public string SetState(string nameOfPage) => DeviceInfo.Platform == DevicePlatform.Android ? $"//{nameOfPage}" : nameOfPage;
