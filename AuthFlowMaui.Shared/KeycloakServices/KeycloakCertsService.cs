@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Net.Mime;
 using System.Text;
 using AuthFlowMaui.Shared.Dtos;
+using System.Net.Http.Json;
 
 namespace AuthFlowMaui.Shared.KeycloakServices;
 
@@ -23,7 +24,6 @@ public class KeycloakCertsService : IKeycloakCertsService
         var httpClient = _httpClientFactory.CreateClient(httpClientName);
         try
         {
-            //var response = await httpClient.SendAsync(httpRequestMessage,0, cancellationToken);
             var response = await httpClient.GetAsync($"{url}/certs", 0, cancellationToken);
             if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
             {
@@ -35,8 +35,8 @@ public class KeycloakCertsService : IKeycloakCertsService
             }
             else
             {
-                var responseJson = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                var keycloakKeyResponseDto = JsonSerializer.Deserialize<KeycloakKeysDto>(responseJson);
+                var keycloakKeyResponseDto = await response.Content.ReadFromJsonAsync<KeycloakKeysDto>();
+                //var keycloakKeyResponseDto = JsonSerializer.Deserialize<KeycloakKeysDto>(responseJson);
 
                 return DataResult<KeycloakKeysDto>.Success(keycloakKeyResponseDto);
             }
