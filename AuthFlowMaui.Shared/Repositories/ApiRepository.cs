@@ -62,7 +62,7 @@ public class ApiRepository : IApiRepository
 
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", client.Content.AccessToken);
 
-        var result = await httpClient.GetAsync($"/admin/realms/{clientSettings.Realm}/users/{keycloakUserDto.Id}", cancellationToken);
+        var result = await httpClient.GetAsync($"/admin/realms/{clientSettings.Realm}/users/?username={keycloakUserDto.UserName}", cancellationToken);
 
         if (result.StatusCode == HttpStatusCode.Unauthorized)
         {
