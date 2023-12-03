@@ -6,10 +6,10 @@ namespace AuthFlowMaui.Shared.Services;
 
 public interface IStorageService
 {
-    Task<MethodDataResult<KeycloakKeysDto>> GetCertsSecretAsync();
-    Task<MethodDataResult<KeycloakClientSettings>> GetClientSecretAsync();
-    Task<MethodDataResult<string>> GetUserCredentialsAsync();
-    Task<MethodDataResult<string>> GetUserSecretAsync();
+    Task<MethodResult<KeycloakKeysDto>> GetCertsSecretAsync();
+    Task<MethodResult<KeycloakClientSettings>> GetClientSecretAsync();
+    Task<MethodResult<string>> GetUserCredentialsAsync();
+    Task<MethodResult<string>> GetUserSecretAsync();
     Task<MethodResult> RemoveCertsSecretAsync();
     Task<MethodResult> RemoveClientSecretAsync();
     Task<MethodResult> RemoveUserCredentialsAsync();

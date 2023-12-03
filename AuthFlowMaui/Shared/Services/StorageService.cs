@@ -25,10 +25,10 @@ public class StorageService : IStorageService
     /// <param name="secretValue"></param>
     /// <returns>MethodResult.Success or MethodResult.Fail</returns>
     public async Task<MethodResult> SetUserCredentialsAsync(string secretValue) => await SetSecret(Credentials, secretValue);
-    public async Task<MethodDataResult<string>> GetUserCredentialsAsync() => await GetSecret(Credentials);
+    public async Task<MethodResult<string>> GetUserCredentialsAsync() => await GetSecret(Credentials);
     public async Task<MethodResult> RemoveUserCredentialsAsync() => await RemoveSecret(Credentials);
     public async Task<MethodResult> SetClientSecretAsync(string secretValue) => await SetSecret(ClientSettings, secretValue);
-    public async Task<MethodDataResult<KeycloakClientSettings>> GetClientSecretAsync()
+    public async Task<MethodResult<KeycloakClientSettings>> GetClientSecretAsync()
     {
         var jsonResult =  await GetSecret(ClientSettings);
         if (jsonResult.IsSuccess)
@@ -37,23 +37,23 @@ public class StorageService : IStorageService
             keycloaksettings = keycloaksettings.FromJson(jsonResult.Data);
             if (keycloaksettings != null)
             {
-                return MethodDataResult<KeycloakClientSettings>.Success(keycloaksettings);
+                return MethodResult<KeycloakClientSettings>.Success(keycloaksettings);
             }
             else
             {
-                return MethodDataResult<KeycloakClientSettings>.Fail("JSON deserialize exception in GetClientSecretAsync", null);
+                return MethodResult<KeycloakClientSettings>.Fail("JSON deserialize exception in GetClientSecretAsync");
             }
         }
         else
         {
-            return MethodDataResult<KeycloakClientSettings>.Fail(jsonResult.Error, null);
+            return MethodResult<KeycloakClientSettings>.Fail(jsonResult.Error);
         }
 
     }
     public async Task<MethodResult> RemoveClientSecretAsync() => await RemoveSecret(ClientSettings);
 
     public async Task<MethodResult> SetCertsSecretAsync(string secretValue) => await SetSecret(RealmCerts, secretValue);
-    public async Task<MethodDataResult<KeycloakKeysDto>> GetCertsSecretAsync()
+    public async Task<MethodResult<KeycloakKeysDto>> GetCertsSecretAsync()
     {
         var jsonResult = await GetSecret(RealmCerts);
         if (jsonResult.IsSuccess)
@@ -62,23 +62,23 @@ public class StorageService : IStorageService
             keycloaksettings = keycloaksettings.FromJson(jsonResult.Data);
             if (keycloaksettings != null)
             {
-                return MethodDataResult<KeycloakKeysDto>.Success(keycloaksettings);
+                return MethodResult<KeycloakKeysDto>.Success(keycloaksettings);
             }
             else
             {
-                return MethodDataResult<KeycloakKeysDto>.Fail("JSON deserialize exception in GetCertsSecretAsync", null);
+                return MethodResult<KeycloakKeysDto>.Fail("JSON deserialize exception in GetCertsSecretAsync");
             }
         }
         else
         {
-            return MethodDataResult<KeycloakKeysDto>.Fail(jsonResult.Error, null);
+            return MethodResult<KeycloakKeysDto>.Fail(jsonResult.Error);
         }
 
     }
     public async Task<MethodResult> RemoveCertsSecretAsync() => await RemoveSecret(RealmCerts);
 
     public async Task<MethodResult> SetUserSecretAsync(string secretValue) => await SetSecret(User, secretValue);
-    public async Task<MethodDataResult<string>> GetUserSecretAsync() => await GetSecret(User);
+    public async Task<MethodResult<string>> GetUserSecretAsync() => await GetSecret(User);
     public async Task<MethodResult> RemoveUserSecretAsync() => await RemoveSecret(User);
 
     private async Task<MethodResult> SetSecret(string secretKey, string secretValue)
@@ -101,7 +101,7 @@ public class StorageService : IStorageService
             return MethodResult.Fail($"Exception {ex.Message} from SetSecret");
         }
     }
-    private async Task<MethodDataResult<string>> GetSecret(string secretKey)
+    private async Task<MethodResult<string>> GetSecret(string secretKey)
     {
         try
         {
@@ -109,17 +109,17 @@ public class StorageService : IStorageService
 
             if (!string.IsNullOrEmpty( secretValue))
             {
-                return MethodDataResult<string>.Success(secretValue);
+                return MethodResult<string>.Success(secretValue);
             }
             else
             {
-                return MethodDataResult<string>.Fail("Error Secret value is null from GetSecret", null);
+                return MethodResult<string>.Fail("Error Secret value is null from GetSecret");
             }
 
         }
         catch (Exception ex)
         {
-            return MethodDataResult<string>.Fail($"Exception {ex.Message} from GetSecret", null);
+            return MethodResult<string>.Fail($"Exception {ex.Message} from GetSecret");
         }
     }
     private async Task<MethodResult> RemoveSecret(string secretKey)

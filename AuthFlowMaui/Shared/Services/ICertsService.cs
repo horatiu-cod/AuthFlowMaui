@@ -5,6 +5,6 @@ namespace AuthFlowMaui.Shared.Services
 {
     public interface ICertsService
     {
-        Task<MethodDataResult<KeycloakKeyDto>> GetRealmCertsAsync(CancellationToken cancellationToken);
+        Task<MethodResult<KeycloakKeyDto>> GetRealmCertsAsync(CancellationToken cancellationToken);
     }
 }

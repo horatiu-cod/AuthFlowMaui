@@ -17,7 +17,7 @@ public class CertsService : ICertsService
         _keycloakCertsService = keycloakCertsService;
     }
 
-    public async Task<MethodDataResult<KeycloakKeyDto>> GetRealmCertsAsync(CancellationToken cancellationToken)
+    public async Task<MethodResult<KeycloakKeyDto>> GetRealmCertsAsync(CancellationToken cancellationToken)
     {
         var keys = await _storageService.GetCertsSecretAsync();
         if (keys.IsSuccess)
@@ -25,21 +25,21 @@ public class CertsService : ICertsService
             var key = keys.Data.KeycloakKeys.Where(k => k.Alg == "RS256").FirstOrDefault();
             if (key != null)
             {
-                return MethodDataResult<KeycloakKeyDto>.Success(key);
+                return MethodResult<KeycloakKeyDto>.Success(key);
             }
             else
             {
-                return MethodDataResult<KeycloakKeyDto>.Fail("Passed from GetCertsSecretAsync to GetRealmCertsAsync in CertService", null);
+                return MethodResult<KeycloakKeyDto>.Fail("Passed from GetCertsSecretAsync to GetRealmCertsAsync in CertService");
             }
         }
         else
         {
             keys = await GetAndStoreRealmCertsAsync(cancellationToken);
             var key = keys.Data.KeycloakKeys.Where(k => k.Alg == "RS256").FirstOrDefault();
-            return MethodDataResult<KeycloakKeyDto>.Success(key);
+            return MethodResult<KeycloakKeyDto>.Success(key);
         }
     }
-    private async Task<MethodDataResult<KeycloakKeysDto>> GetAndStoreRealmCertsAsync(CancellationToken cancellationToken)
+    private async Task<MethodResult<KeycloakKeysDto>> GetAndStoreRealmCertsAsync(CancellationToken cancellationToken)
     {
         var settings = await _storageService.GetClientSecretAsync();
         var httpClientName = RealmConstants.HttpClientName;
@@ -52,19 +52,19 @@ public class CertsService : ICertsService
                 var result = await _storageService.SetCertsSecretAsync(response.Data.ToJson());
                 if (!result.IsSuccess)
                 {
-                    return MethodDataResult<KeycloakKeysDto>.Fail($"{result.Error} passed from SetCertsSecretAsync to GetAndStoreRealmCertsAsync in CertsService", null);
+                    return MethodResult<KeycloakKeysDto>.Fail($"{result.Error} passed from SetCertsSecretAsync to GetAndStoreRealmCertsAsync in CertsService");
                 }
-                return MethodDataResult<KeycloakKeysDto>.Success(response.Data);
+                return MethodResult<KeycloakKeysDto>.Success(response.Data);
             }
             else
             {
-                return MethodDataResult<KeycloakKeysDto>.Fail($"{response.Error} passed from GetClientCertsResponseAsync to GetAndStoreRealmCertsAsync in CertsService", null);
+                return MethodResult<KeycloakKeysDto>.Fail($"{response.Error} passed from GetClientCertsResponseAsync to GetAndStoreRealmCertsAsync in CertsService");
             }
 
         }
         catch (Exception ex)
         {
-            return MethodDataResult<KeycloakKeysDto>.Fail($"{ex.Message} exception from GetAndStoreRealmCertsAsync in CertsService", null);
+            return MethodResult<KeycloakKeysDto>.Fail($"{ex.Message} exception from GetAndStoreRealmCertsAsync in CertsService");
             
         }
     }
