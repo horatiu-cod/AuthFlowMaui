@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:settings="clr-namespace:AuthFlowMaui.Features.AuthClientSetup"
+             xmlns:local="clr-namespace:AuthFlowMaui.Pages.AppInitialSettings"
+             x:Class="AuthFlowMaui.Pages.AppInitialSettings.InitialSettingsPage"
+             x:DataType="local:InitialSettingsPageViewModel"
+             Title="InitialSettingsPage">
+    <VerticalStackLayout>
+        <Label Text="Initial Settings"/>
+        <settings:KeycloakSettingsView BindingContext="{Binding KeycloakSettingsViewModel}"/>
+    </VerticalStackLayout>
+</ContentPage>
