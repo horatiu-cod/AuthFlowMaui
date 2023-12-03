@@ -2,7 +2,6 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:loading="clr-namespace:AuthFlowMaui.Pages.AppStartUp"
-             xmlns:settings="clr-namespace:AuthFlowMaui.Features.AuthClientSetup"
              x:Class="AuthFlowMaui.Pages.AppStartUp.LoadingPage"
              x:DataType="loading:LoadingPageViewModel"
              Title="LoadingPage"
@@ -11,6 +10,5 @@
                          VerticalOptions="Center">
         <ActivityIndicator x:Name="ActivityIndicator" IsRunning="{Binding IsBusy}"/>
         <Label x:Name="testlabel" IsVisible="{Binding IsLabelVisible}" Text="Checking Authentication State ...."/>
-        <settings:KeycloakSettingsView x:Name="Settings" IsVisible="{Binding IsKeycloakSettingsViewVisible}" BindingContext="{Binding KeycloakSettingsViewModel}"/>
     </VerticalStackLayout>
 </ContentPage>

@@ -1,4 +1,4 @@
-﻿using AuthFlowMaui.Features.AuthClientSetup;
+﻿using AuthFlowMaui.Pages.AppInitialSettings;
 using AuthFlowMaui.Pages.UserLogin;
 using AuthFlowMaui.Shared.Services;
 using AuthFlowMaui.Shared.Utils;
@@ -14,11 +14,9 @@ public partial class LoadingPageViewModel : ObservableObject
     private readonly IConnectivityTest _connectivityTest;
     private static readonly CancellationTokenSource s_tokenSource = new CancellationTokenSource();
 
-    public KeycloakSettingsViewModel KeycloakSettingsViewModel { get;}
 
-    public LoadingPageViewModel(KeycloakSettingsViewModel keycloakSettingsViewModel, IAuthService authService, IStorageService secureStorage, IMauiInterop mauiInterop, IConnectivityTest connectivityTest)
+    public LoadingPageViewModel( IAuthService authService, IStorageService secureStorage, IMauiInterop mauiInterop, IConnectivityTest connectivityTest)
     {
-        KeycloakSettingsViewModel = keycloakSettingsViewModel;
         _authService = authService;
         _secureStorage = secureStorage;
         _mauiInterop = mauiInterop;
@@ -29,13 +27,18 @@ public partial class LoadingPageViewModel : ObservableObject
     bool _isBusy;
     [ObservableProperty]
     bool _isLabelVisible;
-    [ObservableProperty]
-    bool _isKeycloakSettingsViewVisible;
 
     public async Task CheckOnNavigate()
     {
-        IsKeycloakSettingsViewVisible = false;
         IsBusy = true;
+        IsLabelVisible = true;
+        var connectivity = Connectivity.Current;
+        if (connectivity.NetworkAccess != NetworkAccess.Internet)
+        {
+            await _mauiInterop.ShowErrorAlertAsync("No internet connection").ContinueWith((e) => App.Current.Quit());
+            await _mauiInterop.ShowToastAsync("No internet connection", CommunityToolkit.Maui.Core.ToastDuration.Long, 10);
+            return;
+        }
 
         //await _secureStorage.RemoveClientSecretAsync();
         //await _secureStorage.RemoveCertsSecretAsync();
@@ -44,63 +47,48 @@ public partial class LoadingPageViewModel : ObservableObject
         {
             IsBusy = false;
             IsLabelVisible = false;
-            IsKeycloakSettingsViewVisible = true;
+            var state = _mauiInterop.SetState(nameof(InitialSettingsPage));
+            await Shell.Current.GoToAsync(state);
         }
         else
         {
-            if (_connectivityTest.CheckConnectivity())
+            try
             {
-                try
+                IsBusy = true;
+                //await _secureStorage.RemoveUserCredentialsAsync();
+                s_tokenSource.CancelAfter(200000);
+                var response = await _authService.CheckIfIsAuthenticatedAsync(s_tokenSource.Token);
+                s_tokenSource.TryReset();
+                if (response.IsSuccess)
                 {
-                    IsBusy = true;
-                    //await _secureStorage.RemoveUserCredentialsAsync();
-                    s_tokenSource.CancelAfter(200000);
-                    var response = await _authService.CheckIfIsAuthenticatedAsync(s_tokenSource.Token);
-                    if (response.IsSuccess)
-                    {
-                        // user is logged in
-                        // redirect to mainpage
-                        var state = _mauiInterop.SetState(nameof(MainPage));
-                        await Shell.Current.GoToAsync(state);
-                    }
-                    else
-                    {
-                        // user is not logged in
-                        // redirect to loginpage
-                        IsBusy = false;
-                        await _mauiInterop.ShowErrorAlertAsync(response.Error);
-                        var state = _mauiInterop.SetState(nameof(LoginPage));
-                        s_tokenSource.Dispose();
-                        await Shell.Current.GoToAsync(state);
-                    }
+                    // user is logged in
+                    // redirect to mainpage
+                    var state = _mauiInterop.SetState(nameof(MainPage));
+                    await Shell.Current.GoToAsync(state);
                 }
-                catch (OperationCanceledException ex)
+                else
                 {
-                    var cancelAction = await _mauiInterop.ShowAlertWithActionAsync("Connection error", ex.Message, null, "Cancel");
-                    if (!cancelAction)
-                    {
-                        var state = _mauiInterop.SetState(nameof(LoginPage));
-                        s_tokenSource.Dispose();
-                        await Shell.Current.GoToAsync(state);
-                    }
-                }
-                finally
-                {
+                    // user is not logged in
+                    // redirect to loginpage
                     IsBusy = false;
-                    s_tokenSource.Dispose();
+                    var state = _mauiInterop.SetState(nameof(LoginPage));
+                    await Shell.Current.GoToAsync(state);
+                    await _mauiInterop.ShowErrorAlertAsync(response.Error);
                 }
             }
-            else 
-            { 
-                IsBusy = false;
-                var cancelAction = await _mauiInterop.ShowAlertWithActionAsync("No network connection",null , "OK", "Error");
+            catch (OperationCanceledException ex)
+            {
+                var cancelAction = await _mauiInterop.ShowAlertWithActionAsync("Connection error", ex.Message, null, "Cancel");
                 if (!cancelAction)
                 {
                     var state = _mauiInterop.SetState(nameof(LoginPage));
-                    s_tokenSource.Dispose();
                     await Shell.Current.GoToAsync(state);
                 }
-
+            }
+            finally
+            {
+                IsBusy = false;
+                s_tokenSource.Dispose();
             }
         }
 
