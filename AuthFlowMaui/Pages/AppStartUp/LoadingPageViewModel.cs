@@ -36,8 +36,8 @@ public partial class LoadingPageViewModel : ObservableObject
         if (connectivity.NetworkAccess != NetworkAccess.Internet)
         {
             await _mauiInterop.ShowErrorAlertAsync("No internet connection").ContinueWith((e) => App.Current.Quit());
-            await _mauiInterop.ShowToastAsync("No internet connection", CommunityToolkit.Maui.Core.ToastDuration.Long, 10);
-            return;
+            await _mauiInterop.ShowToastAsync("No internet connection", CommunityToolkit.Maui.Core.ToastDuration.Long, 10).ContinueWith((e) =>
+                App.Current.Quit());
         }
 
         //await _secureStorage.RemoveClientSecretAsync();
@@ -64,7 +64,8 @@ public partial class LoadingPageViewModel : ObservableObject
                     // user is logged in
                     // redirect to mainpage
                     var state = _mauiInterop.SetState(nameof(MainPage));
-                    await Shell.Current.GoToAsync(state);
+                    await _mauiInterop.NavigateAsync(state, true);
+                    //await Shell.Current.GoToAsync(state);
                 }
                 else
                 {
@@ -82,7 +83,8 @@ public partial class LoadingPageViewModel : ObservableObject
                 if (!cancelAction)
                 {
                     var state = _mauiInterop.SetState(nameof(LoginPage));
-                    await Shell.Current.GoToAsync(state);
+                    await _mauiInterop.NavigateAsync(state, true);
+                    //await Shell.Current.GoToAsync(state);
                 }
             }
             finally

@@ -58,7 +58,8 @@ public partial class KeycloakSettingsViewModel : ObservableObject
             { 
                 IsBusy = false;
                 var state = _mauiInterop.SetState(nameof(LoadingPage));
-                await Shell.Current.GoToAsync($"///{state}");
+                await _mauiInterop.NavigateAsync(state, true);
+                //await Shell.Current.GoToAsync($"///{state}");
                 s_tokenSource.Dispose();
             }
             else
