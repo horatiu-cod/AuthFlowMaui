@@ -2,7 +2,7 @@
 using AuthFlowMaui.Shared.TokenDtos;
 
 namespace AuthFlowMaui.Shared.KeycloakUtils;
-
+#pragma warning disable
 public static class KeycloakTokenUtils
 {
     public static FormUrlEncodedContent GetUserTokenRequestBody(KeycloakUserTokenRequestDto tokenRequestDtos)
