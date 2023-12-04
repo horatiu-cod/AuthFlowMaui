@@ -20,7 +20,7 @@ public static class ServiceCollectionExtensions
           
         services.AddTransient<MainPage>();
         services.AddTransient<InitialSettingsPage>(s => new InitialSettingsPage(s.GetRequiredService<InitialSettingsPageViewModel>()));
-        services.AddTransient<LoadingPage>(s => new LoadingPage(s.GetRequiredService<LoadingPageViewModel>(),s.GetRequiredService<IMauiInterop>()));
+        services.AddTransient<LoadingPage>(s => new LoadingPage(s.GetRequiredService<LoadingPageViewModel>()));
         services.AddTransient<LoginPage>(s => new LoginPage(s.GetRequiredService<LoginPageViewModel>()));
         services.AddTransient<ProfilePage>();
 

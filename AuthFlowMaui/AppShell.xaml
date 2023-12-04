@@ -9,11 +9,11 @@
     Shell.FlyoutBehavior="Flyout"
     Title="AuthFlowMaui">
 
-    <!--<ShellContent
+    <ShellContent
         Title="Loading"
         ContentTemplate="{DataTemplate loading:LoadingPage}"
         Route="LoadingPage" Shell.FlyoutBehavior="Disabled"
-        Shell.FlyoutItemIsVisible="False"/>-->
+        Shell.FlyoutItemIsVisible="False"/>
     <ShellContent
         Title="Login"
         ContentTemplate="{DataTemplate login:LoginPage}"
