@@ -58,7 +58,7 @@ public class ApiRepository : IApiRepository
 
         var client = await _keycloakTokenService.GetClientTokenResponseAsync(clientSettings, httpClientName, cancellationToken);
         if (!client.IsSuccess)
-            return Result<KeycloakUserDto>.Fail(client.HttpStatus, null, $"{client.Error}, Error from GetClientTokenResponseAsync passed to RegisterKeycloakUser in KeycloakApiService");
+            return Result<KeycloakUserDto>.Fail(client.HttpStatus, $"{client.Error}, Error from GetClientTokenResponseAsync passed to RegisterKeycloakUser in KeycloakApiService");
 
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", client.Content.AccessToken);
 
@@ -66,15 +66,15 @@ public class ApiRepository : IApiRepository
 
         if (result.StatusCode == HttpStatusCode.Unauthorized)
         {
-            return Result<KeycloakUserDto>.Fail(result.StatusCode, null, $"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
+            return Result<KeycloakUserDto>.Fail(result.StatusCode, $"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
         }
         else if (!result.IsSuccessStatusCode)
         {
-            return Result<KeycloakUserDto>.Fail(result.StatusCode, null, $"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
+            return Result<KeycloakUserDto>.Fail(result.StatusCode, $"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
         }
         else if (result.StatusCode != HttpStatusCode.OK)
         {
-            return Result<KeycloakUserDto>.Fail(result.StatusCode, null, $"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
+            return Result<KeycloakUserDto>.Fail(result.StatusCode, $"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
         }
         else
         {
@@ -148,7 +148,7 @@ public class ApiRepository : IApiRepository
 
         var client = await _keycloakTokenService.GetClientTokenResponseAsync(clientSettings, httpClientName, cancellationToken);
         if (!client.IsSuccess)
-            return Result<KeycloakRoleDto>.Fail(client.HttpStatus, null, $"{client.Error}, Error from GetClientTokenResponseAsync passed to RegisterKeycloakUser in KeycloakApiService");
+            return Result<KeycloakRoleDto>.Fail(client.HttpStatus, $"{client.Error}, Error from GetClientTokenResponseAsync passed to RegisterKeycloakUser in KeycloakApiService");
 
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", client.Content.AccessToken);
 
@@ -156,15 +156,15 @@ public class ApiRepository : IApiRepository
 
         if (result.StatusCode == HttpStatusCode.Unauthorized)
         {
-            return Result<KeycloakRoleDto>.Fail(result.StatusCode, null, $"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
+            return Result<KeycloakRoleDto>.Fail(result.StatusCode, $"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
         }
         else if (!result.IsSuccessStatusCode)
         {
-            return Result<KeycloakRoleDto>.Fail(result.StatusCode, null, $"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
+            return Result<KeycloakRoleDto>.Fail(result.StatusCode, $"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
         }
         else if (result.StatusCode != HttpStatusCode.OK)
         {
-            return Result<KeycloakRoleDto>.Fail(result.StatusCode, null, $"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
+            return Result<KeycloakRoleDto>.Fail(result.StatusCode, $"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
         }
         else
         {
