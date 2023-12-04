@@ -1,6 +1,6 @@
 ﻿using AuthFlowMaui.Constants;
+using AuthFlowMaui.Shared.ClientHttpExtensions;
 using AuthFlowMaui.Shared.Dtos;
-using AuthFlowMaui.Shared.KeycloakServices;
 using AuthFlowMaui.Shared.Utils;
 
 namespace AuthFlowMaui.Shared.Services;
@@ -9,12 +9,12 @@ public class CertsService : ICertsService
 
 {
     private readonly IStorageService _storageService;
-    private readonly IKeycloakCertsService _keycloakCertsService;
+    private readonly IHttpClientFactory _httpClientFactory;
 
-    public CertsService(IStorageService storageService, IKeycloakCertsService keycloakCertsService)
+    public CertsService(IStorageService storageService, IHttpClientFactory httpClientFactory)
     {
         _storageService = storageService;
-        _keycloakCertsService = keycloakCertsService;
+        _httpClientFactory = httpClientFactory;
     }
 
     public async Task<MethodResult<KeycloakKeyDto>> GetRealmCertsAsync(CancellationToken cancellationToken)
@@ -43,18 +43,19 @@ public class CertsService : ICertsService
     {
         var settings = await _storageService.GetClientSecretAsync();
         var httpClientName = RealmConstants.HttpClientName;
+        var httpClient = _httpClientFactory.CreateClient(httpClientName);
         settings.Data.RealmUrl = RealmConstants.RealmUrl;
         try
         {
-            var response = await _keycloakCertsService.GetClientCertsResponseAsync(settings.Data.RealmUrl, httpClientName, cancellationToken);
+            var response = await httpClient.GetRealmKeysAsync(settings.Data.RealmUrl, cancellationToken);
             if (response.IsSuccess)
             {
-                var result = await _storageService.SetCertsSecretAsync(response.Data.ToJson());
+                var result = await _storageService.SetCertsSecretAsync(response.Content.ToJson());
                 if (!result.IsSuccess)
                 {
                     return MethodResult<KeycloakKeysDto>.Fail($"{result.Error} passed from SetCertsSecretAsync to GetAndStoreRealmCertsAsync in CertsService");
                 }
-                return MethodResult<KeycloakKeysDto>.Success(response.Data);
+                return MethodResult<KeycloakKeysDto>.Success(response.Content);
             }
             else
             {

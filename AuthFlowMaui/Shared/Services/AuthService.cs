@@ -3,6 +3,7 @@ using AuthFlowMaui.Shared.Utils;
 using AuthFlowMaui.Shared.TokenDtos;
 using Microsoft.IdentityModel.Tokens;
 using AuthFlowMaui.Constants;
+using AuthFlowMaui.Shared.ClientHttpExtensions;
 
 namespace AuthFlowMaui.Shared.Services;
 
@@ -10,15 +11,15 @@ public class AuthService : IAuthService
 {
     private readonly IStorageService _storage;
     private readonly ITokenService _tokenService;
-    private readonly IKeycloakTokenService _keycloakTokenService;
+    private readonly IHttpClientFactory _httpClientFactory;
     private readonly ICertsService _certsService;
 
-    public AuthService(IStorageService storage, ITokenService tokenService, IKeycloakTokenService keycloakTokenService, ICertsService certsService)
+    public AuthService(IStorageService storage, ITokenService tokenService, ICertsService certsService, IHttpClientFactory httpClientFactory)
     {
         _storage = storage;
         _tokenService = tokenService;
-        _keycloakTokenService = keycloakTokenService;
         _certsService = certsService;
+        _httpClientFactory = httpClientFactory;
     }
     public KeycloakTokenValidationParametersDto keycloakTokenValidationParametersDto = new KeycloakTokenValidationParametersDto
     {
@@ -30,7 +31,7 @@ public class AuthService : IAuthService
         ValidAudience = "https://localhost:8843/realms/dev",
 
 #endif
-        ValidAudiences = ["demo-client", "account"],
+        ValidAudiences = ["maui-client"],
     };
 
     /// <summary>
@@ -104,6 +105,7 @@ public class AuthService : IAuthService
     private async Task<MethodResult> RefreshTokenAsync(string refreshToken, CancellationToken cancellationToken)
     {
         var httpClientName = RealmConstants.HttpClientName;
+        var httpClient = _httpClientFactory.CreateClient(httpClientName);
         var clientSettingsResponse = await _storage.GetClientSecretAsync();
         if (!clientSettingsResponse.IsSuccess)
             return MethodResult.Fail(clientSettingsResponse.Error);
@@ -113,7 +115,7 @@ public class AuthService : IAuthService
             return MethodResult.Fail(clientSettingsResponse.Error);
         try
         {
-            var result = await _keycloakTokenService.GetUserTokenByRefreshTokenResponseAsync(clientSettings, refreshToken,httpClientName , cancellationToken);
+            var result = await httpClient.RefreshToken(refreshToken, clientSettings, cancellationToken);
             if (!result.IsSuccess)
             {
                 return MethodResult.Fail($"Passed from GetUserTokenByRefreshTokenResponseAsync in AuthService {result.Error}");
@@ -121,7 +123,7 @@ public class AuthService : IAuthService
             else
             {
                 await _storage.RemoveUserCredentialsAsync();
-                await _storage.SetUserCredentialsAsync(result.Data.ToJson());
+                await _storage.SetUserCredentialsAsync(result.Content.ToJson());
                 return MethodResult.Success();
             }
         }

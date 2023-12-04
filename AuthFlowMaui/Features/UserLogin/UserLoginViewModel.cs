@@ -1,5 +1,6 @@
 ﻿using AuthFlowMaui.Constants;
 using AuthFlowMaui.Pages;
+using AuthFlowMaui.Shared.ClientHttpExtensions;
 using AuthFlowMaui.Shared.Dtos;
 using AuthFlowMaui.Shared.KeycloakServices;
 using AuthFlowMaui.Shared.Services;
@@ -12,20 +13,20 @@ namespace AuthFlowMaui.Features.UserLogin;
 
 public partial class UserLoginViewModel : ObservableObject, IDisposable
 {
-    private readonly IKeycloakTokenService _keycloakTokenService;
+    private readonly IHttpClientFactory _httpClientFactory;
     private readonly IStorageService _storageService;
     private readonly ITokenService _tokenService;
     private readonly IConnectivityTest _connectivityTest;
     private readonly IMauiInterop _mauiInterop;
     private static readonly CancellationTokenSource s_tokenSource = new CancellationTokenSource();
 
-    public UserLoginViewModel(IKeycloakTokenService keycloakTokenService, IStorageService storageService, ITokenService tokenService, IConnectivityTest connectivityTest, IMauiInterop mauiInterop)
+    public UserLoginViewModel(IStorageService storageService, ITokenService tokenService, IConnectivityTest connectivityTest, IMauiInterop mauiInterop, IHttpClientFactory httpClientFactory)
     {
-        _keycloakTokenService = keycloakTokenService;
         _storageService = storageService;
         _tokenService = tokenService;
         _connectivityTest = connectivityTest;
         _mauiInterop = mauiInterop;
+        _httpClientFactory = httpClientFactory;
     }
 
     [ObservableProperty]
@@ -60,19 +61,20 @@ public partial class UserLoginViewModel : ObservableObject, IDisposable
         {
             try
             {
+                var httpClient = _httpClientFactory.CreateClient(httpClientName);
                 s_tokenSource.CancelAfter(TimeSpan.FromSeconds(5000));
                 IsBusy = true;
-                var loginResult = await _keycloakTokenService.GetUserTokenResponseAsync(keycloakUserDto, clientSettings, httpClientName, s_tokenSource.Token);
+                var loginResult = await httpClient.LoginGrantTypePassword(keycloakUserDto.UserName, keycloakUserDto.Password, clientSettings, s_tokenSource.Token);
                 s_tokenSource.TryReset();
                 IsBusy = false;
                 if (loginResult.IsSuccess)
                 {
-                    var storeResult = await _storageService.SetUserCredentialsAsync(loginResult.Data.ToJson());
+                    var storeResult = await _storageService.SetUserCredentialsAsync(loginResult.Content.ToJson());
                     var userStoreResult = await _storageService.SetUserSecretAsync(user.ToJson());
                     if (storeResult.IsSuccess && userStoreResult.IsSuccess)
                     {
                         await Toast.Make("You are logged in", CommunityToolkit.Maui.Core.ToastDuration.Short, 20).Show();
-                        await _mauiInterop.ShowSuccessAlertAsync(loginResult.Data.AccessToken);
+                        await _mauiInterop.ShowSuccessAlertAsync(loginResult.Content.AccessToken);
                         var state = _mauiInterop.SetState(nameof(MainPage));
                         await _mauiInterop.NavigateAsync(state, true);
                         //await Shell.Current.GoToAsync(state);
