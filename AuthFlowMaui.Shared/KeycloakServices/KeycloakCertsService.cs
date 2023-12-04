@@ -1,10 +1,4 @@
 ﻿using AuthFlowMaui.Shared.KeycloakUtils;
-using AuthFlowMaui.Shared.KeycloakSettings;
-using AuthFlowMaui.Shared.TokenDtos;
-using AuthFlowMaui.Shared.Constants;
-using System.Text.Json;
-using System.Net.Mime;
-using System.Text;
 using AuthFlowMaui.Shared.Dtos;
 using System.Net.Http.Json;
 
@@ -19,7 +13,7 @@ public class KeycloakCertsService : IKeycloakCertsService
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<DataResult<KeycloakKeysDto>> GetClientCertsResponseAsync( string url,string httpClientName, CancellationToken cancellationToken)
+    public async Task<Result<KeycloakKeysDto>> GetClientCertsResponseAsync( string url,string httpClientName, CancellationToken cancellationToken)
     {
         var httpClient = _httpClientFactory.CreateClient(httpClientName);
         try
@@ -27,24 +21,24 @@ public class KeycloakCertsService : IKeycloakCertsService
             var response = await httpClient.GetAsync($"{url}/certs", 0, cancellationToken);
             if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
             {
-                return DataResult<KeycloakKeysDto>.Fail($"{response.StatusCode} {response.ReasonPhrase} You are unauthorized from GetClientCertsResponseAsync", null);
+                return Result<KeycloakKeysDto>.Fail(response.StatusCode,$"{response.StatusCode} {response.ReasonPhrase} You are unauthorized from GetClientCertsResponseAsync");
             }
             else if (!response.IsSuccessStatusCode)
             {
-                return DataResult<KeycloakKeysDto>.Fail($"{response.StatusCode} {response.ReasonPhrase} from GetClientCertsResponseAsync", null);
+                return Result<KeycloakKeysDto>.Fail(response.StatusCode,$"{response.StatusCode} {response.ReasonPhrase} from GetClientCertsResponseAsync");
             }
             else
             {
                 var keycloakKeyResponseDto = await response.Content.ReadFromJsonAsync<KeycloakKeysDto>();
                 //var keycloakKeyResponseDto = JsonSerializer.Deserialize<KeycloakKeysDto>(responseJson);
 
-                return DataResult<KeycloakKeysDto>.Success(keycloakKeyResponseDto);
+                return Result<KeycloakKeysDto>.Success(keycloakKeyResponseDto);
             }
 
         }
         catch (Exception ex)
         {
-            return DataResult<KeycloakKeysDto>.Fail($"{ex.Message} exception from from GetClientCertsResponseAsync", null);
+            return Result<KeycloakKeysDto>.Fail($"{ex.Message} exception from from GetClientCertsResponseAsync");
         }
     }
 }

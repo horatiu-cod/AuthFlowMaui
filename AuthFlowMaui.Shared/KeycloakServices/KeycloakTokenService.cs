@@ -18,7 +18,7 @@ public class KeycloakTokenService : IKeycloakTokenService
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<DataResult<KeycloakTokenResponseDto>> GetUserTokenResponseAsync(KeycloakUserDto keycloakUserDtos, KeycloakClientSettings keycloakSettings, string httpClientName, CancellationToken cancellationToken)
+    public async Task<Result<KeycloakTokenResponseDto>> GetUserTokenResponseAsync(KeycloakUserDto keycloakUserDtos, KeycloakClientSettings keycloakSettings, string httpClientName, CancellationToken cancellationToken)
     {
         var httpclient = _httpClientFactory.CreateClient(httpClientName);
         var keycloakTokenRequestDto = new KeycloakUserTokenRequestDto
@@ -35,23 +35,23 @@ public class KeycloakTokenService : IKeycloakTokenService
             var response = await httpclient.PostAsync($"{keycloakSettings.RealmUrl}/token", tokenRequestBody, cancellationToken);
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                return DataResult<KeycloakTokenResponseDto>.Fail($"{response.StatusCode} {response.ReasonPhrase} You are unauthorized from GetUserTokenRequestBody", null);
+                return Result<KeycloakTokenResponseDto>.Fail($"{response.StatusCode} {response.ReasonPhrase} You are unauthorized from GetUserTokenRequestBody");
             }
             else if (!response.IsSuccessStatusCode)
             {
-                return DataResult<KeycloakTokenResponseDto>.Fail($"{response.StatusCode} {response.ReasonPhrase} from GetUserTokenRequestBody", null);
+                return Result<KeycloakTokenResponseDto>.Fail($"{response.StatusCode} {response.ReasonPhrase} from GetUserTokenRequestBody");
             }
             else
             {
                 var keycloakTokenResponseDto = await response.Content.ReadFromJsonAsync<KeycloakTokenResponseDto>(); //.ReadAsStringAsync().ConfigureAwait(false);
                 //var keycloakTokenResponseDto = JsonSerializer.Deserialize<KeycloakTokenResponseDto>(responseJson);
 
-                return DataResult<KeycloakTokenResponseDto>.Success(keycloakTokenResponseDto);
+                return Result<KeycloakTokenResponseDto>.Success(keycloakTokenResponseDto);
             }
         }
         catch (Exception ex)
         {
-            return DataResult<KeycloakTokenResponseDto>.Fail($"{ex.Message} exception from GetUserTokenRequestBody", null);
+            return Result<KeycloakTokenResponseDto>.Fail($"{ex.Message} exception from GetUserTokenRequestBody");
         }
 
     }
@@ -70,11 +70,11 @@ public class KeycloakTokenService : IKeycloakTokenService
             var response = await httpClient.PostAsync($"{keycloakSettings.RealmUrl}/token", tokenRequestBody, cancellationToken);
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                return Result<KeycloakTokenResponseDto>.Fail(response.StatusCode,null, $"{response.StatusCode} {response.ReasonPhrase} from GetClientTokenResponseAsync");
+                return Result<KeycloakTokenResponseDto>.Fail(response.StatusCode, $"{response.StatusCode} {response.ReasonPhrase} from GetClientTokenResponseAsync");
             }
             else if (!response.IsSuccessStatusCode)
             {
-                return Result<KeycloakTokenResponseDto>.Fail(response.StatusCode, null, $"{response.StatusCode} {response.ReasonPhrase} from GetClientTokenResponseAsync");
+                return Result<KeycloakTokenResponseDto>.Fail(response.StatusCode, $"{response.StatusCode} {response.ReasonPhrase} from GetClientTokenResponseAsync");
             }
             else
             {
@@ -87,10 +87,10 @@ public class KeycloakTokenService : IKeycloakTokenService
         }
         catch (Exception ex)
         {
-            return Result<KeycloakTokenResponseDto>.Fail( $"{ex.Message} Exception from GetClientTokenResponseAsync", null);
+            return Result<KeycloakTokenResponseDto>.Fail( $"{ex.Message} Exception from GetClientTokenResponseAsync");
         }
     }
-    public async Task<DataResult<KeycloakTokenResponseDto>> GetUserTokenByRefreshTokenResponseAsync(KeycloakClientSettings keycloakSettings, string refreshToken, string httpClientName, CancellationToken cancellationToken)
+    public async Task<Result<KeycloakTokenResponseDto>> GetUserTokenByRefreshTokenResponseAsync(KeycloakClientSettings keycloakSettings, string refreshToken, string httpClientName, CancellationToken cancellationToken)
     {
         var httpClient = _httpClientFactory.CreateClient(httpClientName);
         var keycloakUserTokenWithRefreshTokenRequestDto = new KeycloakUserTokenWithRefreshTokenRequestDto
@@ -106,23 +106,23 @@ public class KeycloakTokenService : IKeycloakTokenService
             var response = await httpClient.PostAsync($"{keycloakSettings.RealmUrl}/token", tokenRequestBody, cancellationToken);
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                return DataResult<KeycloakTokenResponseDto>.Fail($"{response.StatusCode} {response.ReasonPhrase}You are unauthorized from GetUserTokenByRefreshTokenResponseAsync", null);
+                return Result<KeycloakTokenResponseDto>.Fail($"{response.StatusCode} {response.ReasonPhrase}You are unauthorized from GetUserTokenByRefreshTokenResponseAsync");
             }
             else if (!response.IsSuccessStatusCode)
             {
-                return DataResult<KeycloakTokenResponseDto>.Fail($"{response.StatusCode} {response.ReasonPhrase} from GetUserTokenByRefreshTokenResponseAsync", null);
+                return Result<KeycloakTokenResponseDto>.Fail(response.StatusCode,$"{response.StatusCode} {response.ReasonPhrase} from GetUserTokenByRefreshTokenResponseAsync");
             }
             else
             {
                 var responseJson = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 var keycloakTokenResponseDto = JsonSerializer.Deserialize<KeycloakTokenResponseDto>(responseJson);
 
-                return DataResult<KeycloakTokenResponseDto>.Success(keycloakTokenResponseDto);
+                return Result<KeycloakTokenResponseDto>.Success(keycloakTokenResponseDto);
             }
         }
         catch (Exception ex)
         {
-            return DataResult<KeycloakTokenResponseDto>.Fail($"{ex.Message} Exception from GetUserTokenByRefreshTokenResponseAsync", null);
+            return Result<KeycloakTokenResponseDto>.Fail($"{ex.Message} Exception from GetUserTokenByRefreshTokenResponseAsync");
         }
     }
 }
