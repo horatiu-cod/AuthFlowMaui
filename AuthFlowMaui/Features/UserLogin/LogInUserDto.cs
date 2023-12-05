@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace AuthFlowMaui.Features.UserLogin;
 
-public record struct LoggedInUserModel
+public record struct LogInUserDto
 {
     [Required]
     [JsonPropertyName("username")]
@@ -15,6 +15,6 @@ public record struct LoggedInUserModel
 
     public  string ToJson() =>
         JsonSerializer.Serialize(this);
-    public LoggedInUserModel FromJson(string user) =>
-        JsonSerializer.Deserialize<LoggedInUserModel>(user);
+    public LogInUserDto FromJson(string user) =>
+        JsonSerializer.Deserialize<LogInUserDto>(user);
 }
