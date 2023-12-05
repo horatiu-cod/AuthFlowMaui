@@ -11,6 +11,7 @@ public static class ServiceExtensions
         services.AddTransient<IAuthService, AuthService>();
         services.AddTransient<IStorageService, StorageService>();
         services.AddTransient<ICertsService, CertsService>();
+        services.AddTransient<ITokenService, TokenService>();
 
         services.AddTransient<IConnectivityTest, ConnectivityTest>();
         services.AddTransient<IMauiInterop,MauiInterop>();
