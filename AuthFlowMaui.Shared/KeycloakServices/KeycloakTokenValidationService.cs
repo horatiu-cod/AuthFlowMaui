@@ -4,7 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 namespace AuthFlowMaui.Shared.KeycloakServices;
 
-public class TokenService : ITokenService
+public class KeycloakTokenValidationService : IKeycloakTokenValidationService
 {
     public async Task<Result> ValidateTokenAsync(string token, KeycloakTokenValidationParametersDto keycloakTokenValidationParametersDto)
     {
