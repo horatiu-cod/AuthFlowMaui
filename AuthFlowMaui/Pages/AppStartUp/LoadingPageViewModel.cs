@@ -57,7 +57,7 @@ public partial class LoadingPageViewModel : ObservableObject
                 IsBusy = true;
                 //await _secureStorage.RemoveUserCredentialsAsync();
                 s_tokenSource.CancelAfter(200000);
-                var response = await _authService.CheckIfIsAuthenticatedAsync(s_tokenSource.Token);
+                var response = await _authService.AuthenticatedAsync(s_tokenSource.Token);
                 s_tokenSource.TryReset();
                 if (response.IsSuccess)
                 {
