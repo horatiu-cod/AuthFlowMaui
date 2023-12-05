@@ -1,8 +1,6 @@
 ﻿using AuthFlowMaui.Constants;
 using AuthFlowMaui.Pages;
 using AuthFlowMaui.Shared.ClientHttpExtensions;
-using AuthFlowMaui.Shared.Dtos;
-using AuthFlowMaui.Shared.KeycloakServices;
 using AuthFlowMaui.Shared.Services;
 using AuthFlowMaui.Shared.Utils;
 using CommunityToolkit.Maui.Alerts;
@@ -46,13 +44,7 @@ public partial class UserLoginViewModel : ObservableObject, IDisposable
         var clientSettings = clientSettingsResponse.Data;
         clientSettings.RealmUrl = RealmConstants.RealmUrl;
 
-        // TODO add mapper
-        var user = new LoggedInUserModel
-        {
-            UserName = UserName,
-            Password = Password
-        };
-        var keycloakUserDto = new KeycloakUserDto
+        var user = new LogInUserDto
         {
             UserName = UserName,
             Password = Password
@@ -64,10 +56,11 @@ public partial class UserLoginViewModel : ObservableObject, IDisposable
                 var httpClient = _httpClientFactory.CreateClient(httpClientName);
                 s_tokenSource.CancelAfter(TimeSpan.FromSeconds(5000));
                 IsBusy = true;
-                var loginResult = await httpClient.LoginGrantTypePassword(keycloakUserDto.UserName, keycloakUserDto.Password, clientSettings, s_tokenSource.Token);
+                var loginResult = await httpClient.LoginGrantTypePassword(user.UserName, user.Password, clientSettings, s_tokenSource.Token);
+                var validation = await _tokenService.ValidateTokenAsync(loginResult.Content.AccessToken, s_tokenSource.Token);
                 s_tokenSource.TryReset();
                 IsBusy = false;
-                if (loginResult.IsSuccess)
+                if (loginResult.IsSuccess && validation.IsSuccess)
                 {
                     var storeResult = await _storageService.SetUserCredentialsAsync(loginResult.Content.ToJson());
                     var userStoreResult = await _storageService.SetUserSecretAsync(user.ToJson());

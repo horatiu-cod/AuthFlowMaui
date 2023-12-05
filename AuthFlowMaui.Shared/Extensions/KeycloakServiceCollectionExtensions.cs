@@ -8,10 +8,8 @@ public static class KeycloakServiceCollectionExtensions
 {
     public static IServiceCollection AddKeycloakServices(this IServiceCollection services)
     {
-        services.AddTransient<IKeycloakTokenService, KeycloakTokenService>();
-        services.AddTransient<ITokenService, TokenService>();
+        services.AddTransient<IKeycloakTokenValidationService, KeycloakTokenValidationService>();
         services.AddTransient<IApiRepository, ApiRepository>();
-        services.AddTransient<IKeycloakCertsService, KeycloakCertsService>();
 
         return services;
     }

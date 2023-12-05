@@ -6,8 +6,6 @@ public class ConnectivityState
     public ConnectivityState() => Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
     ~ConnectivityState() => Connectivity.ConnectivityChanged -= Connectivity_ConnectivityChanged;
 
-    public event EventHandler<ConnectivityChangedEventArgs> ConnectivityChanged;
-
     private void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
     {
         var mauiInterop = new MauiInterop();

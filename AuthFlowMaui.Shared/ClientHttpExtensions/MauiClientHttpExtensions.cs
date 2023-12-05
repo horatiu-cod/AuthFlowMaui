@@ -82,6 +82,26 @@ public static class MauiClientHttpExtensions
             return Result<KeycloakKeysDto>.Fail($"{ex.Message} exception from from GetClientCertsResponseAsync");
         }
     }
+    public static async Task<Result<KeycloakTokenResponseDto>> GetClientTokenAsync(this HttpClient httpClient, KeycloakClientSettings clientSettings,  CancellationToken cancellationToken = default)
+    {
+        var keycloakTokenRequestDto = new KeycloakClientRequestDto
+        {
+            GrantType = KeycloakAccessTokenConst.GrantTypeCredentials,
+            ClientId = clientSettings.ClientId,
+            ClientSecret = clientSettings.ClientSecret,
+        };
+        var tokenRequestBody = KeycloakTokenUtils.GetClientTokenRequestBody(keycloakTokenRequestDto);
+        var response = await httpClient.PostAsync($"{clientSettings.RealmUrl}/token", tokenRequestBody,  cancellationToken);
+        var keycloakTokenResponseDto = await response.Content.ReadFromJsonAsync<KeycloakTokenResponseDto>(cancellationToken);
+        if (keycloakTokenResponseDto != null && response.IsSuccessStatusCode)
+        {
+            return Result<KeycloakTokenResponseDto>.Success(keycloakTokenResponseDto, response.StatusCode);
+        }
+        else
+        {
+            return Result<KeycloakTokenResponseDto>.Fail(response.StatusCode, $"{response.StatusCode} {response.ReasonPhrase} from GetClientTokenAsync extensin method");
+        }
+    }
     //public static async Task<HttpResponseMessage> Register(this HttpClient httpClient, KeycloakRegisterUserDto keycloakRegisterUserDto, KeycloakClientSettings clientSettings, CancellationToken cancellationToken)
     //{
     //    var keycloakTokenRequestDto = new KeycloakClientRequestDto
