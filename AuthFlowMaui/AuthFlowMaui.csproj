@@ -59,10 +59,8 @@
 	<ItemGroup>
 	  <Compile Remove="Shared\Services\IKeycloakApiService.cs" />
 	  <Compile Remove="Shared\Services\IKeycloakTokenService.cs" />
-	  <Compile Remove="Shared\Services\ITokenService.cs" />
 	  <Compile Remove="Shared\Services\KeycloakApiService.cs" />
 	  <Compile Remove="Shared\Services\KeycloakTokenService.cs" />
-	  <Compile Remove="Shared\Services\TokenService.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
