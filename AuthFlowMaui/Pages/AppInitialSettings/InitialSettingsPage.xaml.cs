@@ -2,9 +2,8 @@ namespace AuthFlowMaui.Pages.AppInitialSettings;
 
 public partial class InitialSettingsPage : ContentPage
 {
-	public InitialSettingsPage(InitialSettingsPageViewModel initialSettingsPageViewModel)
+	public InitialSettingsPage()
 	{
 		InitializeComponent();
-		BindingContext = initialSettingsPageViewModel;
 	}
 }

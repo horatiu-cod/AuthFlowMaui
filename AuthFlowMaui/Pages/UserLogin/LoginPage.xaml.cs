@@ -2,9 +2,8 @@ namespace AuthFlowMaui.Pages.UserLogin;
 
 public partial class LoginPage : ContentPage
 {
-    public LoginPage(LoginPageViewModel loginPageViewModel)
+    public LoginPage()
     {
         InitializeComponent();
-        BindingContext = loginPageViewModel;
     }
 }
