@@ -1,6 +1,4 @@
-﻿using AuthFlowMaui.Shared.TokenDtos;
-using System.Net;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace AuthFlowMaui.Shared.Dtos;
@@ -16,7 +14,7 @@ public class KeycloakRegisterUserDto
     [JsonPropertyName("enabled")]
     public bool? Enabled { get; set; }
     [JsonPropertyName("credentials")]
-    public Credentials? Credentials { get; set; }
+    public Credentials[]? Credentials { get; set; }
     [JsonPropertyName("username")]
     public string? UserName { get; set; }
 
@@ -33,9 +31,9 @@ public class KeycloakRegisterUserDto
 public class Credentials
 {
     [JsonPropertyName("type")]
-    public string? Type { get; set;}
+    public string? Type { get; set; } = "password";
     [JsonPropertyName("value")]
     public string? Value { get; set; }
     [JsonPropertyName("temporary")]
-    public bool Temporary { get; set; }
+    public bool Temporary { get; set; } = false;
 }
