@@ -11,16 +11,14 @@ namespace AuthFlowMaui.Shared.KeycloakServices;
 
 public class KeycloakTokenService : IKeycloakTokenService
 {
-    private readonly IHttpClientFactory _httpClientFactory;
 
-    public KeycloakTokenService(IHttpClientFactory httpClientFactory)
+    public KeycloakTokenService()
     {
-        _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<Result<KeycloakTokenResponseDto>> GetUserTokenResponseAsync(KeycloakUserDto keycloakUserDtos, KeycloakClientSettings keycloakSettings, string httpClientName, CancellationToken cancellationToken)
+    public async Task<Result<KeycloakTokenResponseDto>> GetUserTokenResponseAsync(KeycloakUserDto keycloakUserDtos, KeycloakClientSettings keycloakSettings, HttpClient httpClient, CancellationToken cancellationToken)
     {
-        var httpclient = _httpClientFactory.CreateClient(httpClientName);
+        //var httpclient = _httpClientFactory.CreateClient(httpClientName);
         var keycloakTokenRequestDto = new KeycloakUserTokenRequestDto
         {
             GrantType = KeycloakAccessTokenConst.GrantTypePassword,
@@ -32,7 +30,7 @@ public class KeycloakTokenService : IKeycloakTokenService
         var tokenRequestBody = KeycloakTokenUtils.GetUserTokenRequestBody(keycloakTokenRequestDto);
         try
         {
-            var response = await httpclient.PostAsync($"{keycloakSettings.RealmUrl}/token", tokenRequestBody, cancellationToken);
+            var response = await httpClient.PostAsync($"{keycloakSettings.RealmUrl}/token", tokenRequestBody, cancellationToken);
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
                 return Result<KeycloakTokenResponseDto>.Fail($"{response.StatusCode} {response.ReasonPhrase} You are unauthorized from GetUserTokenRequestBody");
@@ -55,9 +53,9 @@ public class KeycloakTokenService : IKeycloakTokenService
         }
 
     }
-    public async Task<Result<KeycloakTokenResponseDto>> GetClientTokenResponseAsync(KeycloakClientSettings keycloakSettings, string httpClientName, CancellationToken cancellationToken)
+    public async Task<Result<KeycloakTokenResponseDto>> GetClientTokenResponseAsync(KeycloakClientSettings keycloakSettings, HttpClient httpClient, CancellationToken cancellationToken)
     {
-        var httpClient = _httpClientFactory.CreateClient(httpClientName);
+        //var httpClient = _httpClientFactory.CreateClient(httpClientName);
         var keycloakTokenRequestDto = new KeycloakClientRequestDto
         {
             GrantType = KeycloakAccessTokenConst.GrantTypeCredentials,
@@ -90,9 +88,9 @@ public class KeycloakTokenService : IKeycloakTokenService
             return Result<KeycloakTokenResponseDto>.Fail( $"{ex.Message} Exception from GetClientTokenResponseAsync");
         }
     }
-    public async Task<Result<KeycloakTokenResponseDto>> GetUserTokenByRefreshTokenResponseAsync(KeycloakClientSettings keycloakSettings, string refreshToken, string httpClientName, CancellationToken cancellationToken)
+    public async Task<Result<KeycloakTokenResponseDto>> GetUserTokenByRefreshTokenResponseAsync(KeycloakClientSettings keycloakSettings, string refreshToken, HttpClient httpClient, CancellationToken cancellationToken)
     {
-        var httpClient = _httpClientFactory.CreateClient(httpClientName);
+        //var httpClient = _httpClientFactory.CreateClient(httpClientName);
         var keycloakUserTokenWithRefreshTokenRequestDto = new KeycloakUserTokenWithRefreshTokenRequestDto
         {
             GrantType = KeycloakAccessTokenConst.GrantTypeRefreshToken,

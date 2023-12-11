@@ -6,16 +6,13 @@ namespace AuthFlowMaui.Shared.KeycloakServices;
 
 public class KeycloakCertsService : IKeycloakCertsService
 {
-    private readonly IHttpClientFactory _httpClientFactory;
 
-    public KeycloakCertsService(IHttpClientFactory httpClientFactory)
+    public KeycloakCertsService()
     {
-        _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<Result<KeycloakKeysDto>> GetClientCertsResponseAsync( string url,string httpClientName, CancellationToken cancellationToken)
+    public async Task<Result<KeycloakKeysDto>> GetClientCertsResponseAsync( string url,HttpClient httpClient, CancellationToken cancellationToken)
     {
-        var httpClient = _httpClientFactory.CreateClient(httpClientName);
         try
         {
             var response = await httpClient.GetAsync($"{url}/certs", 0, cancellationToken);

@@ -6,6 +6,6 @@ namespace AuthFlowMaui.Shared.KeycloakServices
 {
     public interface IKeycloakCertsService
     {
-        Task<Result<KeycloakKeysDto>> GetClientCertsResponseAsync(string httpClientName,string url, CancellationToken cancellationToken);
+        Task<Result<KeycloakKeysDto>> GetClientCertsResponseAsync(HttpClient httpClient,string url, CancellationToken cancellationToken);
     }
 }
