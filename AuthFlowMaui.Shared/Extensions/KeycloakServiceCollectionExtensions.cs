@@ -13,4 +13,10 @@ public static class KeycloakServiceCollectionExtensions
 
         return services;
     }
+    public static IServiceCollection ConfigureKeycloak(this IServiceCollection services)
+    {
+        services.AddScoped<IApiRepository, ApiRepository>();
+        services.AddScoped<IKeycloakTokenService, KeycloakTokenService>();
+        return services;
+    }
 }
