@@ -13,7 +13,7 @@ builder.Services.AddHttpClient("api-http_client",httpClient =>
     var baseUrl = "https://localhost:8843";
     httpClient.BaseAddress = new Uri(baseUrl);
 });
-
+   
 builder.Services.AddScoped<IApiRepository, ApiRepository>();
 builder.Services.AddScoped<IKeycloakTokenService, KeycloakTokenService>();
 
@@ -39,5 +39,19 @@ app.MapGet("api/user/authorization", () => "ok merge")
     .Produces(200)
     .Produces(401)
     .WithOpenApi();
+
+app.MapPut("api/user/register", async (IHttpClientFactory _httpClientFactory, IApiRepository _repository, KeycloakRegisterUserDto keycloakRegisterUserDto, CancellationToken cancellationToken) =>
+{
+    var clientSettings = new KeycloakClientSettings
+    {
+        ClientId = "api-client",
+        ClientSecret = "xrJ4rQG1UDbfpHGgqCeclkaSzedm8WQY",
+        RealmUrl = "/realms/dev/protocol/openid-connect",
+        Realm = "dev"
+    };
+    var httpClient = _httpClientFactory.CreateClient("api-http_client");
+    var result = await _repository.RegisterKeycloakUser(keycloakRegisterUserDto, clientSettings, httpClient, cancellationToken);
+    return result;
+});
 
 app.Run();
