@@ -1,4 +1,8 @@
 using AuthFlowMaui.MinimalApi.Extensions;
+using AuthFlowMaui.Shared.Dtos;
+using AuthFlowMaui.Shared.KeycloakServices;
+using AuthFlowMaui.Shared.KeycloakSettings;
+using AuthFlowMaui.Shared.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +13,9 @@ builder.Services.AddHttpClient("api-http_client",httpClient =>
     var baseUrl = "https://localhost:8843";
     httpClient.BaseAddress = new Uri(baseUrl);
 });
+
+builder.Services.AddScoped<IApiRepository, ApiRepository>();
+builder.Services.AddScoped<IKeycloakTokenService, KeycloakTokenService>();
 
 builder.AddJwtBearerConfig();
 builder.AddKeycloakAuthorization();
