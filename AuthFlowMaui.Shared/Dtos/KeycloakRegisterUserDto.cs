@@ -12,7 +12,7 @@ public class KeycloakRegisterUserDto
     [JsonPropertyName("email")]
     public string? Email { get; set;}
     [JsonPropertyName("enabled")]
-    public bool? Enabled { get; set; }
+    public bool? Enabled { get; set; } = true;
     [JsonPropertyName("credentials")]
     public Credentials[]? Credentials { get; set; }
     [JsonPropertyName("username")]
