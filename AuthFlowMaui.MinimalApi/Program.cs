@@ -4,6 +4,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddHttpClient("api-http_client",httpClient =>
+{
+    var baseUrl = "https://localhost:8843";
+    httpClient.BaseAddress = new Uri(baseUrl);
+});
 
 builder.AddJwtBearerConfig();
 builder.AddKeycloakAuthorization();
