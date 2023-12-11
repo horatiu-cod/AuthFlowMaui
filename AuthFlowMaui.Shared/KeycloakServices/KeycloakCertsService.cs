@@ -11,7 +11,7 @@ public class KeycloakCertsService : IKeycloakCertsService
     {
     }
 
-    public async Task<Result<KeycloakKeysDto>> GetClientCertsResponseAsync( string url,HttpClient httpClient, CancellationToken cancellationToken)
+    public async Task<Result<KeycloakKeysDto>> GetClientCertsResponseAsync( HttpClient httpClient, string url, CancellationToken cancellationToken)
     {
         try
         {
