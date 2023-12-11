@@ -18,6 +18,15 @@ public static class ApplicationBuilderExtensions
         }
         return builder;
     }
+    public static WebApplicationBuilder AddClientSettingsConfig(this WebApplicationBuilder builder)
+    {
+        var clientSettingsConfig = builder.Configuration.GetSection("ClientSettings");
+        if (clientSettingsConfig != null)
+        {
+            builder.Services.Configure<AuthClientConfig>(clientSettingsConfig);
+        }
+        return builder;
+    }
     public static WebApplicationBuilder AddKeycloakAuthorization(this WebApplicationBuilder builder)
     {
         IdentityModelEventSource.ShowPII = true;
