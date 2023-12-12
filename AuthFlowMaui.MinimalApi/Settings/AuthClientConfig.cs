@@ -1,10 +1,11 @@
 ﻿namespace AuthFlowMaui.MinimalApi.Settings;
 
-public class AuthClientConfig
+public record AuthClientConfig()
 {
-    public string? ClientUuID { get; set; }
+    public string? ClientUuID { get; init; }
     public string? ClientId { get; init; }
     public string? ClientSecret { get; init; }
     public string? Realm { get; init; }
-    public string? RealmUrl { get; set; }
+    public string? RealmUrl { get; init; }
+    public string? BaseUrl { get; init; }
 }
