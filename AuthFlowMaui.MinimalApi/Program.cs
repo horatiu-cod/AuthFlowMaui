@@ -11,7 +11,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient("api-http_client",httpClient =>
 {
-    var baseUrl = "https://localhost:8843";
+    var settings = builder.Configuration.GetRequiredSection("ClientSettings").Get<AuthClientConfig>();
+    var baseUrl = settings.BaseUrl;
     httpClient.BaseAddress = new Uri(baseUrl);
 });
    
