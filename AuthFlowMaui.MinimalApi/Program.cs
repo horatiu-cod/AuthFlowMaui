@@ -18,8 +18,8 @@ builder.Services.AddHttpClient("api-http_client",httpClient =>
    
 builder.Services.ConfigureKeycloak();
 
-builder.AddJwtBearerConfig();
-builder.AddClientSettingsConfig();
+//builder.AddJwtBearerConfig();
+//builder.AddClientSettingsConfig();
 builder.AddKeycloakAuthorization();
 
 var app = builder.Build();
