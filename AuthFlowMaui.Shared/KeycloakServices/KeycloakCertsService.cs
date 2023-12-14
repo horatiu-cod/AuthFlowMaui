@@ -4,9 +4,8 @@ using System.Net.Http.Json;
 
 namespace AuthFlowMaui.Shared.KeycloakServices;
 
-public class KeycloakCertsService : IKeycloakCertsService
+internal class KeycloakCertsService : IKeycloakCertsService
 {
-
     public KeycloakCertsService()
     {
     }
