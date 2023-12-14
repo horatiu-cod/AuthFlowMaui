@@ -12,12 +12,10 @@ namespace AuthFlowMaui.Shared.Repositories;
 #nullable enable
 public class ApiRepository : IApiRepository
 {
-    private IHttpClientFactory _httpClientFactory;
     private IKeycloakTokenService _keycloakTokenService;
 
-    public ApiRepository(IHttpClientFactory httpClientFactory, IKeycloakTokenService keycloakTokenService)
+    public ApiRepository(IKeycloakTokenService keycloakTokenService)
     {
-        _httpClientFactory = httpClientFactory;
         _keycloakTokenService = keycloakTokenService;
     }
 
