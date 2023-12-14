@@ -15,7 +15,7 @@ public static class KeycloakServiceCollectionExtensions
     }
     public static IServiceCollection ConfigureKeycloak(this IServiceCollection services)
     {
-        services.AddScoped<IApiRepository, ApiRepository>();
+        services.AddScoped<IApiRepository, ApiRepository>(s => new ApiRepository(s.GetRequiredService<IKeycloakTokenService>()));
         services.AddScoped<IKeycloakTokenService, KeycloakTokenService>();
         return services;
     }
