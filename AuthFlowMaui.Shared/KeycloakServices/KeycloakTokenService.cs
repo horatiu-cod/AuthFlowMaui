@@ -9,12 +9,8 @@ using System.Net.Http.Json;
 
 namespace AuthFlowMaui.Shared.KeycloakServices;
 
-public class KeycloakTokenService : IKeycloakTokenService
+internal class KeycloakTokenService : IKeycloakTokenService
 {
-
-    public KeycloakTokenService()
-    {
-    }
 
     public async Task<Result<KeycloakTokenResponseDto>> GetUserTokenResponseAsync(KeycloakUserDto keycloakUserDtos, KeycloakClientSettings keycloakSettings, HttpClient httpClient, CancellationToken cancellationToken)
     {
