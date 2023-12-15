@@ -49,7 +49,7 @@ public class ApiRepository : IApiRepository
             return Result.Success(result.StatusCode);
         }
     }
-    public async Task<Result<KeycloakUserDto>> GetKeycloakUser(KeycloakUserDto keycloakUserDto, KeycloakClientSettings clientSettings, HttpClient httpClient, CancellationToken cancellationToken)
+    public async Task<Result<KeycloakUserDto>> GetKeycloakUser(string username, KeycloakClientSettings clientSettings, HttpClient httpClient, CancellationToken cancellationToken)
     {
         //var httpClient = _httpClientFactory.CreateClient(httpClientName);
 
@@ -59,7 +59,7 @@ public class ApiRepository : IApiRepository
 
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", client.Content.AccessToken);
 
-        var result = await httpClient.GetAsync($"/admin/realms/{clientSettings.Realm}/users/?username={keycloakUserDto.UserName}", cancellationToken);
+        var result = await httpClient.GetAsync($"/admin/realms/{clientSettings.Realm}/users/?username={username}", cancellationToken);
 
         if (result.StatusCode == HttpStatusCode.Unauthorized)
         {
