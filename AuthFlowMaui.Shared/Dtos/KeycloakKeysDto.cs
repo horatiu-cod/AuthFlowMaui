@@ -9,7 +9,6 @@ public class KeycloakKeysDto
     public IEnumerable<KeycloakKeyDto>? KeycloakKeys { get; set; }
     public string ToJson() =>
     JsonSerializer.Serialize(this);
-
     public KeycloakKeysDto? FromJson(string keycloakKeyDto) =>
     JsonSerializer.Deserialize<KeycloakKeysDto>(keycloakKeyDto);
 
@@ -34,11 +33,9 @@ public class KeycloakKeyDto
     public string? X5t { get; set; }
     [JsonPropertyName("x5t#s256")]
     public string? X5ts256 { get; set; }
+
     public string ToJson() =>
         JsonSerializer.Serialize(this);
-
     public KeycloakKeysDto? FromJson(string keycloakKeyDto) =>
         JsonSerializer.Deserialize<KeycloakKeysDto>(keycloakKeyDto);
-
-
 }
