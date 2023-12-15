@@ -8,3 +8,4 @@ public class KeycloakRoleDto
     public string? Id { get; set; }
     [JsonPropertyName("name")]
     public string? Name { get; set; }
+}
