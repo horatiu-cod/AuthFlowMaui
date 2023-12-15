@@ -75,7 +75,8 @@ public class ApiRepository : IApiRepository
         }
         else
         {
-            keycloakUserDto = await result.Content.ReadFromJsonAsync<KeycloakUserDto>(cancellationToken);
+            var keycloakUserDtos = await result.Content.ReadFromJsonAsync<IEnumerable<KeycloakUserDto>>(); 
+            var keycloakUserDto = keycloakUserDtos.Where(n => n.UserName == username).FirstOrDefault();
             return Result<KeycloakUserDto>.Success(keycloakUserDto, result.StatusCode);
         }
     }
