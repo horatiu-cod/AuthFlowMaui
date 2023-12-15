@@ -1,7 +1,7 @@
 ﻿using AuthFlowMaui.Constants;
 using AuthFlowMaui.Shared.ClientHttpExtensions;
+using AuthFlowMaui.Shared.Dtos;
 using AuthFlowMaui.Shared.KeycloakServices;
-using AuthFlowMaui.Shared.TokenDtos;
 using AuthFlowMaui.Shared.Utils;
 using Microsoft.IdentityModel.Tokens;
 

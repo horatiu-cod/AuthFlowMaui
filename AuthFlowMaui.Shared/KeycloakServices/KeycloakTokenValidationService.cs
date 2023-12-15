@@ -1,5 +1,5 @@
-﻿using AuthFlowMaui.Shared.KeycloakUtils;
-using AuthFlowMaui.Shared.TokenDtos;
+﻿using AuthFlowMaui.Shared.Dtos;
+using AuthFlowMaui.Shared.KeycloakUtils;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 namespace AuthFlowMaui.Shared.KeycloakServices;
