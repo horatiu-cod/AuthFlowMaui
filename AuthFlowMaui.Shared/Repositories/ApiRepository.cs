@@ -170,7 +170,7 @@ public class ApiRepository : IApiRepository
             return Result<KeycloakRoleDto>.Success(keycloakRoleDto, result.StatusCode);
         }
     }
-    public async Task<Result> AsignRoleToKeycloakUser(KeycloakUserDto keycloakUserDto, KeycloakClientSettings clientSettings,KeycloakRoleDto keycloakRoleDto, HttpClient httpClient,string clientUuid, CancellationToken cancellationToken)
+    public async Task<Result> AsignRoleToKeycloakUser(KeycloakUserDto keycloakUserDto, KeycloakClientSettings clientSettings,KeycloakRoleDto[] keycloakRoleDtos, HttpClient httpClient,string clientUuid, CancellationToken cancellationToken)
     {
         //var httpClient = _httpClientFactory.CreateClient(httpClientName);
 
@@ -180,7 +180,7 @@ public class ApiRepository : IApiRepository
 
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", client.Content.AccessToken);
 
-        var result = await httpClient.PostAsJsonAsync($"/admin/realms/{clientSettings.Realm}/users/{keycloakUserDto.Id}/role-mapping/clients/{clientUuid}", keycloakRoleDto, cancellationToken);
+        var result = await httpClient.PostAsJsonAsync($"/admin/realms/{clientSettings.Realm}/users/{keycloakUserDto.Id}/role-mappings/clients/{clientUuid}", keycloakRoleDtos, cancellationToken);
 
         if (result.StatusCode == HttpStatusCode.Unauthorized)
         {
