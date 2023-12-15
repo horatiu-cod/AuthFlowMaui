@@ -140,7 +140,7 @@ public class ApiRepository : IApiRepository
             return Result.Success(result.StatusCode);
         }
     }
-    public async Task<Result<KeycloakRoleDto>> GetKeycloakRealmRole(KeycloakRoleDto keycloakRoleDto, KeycloakClientSettings clientSettings, HttpClient httpClient,string clientUuid, string roleName, CancellationToken cancellationToken)
+    public async Task<Result<KeycloakRoleDto>> GetKeycloakRealmRole(KeycloakClientSettings clientSettings, HttpClient httpClient,string clientUuid, string roleName, CancellationToken cancellationToken)
     {
         //var httpClient = _httpClientFactory.CreateClient(httpClientName);
 
@@ -166,7 +166,7 @@ public class ApiRepository : IApiRepository
         }
         else
         {
-            keycloakRoleDto = await result.Content.ReadFromJsonAsync<KeycloakRoleDto>(cancellationToken);
+            var keycloakRoleDto = await result.Content.ReadFromJsonAsync<KeycloakRoleDto>(cancellationToken);
             return Result<KeycloakRoleDto>.Success(keycloakRoleDto, result.StatusCode);
         }
     }
