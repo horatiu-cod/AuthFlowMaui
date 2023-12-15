@@ -4,18 +4,18 @@ using AuthFlowMaui.Shared.Dtos;
 using AuthFlowMaui.Shared.Extensions;
 using AuthFlowMaui.Shared.KeycloakSettings;
 using AuthFlowMaui.Shared.Repositories;
-
+#pragma warning disable
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddHttpClient("api-http_client",httpClient =>
+builder.Services.AddHttpClient("api-http_client", httpClient =>
 {
     var settings = builder.Configuration.GetRequiredSection("ClientSettings").Get<AuthClientConfig>();
     var baseUrl = settings.BaseUrl;
     httpClient.BaseAddress = new Uri(baseUrl);
 });
-   
+
 builder.Services.ConfigureKeycloak();
 
 //builder.AddJwtBearerConfig();
@@ -74,13 +74,13 @@ app.MapPut("api/user/register", async (IHttpClientFactory _httpClientFactory, IA
         Name = role.Name
     };
     KeycloakRoleDto[] roleDtos = [roleDto];
-    var asignResult = await _repository.AsignRoleToKeycloakUser(getUserResult.Content, clientSettings, roleDtos, httpClient, clientConfig.ClientUuID,cancellationToken);
+    var asignResult = await _repository.AsignRoleToKeycloakUser(getUserResult.Content, clientSettings, roleDtos, httpClient, clientConfig.ClientUuID, cancellationToken);
     if (!asignResult.IsSuccess)
     {
-        await _repository.DeletKeycloakUser(getUserResult.Content, clientSettings, httpClient, cancellationToken);
+        await _repository.DeletKeycloakUser(getUserResult.Content!, clientSettings, httpClient, cancellationToken);
         return Results.Problem(asignResult.Error, null, (int?)asignResult.StatusCode);
     }
-    return Results.Created( "", getUserResult);
+    return Results.Created("", getUserResult);
 }).WithName("registration");
 
 app.Run();
