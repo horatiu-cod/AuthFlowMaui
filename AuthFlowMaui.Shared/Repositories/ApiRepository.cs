@@ -34,7 +34,7 @@ public class ApiRepository : IApiRepository
 
         if (result.StatusCode == HttpStatusCode.Unauthorized)
         {
-            return Result.Fail($"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser", result.StatusCode);
+            return Result.Fail($"{(int)result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser", result.StatusCode);
         }
         else if (!result.IsSuccessStatusCode)
         {
@@ -42,7 +42,7 @@ public class ApiRepository : IApiRepository
         }
         else if (result.StatusCode != HttpStatusCode.Created)
         {
-            return Result.Fail($"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser", result.StatusCode);
+            return Result.Fail($"{(int)result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser", result.StatusCode);
         }
         else
         {
@@ -63,15 +63,15 @@ public class ApiRepository : IApiRepository
 
         if (result.StatusCode == HttpStatusCode.Unauthorized)
         {
-            return Result<KeycloakUserDto>.Fail(result.StatusCode, $"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
+            return Result<KeycloakUserDto>.Fail(result.StatusCode, $"{(int)result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
         }
         else if (!result.IsSuccessStatusCode)
         {
-            return Result<KeycloakUserDto>.Fail(result.StatusCode, $"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
+            return Result<KeycloakUserDto>.Fail(result.StatusCode, $"{(int)result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
         }
         else if (result.StatusCode != HttpStatusCode.OK)
         {
-            return Result<KeycloakUserDto>.Fail(result.StatusCode, $"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
+            return Result<KeycloakUserDto>.Fail(result.StatusCode, $"{(int)result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
         }
         else
         {
@@ -93,15 +93,15 @@ public class ApiRepository : IApiRepository
 
         if (result.StatusCode == HttpStatusCode.Unauthorized)
         {
-            return Result.Fail($"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser", result.StatusCode);
+            return Result.Fail($"{(int)result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser", result.StatusCode);
         }
         else if (!result.IsSuccessStatusCode)
         {
-            return Result.Fail($"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser", result.StatusCode);
+            return Result.Fail($"{(int)result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser", result.StatusCode);
         }
         else if (result.StatusCode != HttpStatusCode.NoContent)
         {
-            return Result.Fail($"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser", result.StatusCode);
+            return Result.Fail($"{(int)result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser", result.StatusCode);
         }
         else
         {
@@ -121,15 +121,15 @@ public class ApiRepository : IApiRepository
 
         if (result.StatusCode == HttpStatusCode.Unauthorized)
         {
-            return Result.Fail( $"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser", result.StatusCode);
+            return Result.Fail( $"{(int)result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser", result.StatusCode);
         }
         else if (!result.IsSuccessStatusCode)
         {
-            return Result.Fail($"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser", result.StatusCode);
+            return Result.Fail($"{(int)result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser", result.StatusCode);
         }
         else if (result.StatusCode != HttpStatusCode.NoContent)
         {
-            return Result.Fail($"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser", result.StatusCode);
+            return Result.Fail($"{(int)result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser", result.StatusCode);
         }
         else
         {
@@ -149,15 +149,15 @@ public class ApiRepository : IApiRepository
 
         if (result.StatusCode == HttpStatusCode.Unauthorized)
         {
-            return Result<KeycloakRoleDto>.Fail(result.StatusCode, $"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
+            return Result<KeycloakRoleDto>.Fail(result.StatusCode, $"{(int)result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
         }
         else if (!result.IsSuccessStatusCode)
         {
-            return Result<KeycloakRoleDto>.Fail(result.StatusCode, $"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
+            return Result<KeycloakRoleDto>.Fail(result.StatusCode, $"{(int)result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
         }
         else if (result.StatusCode != HttpStatusCode.OK)
         {
-            return Result<KeycloakRoleDto>.Fail(result.StatusCode, $"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
+            return Result<KeycloakRoleDto>.Fail(result.StatusCode, $"{(int)result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
         }
         else
         {
@@ -177,15 +177,15 @@ public class ApiRepository : IApiRepository
 
         if (result.StatusCode == HttpStatusCode.Unauthorized)
         {
-            return Result.Fail($"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser", result.StatusCode);
+            return Result.Fail($"{(int)result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser", result.StatusCode);
         }
         else if (!result.IsSuccessStatusCode)
         {
-            return Result.Fail($"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser", result.StatusCode);
+            return Result.Fail($"{(int)result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser", result.StatusCode);
         }
         else if (result.StatusCode != HttpStatusCode.NoContent)
         {
-            return Result.Fail($"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser", result.StatusCode);
+            return Result.Fail($"{(int)result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser", result.StatusCode);
         }
         else
         {
@@ -203,15 +203,15 @@ public class ApiRepository : IApiRepository
 
         if (result.StatusCode == HttpStatusCode.Unauthorized)
         {
-            return Result.Fail($"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser", result.StatusCode);
+            return Result.Fail($"{(int)result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser", result.StatusCode);
         }
         else if (!result.IsSuccessStatusCode)
         {
-            return Result.Fail($"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser", result.StatusCode);
+            return Result.Fail($"{(int)result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser", result.StatusCode);
         }
         else if (result.StatusCode != HttpStatusCode.NoContent)
         {
-            return Result.Fail($"{result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser", result.StatusCode);
+            return Result.Fail($"{(int)result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser", result.StatusCode);
         }
         else
         {
