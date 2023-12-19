@@ -2,7 +2,7 @@
 
 namespace AuthFlowMaui.Shared.Dtos;
 
-public class KeycloakRoleDto
+public record struct KeycloakRoleDto()
 {
     [JsonPropertyName("id")]
     public string? Id { get; set; }
