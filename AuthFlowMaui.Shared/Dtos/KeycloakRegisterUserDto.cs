@@ -3,12 +3,8 @@ using System.Text.Json.Serialization;
 
 namespace AuthFlowMaui.Shared.Dtos;
 
-public class KeycloakRegisterUserDto
+public record struct KeycloakRegisterUserDto()
 {
-    [JsonPropertyName("firstName")]
-    public string? FirstName { get; set; }
-    [JsonPropertyName("lastName")]
-    public string? LastName { get; set;}
     [JsonPropertyName("email")]
     public string? Email { get; set;}
     [JsonPropertyName("enabled")]
@@ -28,7 +24,7 @@ public class KeycloakRegisterUserDto
 
 }
 
-public class Credentials
+public record struct Credentials()
 {
     [JsonPropertyName("type")]
     public string? Type { get; set; } = "password";
