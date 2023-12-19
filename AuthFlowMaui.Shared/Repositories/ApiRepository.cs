@@ -19,6 +19,58 @@ public class ApiRepository : IApiRepository
         _keycloakTokenService = keycloakTokenService;
     }
 
+    public async Task<Result<KeycloakUserDto>> Register(RegisterUserDto registerUserDto, string clientId, string clientSecret, string realm, HttpClient httpClient, CancellationToken cancellationToken)
+    {
+        var credentials = new Credentials
+        {
+            Value = registerUserDto.Password
+        };
+
+        var keycloakRegisterUserDto = new KeycloakRegisterUserDto()
+        {
+            Email = registerUserDto.Email,
+            UserName = registerUserDto.UserName,
+            Credentials = [credentials]
+        };
+
+        var client = await _keycloakTokenService.GetClientTokenResponseAsync(clientId, clientSecret, realm, httpClient, cancellationToken);
+        if (!client.IsSuccess)
+            return Result<KeycloakUserDto>.Fail(client.StatusCode, $"{client.Error}, Error from GetClientTokenResponseAsync passed to RegisterKeycloakUser in KeycloakApiService");
+
+        var signupResult = await RegisterKeycloakUser(keycloakRegisterUserDto, realm, client.Content.AccessToken, httpClient, cancellationToken);
+        if (!signupResult.IsSuccess)
+            return Result<KeycloakUserDto>.Fail(signupResult.StatusCode, signupResult.Error);
+
+        var getUserResult = await GetKeycloakUser(registerUserDto.UserName, realm, client.Content.AccessToken, httpClient, cancellationToken);
+        if (!getUserResult.IsSuccess)
+        {
+            await DeleteKeycloakUser(getUserResult.Content.Id, realm, client.Content.AccessToken, httpClient, cancellationToken);
+            return Result<KeycloakUserDto>.Fail(getUserResult.StatusCode, getUserResult.Error);
+        }
+
+        var getClientResult = await GetKeycloakClientAsync( realm, client.Content.AccessToken, httpClient, registerUserDto.ClientId, cancellationToken);
+        if (!getClientResult.IsSuccess)
+        {
+            await DeleteKeycloakUser(getUserResult.Content.Id, realm, client.Content.AccessToken, httpClient, cancellationToken);
+            return Result<KeycloakUserDto>.Fail(getClientResult.StatusCode, getClientResult.Error);
+        }
+
+        var getClientRoleResult = await GetKeycloakClientRoleAsync( realm, client.Content.AccessToken, httpClient, getClientResult.Content.ClientUuID, registerUserDto.RoleName, cancellationToken);
+        if (!getClientRoleResult.IsSuccess)
+        {
+            await DeleteKeycloakUser(getUserResult.Content.Id, realm, client.Content.AccessToken, httpClient, cancellationToken);
+            return Result<KeycloakUserDto>.Fail(getClientRoleResult.StatusCode, getClientRoleResult.Error);
+        }
+
+        KeycloakRoleDto[] clientRoles = [getClientRoleResult.Content];
+        var asignUserRoleResult = await AsignRoleToKeycloakUser(getUserResult.Content, realm, client.Content.AccessToken, clientRoles, httpClient, getClientResult.Content.ClientUuID, cancellationToken);
+        if (!asignUserRoleResult.IsSuccess)
+        {
+            await DeleteKeycloakUser(getUserResult.Content.Id, realm, client.Content.AccessToken, httpClient, cancellationToken);
+            return Result<KeycloakUserDto>.Fail(asignUserRoleResult.StatusCode, asignUserRoleResult.Error);
+        }
+        return Result<KeycloakUserDto>.Success(getUserResult.Content, getUserResult.StatusCode);
+    }
     public async Task<Result> RegisterKeycloakUser(KeycloakRegisterUserDto keycloakRegisterUserDto, KeycloakClientSettings clientSettings, HttpClient httpClient, CancellationToken cancellationToken)
     {
 
@@ -260,7 +312,7 @@ public class ApiRepository : IApiRepository
         else if (result.StatusCode != HttpStatusCode.OK)
         {
             return Result<KeycloakRoleDto>.Fail(result.StatusCode, $"{(int)result.StatusCode} {result.ReasonPhrase} from RegisterKeycloakUser");
-    }
+        }
         else
         {
             var keycloakRoleDto = await result.Content.ReadFromJsonAsync<KeycloakRoleDto>(cancellationToken);
