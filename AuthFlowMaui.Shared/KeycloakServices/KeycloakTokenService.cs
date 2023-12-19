@@ -84,6 +84,40 @@ internal class KeycloakTokenService : IKeycloakTokenService
             return Result<KeycloakTokenResponseDto>.Fail( $"{ex.Message} Exception from GetClientTokenResponseAsync");
         }
     }
+    public async Task<Result<KeycloakTokenResponseDto>> GetClientTokenResponseAsync(string clientId, string clientSecret, string realm, HttpClient httpClient, CancellationToken cancellationToken)
+    {
+        //var httpClient = _httpClientFactory.CreateClient(httpClientName);
+        var keycloakTokenRequestDto = new KeycloakClientRequestDto
+        {
+            GrantType = KeycloakAccessTokenConst.GrantTypeCredentials,
+            ClientId = clientId,
+            ClientSecret = clientSecret,
+        };
+        var tokenRequestBody = KeycloakTokenUtils.GetClientTokenRequestBody(keycloakTokenRequestDto);
+        try
+        {
+            var response = await httpClient.PostAsync($"/realms/{realm}/protocol/openid-connect/token", tokenRequestBody, cancellationToken);
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                return Result<KeycloakTokenResponseDto>.Fail(response.StatusCode, $"{response.StatusCode} {response.ReasonPhrase} from GetClientTokenResponseAsync");
+            }
+            else if (!response.IsSuccessStatusCode)
+            {
+                return Result<KeycloakTokenResponseDto>.Fail(response.StatusCode, $"{response.StatusCode} {response.ReasonPhrase} from GetClientTokenResponseAsync");
+            }
+            else
+            {
+                var responseJson = await response.Content.ReadAsStringAsync();
+                var keycloakTokenResponseDto = JsonSerializer.Deserialize<KeycloakTokenResponseDto>(responseJson);
+                return Result<KeycloakTokenResponseDto>.Success(keycloakTokenResponseDto);
+            }
+        }
+        catch (Exception ex)
+        {
+            return Result<KeycloakTokenResponseDto>.Fail($"{ex.Message} Exception from GetClientTokenResponseAsync");
+        }
+    }
+
     public async Task<Result<KeycloakTokenResponseDto>> GetUserTokenByRefreshTokenResponseAsync(KeycloakClientSettings keycloakSettings, string refreshToken, HttpClient httpClient, CancellationToken cancellationToken)
     {
         //var httpClient = _httpClientFactory.CreateClient(httpClientName);
