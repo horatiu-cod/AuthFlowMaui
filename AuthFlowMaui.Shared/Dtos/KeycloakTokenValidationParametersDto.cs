@@ -2,7 +2,7 @@
 
 namespace AuthFlowMaui.Shared.Dtos;
 
-public class KeycloakTokenValidationParametersDto
+public record struct KeycloakTokenValidationParametersDto()
 {
     public string? ValidIssuer { get; set; }
     public string? ValidAudience { get; set; }
