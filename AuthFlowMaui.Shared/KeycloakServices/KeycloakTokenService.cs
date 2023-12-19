@@ -14,7 +14,6 @@ internal class KeycloakTokenService : IKeycloakTokenService
 
     public async Task<Result<KeycloakTokenResponseDto>> GetUserTokenResponseAsync(KeycloakUserDto keycloakUserDtos, KeycloakClientSettings keycloakSettings, HttpClient httpClient, CancellationToken cancellationToken)
     {
-        //var httpclient = _httpClientFactory.CreateClient(httpClientName);
         var keycloakTokenRequestDto = new KeycloakUserTokenRequestDto
         {
             GrantType = KeycloakAccessTokenConst.GrantTypePassword,
@@ -26,7 +25,7 @@ internal class KeycloakTokenService : IKeycloakTokenService
         var tokenRequestBody = KeycloakTokenUtils.GetUserTokenRequestBody(keycloakTokenRequestDto);
         try
         {
-            var response = await httpClient.PostAsync($"{keycloakSettings.RealmUrl}/token", tokenRequestBody, cancellationToken);
+            var response = await httpClient.PostAsync($"/realms/{keycloakSettings.Realm}/protocol/openid-connect/token", tokenRequestBody, cancellationToken);
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
                 return Result<KeycloakTokenResponseDto>.Fail($"{response.StatusCode} {response.ReasonPhrase} You are unauthorized from GetUserTokenRequestBody");
@@ -61,7 +60,7 @@ internal class KeycloakTokenService : IKeycloakTokenService
         var tokenRequestBody = KeycloakTokenUtils.GetClientTokenRequestBody(keycloakTokenRequestDto);
         try
         {
-            var response = await httpClient.PostAsync($"{keycloakSettings.RealmUrl}/token", tokenRequestBody, cancellationToken);
+            var response = await httpClient.PostAsync($"/realms/{keycloakSettings.Realm}/protocol/openid-connect/token", tokenRequestBody, cancellationToken);
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
                 return Result<KeycloakTokenResponseDto>.Fail(response.StatusCode, $"{response.StatusCode} {response.ReasonPhrase} from GetClientTokenResponseAsync");
@@ -72,12 +71,10 @@ internal class KeycloakTokenService : IKeycloakTokenService
             }
             else
             {
-                var responseJson = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                var responseJson = await response.Content.ReadAsStringAsync();
                 var keycloakTokenResponseDto = JsonSerializer.Deserialize<KeycloakTokenResponseDto>(responseJson);
-
                 return Result<KeycloakTokenResponseDto>.Success(keycloakTokenResponseDto);
             }
-
         }
         catch (Exception ex)
         {
@@ -131,7 +128,7 @@ internal class KeycloakTokenService : IKeycloakTokenService
         var tokenRequestBody = KeycloakTokenUtils.GetUserTokenWithRefreshTokenRequestBody(keycloakUserTokenWithRefreshTokenRequestDto);
         try
         {
-            var response = await httpClient.PostAsync($"{keycloakSettings.RealmUrl}/token", tokenRequestBody, cancellationToken);
+            var response = await httpClient.PostAsync($"/realms/{keycloakSettings.Realm}/protocol/openid-connect/token", tokenRequestBody, cancellationToken);
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
                 return Result<KeycloakTokenResponseDto>.Fail($"{response.StatusCode} {response.ReasonPhrase}You are unauthorized from GetUserTokenByRefreshTokenResponseAsync");
