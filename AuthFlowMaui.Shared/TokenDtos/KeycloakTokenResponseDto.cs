@@ -1,5 +1,4 @@
-﻿using AuthFlowMaui.Shared.KeycloakSettings;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace AuthFlowMaui.Shared.TokenDtos;
