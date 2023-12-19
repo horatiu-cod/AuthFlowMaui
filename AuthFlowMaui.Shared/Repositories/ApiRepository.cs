@@ -109,7 +109,7 @@ public class ApiRepository : IApiRepository
             return Result.Success(result.StatusCode);
         }
     }
-    public async Task<Result> DeletKeycloakUser(KeycloakUserDto keycloakUserDto, KeycloakClientSettings clientSettings, HttpClient httpClient, CancellationToken cancellationToken)
+    public async Task<Result> DeleteKeycloakUser(KeycloakUserDto keycloakUserDto, KeycloakClientSettings clientSettings, HttpClient httpClient, CancellationToken cancellationToken)
     {
         var client = await _keycloakTokenService.GetClientTokenResponseAsync(clientSettings, httpClient, cancellationToken);
         if (!client.IsSuccess)
