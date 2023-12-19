@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace AuthFlowMaui.Shared.Dtos;
 
-public class KeycloakKeysDto
+public record struct KeycloakKeysDto()
 {
     [JsonPropertyName("keys")]
     public IEnumerable<KeycloakKeyDto>? KeycloakKeys { get; set; }
@@ -13,7 +13,7 @@ public class KeycloakKeysDto
     JsonSerializer.Deserialize<KeycloakKeysDto>(keycloakKeyDto);
 
 }
-public class KeycloakKeyDto
+public record struct KeycloakKeyDto()
 {
     [JsonPropertyName("kid")]
     public string? Kid { get; set; }
