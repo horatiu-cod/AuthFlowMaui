@@ -8,24 +8,6 @@ namespace AuthFlowMaui.MinimalApi.Extensions;
 
 public static class ApplicationBuilderExtensions
 {
-    //public static WebApplicationBuilder AddJwtBearerConfig(this WebApplicationBuilder builder)
-    //{
-    //    var jwtBearerConfig = builder.Configuration.GetSection("JwtBearer");
-    //    if (jwtBearerConfig != null)
-    //    {
-    //        builder.Services.Configure<JwtBearerConfig>(jwtBearerConfig);
-    //    }
-    //    return builder;
-    //}
-    //public static WebApplicationBuilder AddClientSettingsConfig(this WebApplicationBuilder builder)
-    //{
-    //    var clientSettingsConfig = builder.Configuration.GetSection("ClientSettings");
-    //    if (clientSettingsConfig != null)
-    //    {
-    //        builder.Services.Configure<AuthClientConfig>(clientSettingsConfig);
-    //    }
-    //    return builder;
-    //}
     public static WebApplicationBuilder AddKeycloakAuthorization(this WebApplicationBuilder builder)
     {
         IdentityModelEventSource.ShowPII = true;
