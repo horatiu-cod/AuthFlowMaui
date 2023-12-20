@@ -1,9 +1,10 @@
+using AuthFlowMaui.MinimalApi;
 using AuthFlowMaui.MinimalApi.Extensions;
+using AuthFlowMaui.MinimalApi.Services;
 using AuthFlowMaui.MinimalApi.Settings;
 using AuthFlowMaui.Shared.Dtos;
 using AuthFlowMaui.Shared.Extensions;
-using AuthFlowMaui.Shared.KeycloakSettings;
-using AuthFlowMaui.Shared.Repositories;
+
 #pragma warning disable
 var builder = WebApplication.CreateBuilder(args);
 
