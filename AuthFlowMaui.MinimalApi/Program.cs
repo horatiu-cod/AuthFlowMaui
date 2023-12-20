@@ -12,7 +12,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient(Constants.HttpClientName, httpClient =>
 {
-    var settings = builder.Configuration.GetRequiredSection("ClientSettings").Get<AuthClientConfig>();
+    var settings = builder.Configuration.GetRequiredSection("AuthClientSettings").Get<AuthClientConfig>();
     var baseUrl = settings.BaseUrl;
     httpClient.BaseAddress = new Uri(baseUrl);
 });
@@ -43,45 +43,19 @@ app.MapGet("api/user/authorization", () => "ok merge")
     .Produces(401)
     .WithOpenApi();
 
-app.MapPut("api/user/register", async (IHttpClientFactory _httpClientFactory, IApiRepository _repository, KeycloakRegisterUserDto keycloakRegisterUserDto, CancellationToken cancellationToken) =>
+
+app.MapPut("api/user/register", async (IRegisterUser register, RegisterUserDto keycloakRegisterUserDto, CancellationToken cancellationToken) =>
 {
-    var authClientConfig = builder.Configuration.GetRequiredSection("AuthClientSettings").Get<AuthClientConfig>();
-    //TODO map KeycloakClientSettings with AuthClientConfig
-    var clientSettings = new KeycloakClientSettings
-    {
-        ClientId = authClientConfig.ClientId,
-        ClientSecret = authClientConfig.ClientSecret,
-        Realm = authClientConfig.Realm,
-        RealmUrl = authClientConfig.RealmUrl
-    };
+    var result = register.Register( keycloakRegisterUserDto, cancellationToken);
+    return await result;
+})
+    .Produces<KeycloakUserDto>()
+    .Produces(500)
+    .Produces(200)
+    .Produces(201)
+    .Produces(409)
+    .Produces(401)
+    .WithName("register");
 
-    var httpClient = _httpClientFactory.CreateClient("api-http_client");
-
-    var signupResult = await _repository.RegisterKeycloakUser(keycloakRegisterUserDto, clientSettings, httpClient, cancellationToken);
-    if (!signupResult.IsSuccess)
-    {
-        return Results.Problem(signupResult.Error, null, (int?)signupResult.StatusCode);
-    }
-    var getUserResult = await _repository.GetKeycloakUser(keycloakRegisterUserDto.UserName, clientSettings, httpClient, cancellationToken);
-    if (!getUserResult.IsSuccess)
-    {
-        return Results.Problem(getUserResult.Error, null, (int?)getUserResult.StatusCode);
-    }
-    var clientConfig = builder.Configuration.GetRequiredSection("ClientSettings").Get<ClientConfig>();
-    var role = builder.Configuration.GetRequiredSection("UserRole").Get<RoleSettings>();
-    var roleDto = new KeycloakRoleDto
-    {
-        Id = role.Id,
-        Name = role.Name
-    };
-    KeycloakRoleDto[] roleDtos = [roleDto];
-    var asignResult = await _repository.AsignRoleToKeycloakUser(getUserResult.Content, clientSettings, roleDtos, httpClient, clientConfig.ClientUuID, cancellationToken);
-    if (!asignResult.IsSuccess)
-    {
-        await _repository.DeletKeycloakUser(getUserResult.Content!, clientSettings, httpClient, cancellationToken);
-        return Results.Problem(asignResult.Error, null, (int?)asignResult.StatusCode);
-    }
-    return Results.Created("", getUserResult);
-}).WithName("registration");
 
 app.Run();
