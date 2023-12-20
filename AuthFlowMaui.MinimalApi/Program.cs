@@ -16,8 +16,10 @@ builder.Services.AddHttpClient("api-http_client", httpClient =>
     var baseUrl = settings.BaseUrl;
     httpClient.BaseAddress = new Uri(baseUrl);
 });
+builder.AddKeycloakAuthorization();
 
 builder.Services.ConfigureKeycloak();
+builder.Services.AddScoped<IRegisterUser, RegisterUser>();
 
 //builder.AddJwtBearerConfig();
 //builder.AddClientSettingsConfig();
