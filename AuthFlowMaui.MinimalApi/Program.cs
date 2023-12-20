@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddHttpClient("api-http_client", httpClient =>
+builder.Services.AddHttpClient(Constants.HttpClientName, httpClient =>
 {
     var settings = builder.Configuration.GetRequiredSection("ClientSettings").Get<AuthClientConfig>();
     var baseUrl = settings.BaseUrl;
