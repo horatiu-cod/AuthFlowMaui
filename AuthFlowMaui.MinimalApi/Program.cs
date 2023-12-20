@@ -21,8 +21,6 @@ builder.AddKeycloakAuthorization();
 builder.Services.ConfigureKeycloak();
 builder.Services.AddScoped<IRegisterUser, RegisterUser>();
 
-//builder.AddJwtBearerConfig();
-//builder.AddClientSettingsConfig();
 builder.AddKeycloakAuthorization();
 
 var app = builder.Build();
