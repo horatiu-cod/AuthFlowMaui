@@ -6,7 +6,7 @@ namespace AuthFlowMaui.Shared.Services;
 
 public interface IStorageService
 {
-    Task<MethodResult<KeycloakKeysDto>> GetCertsSecretAsync();
+    Task<MethodResult<KeycloakKeyDto>> GetCertsSecretAsync();
     Task<MethodResult<KeycloakClientSettings>> GetClientSecretAsync();
     Task<MethodResult<string>> GetUserCredentialsAsync();
     Task<MethodResult<string>> GetUserSecretAsync();

@@ -1,5 +1,4 @@
-﻿using AuthFlowMaui.Features.UserLogin;
-using AuthFlowMaui.Shared.Dtos;
+﻿using AuthFlowMaui.Shared.Dtos;
 using AuthFlowMaui.Shared.KeycloakSettings;
 using AuthFlowMaui.Shared.Utils;
 
@@ -53,25 +52,25 @@ public class StorageService : IStorageService
     public async Task<MethodResult> RemoveClientSecretAsync() => await RemoveSecret(ClientSettings);
 
     public async Task<MethodResult> SetCertsSecretAsync(string secretValue) => await SetSecret(RealmCerts, secretValue);
-    public async Task<MethodResult<KeycloakKeysDto>> GetCertsSecretAsync()
+    public async Task<MethodResult<KeycloakKeyDto>> GetCertsSecretAsync()
     {
         var jsonResult = await GetSecret(RealmCerts);
         if (jsonResult.IsSuccess)
         {
-            var keycloaksettings = new KeycloakKeysDto();
-            keycloaksettings = keycloaksettings.FromJson(jsonResult.Data);
-            if (keycloaksettings != null)
+            var keycloaksetting = new KeycloakKeyDto();
+             keycloaksetting = keycloaksetting.FromJson(jsonResult.Data);
+            if (keycloaksetting is not null)
             {
-                return MethodResult<KeycloakKeysDto>.Success(keycloaksettings);
+                return MethodResult<KeycloakKeyDto>.Success(keycloaksetting);
             }
             else
             {
-                return MethodResult<KeycloakKeysDto>.Fail("JSON deserialize exception in GetCertsSecretAsync");
+                return MethodResult<KeycloakKeyDto>.Fail("JSON deserialize exception in GetCertsSecretAsync");
             }
         }
         else
         {
-            return MethodResult<KeycloakKeysDto>.Fail(jsonResult.Error);
+            return MethodResult<KeycloakKeyDto>.Fail(jsonResult.Error);
         }
 
     }
