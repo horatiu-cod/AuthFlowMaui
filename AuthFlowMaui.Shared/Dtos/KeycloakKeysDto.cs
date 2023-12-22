@@ -3,17 +3,17 @@ using System.Text.Json.Serialization;
 
 namespace AuthFlowMaui.Shared.Dtos;
 
-public record struct KeycloakKeysDto()
+public record KeycloakKeysDto()
 {
     [JsonPropertyName("keys")]
-    public IEnumerable<KeycloakKeyDto>? KeycloakKeys { get; set; }
+    public IEnumerable<KeycloakKeyDto?>? KeycloakKeys { get; set; }
     public string ToJson() =>
     JsonSerializer.Serialize(this);
     public KeycloakKeysDto? FromJson(string keycloakKeyDto) =>
     JsonSerializer.Deserialize<KeycloakKeysDto>(keycloakKeyDto);
 
 }
-public record struct KeycloakKeyDto()
+public record KeycloakKeyDto()
 {
     [JsonPropertyName("kid")]
     public string? Kid { get; set; }
@@ -34,8 +34,8 @@ public record struct KeycloakKeyDto()
     [JsonPropertyName("x5t#s256")]
     public string? X5ts256 { get; set; }
 
-    public string ToJson() =>
+    public string? ToJson() =>
         JsonSerializer.Serialize(this);
-    public KeycloakKeysDto? FromJson(string keycloakKeyDto) =>
-        JsonSerializer.Deserialize<KeycloakKeysDto>(keycloakKeyDto);
+    public KeycloakKeyDto? FromJson(string keycloakKeyDto) =>
+        JsonSerializer.Deserialize<KeycloakKeyDto?>(keycloakKeyDto);
 }
