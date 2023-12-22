@@ -7,7 +7,7 @@ public static class KeycloakTokenUtils
 {
     public static FormUrlEncodedContent GetUserTokenRequestBody(KeycloakUserTokenRequestDto tokenRequestDtos)
     {
-        //to request token we need FormUrlEncodedContentType, we create a list of
+        //to request token we need FormUrlEncodedContentType, we create a list of KeyValuePair
         var keyValuePairs = new List<KeyValuePair<string, string>>()
         {
             new KeyValuePair<string, string>(KeycloakAccessTokenConst.GrantType, tokenRequestDtos.GrantType),
