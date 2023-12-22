@@ -19,53 +19,45 @@ public class CertsService : ICertsService
 
     public async Task<MethodResult<KeycloakKeyDto>> GetRealmCertsAsync(CancellationToken cancellationToken)
     {
-        var keys = await _storageService.GetCertsSecretAsync();
-        if (keys.IsSuccess)
+        var key = await _storageService.GetCertsSecretAsync();
+        if (key.IsSuccess)
         {
-            var key = keys.Data.KeycloakKeys.Where(k => k.Alg == "RS256").FirstOrDefault();
-            if (key != null)
+            return MethodResult<KeycloakKeyDto>.Success(key.Data);
+        }
+        else
+        {
+            return await GetAndStoreRealmCertsAsync(cancellationToken);
+        }
+    }
+    private async Task<MethodResult<KeycloakKeyDto>> GetAndStoreRealmCertsAsync(CancellationToken cancellationToken)
+    {
+        var httpClientName = RealmConstants.HttpClientName;
+        var httpClient = _httpClientFactory.CreateClient(httpClientName);
+        try
+        {
+            var response = await httpClient.GetRealmKeysAsync(RealmConstants.RealmUrl, cancellationToken);
+            if (response.IsSuccess)
             {
+                KeycloakKeyDto key = response.Content.KeycloakKeys.Where(k => k.Alg == "RS256").FirstOrDefault();
+                if(key is null)
+                    return MethodResult<KeycloakKeyDto>.Fail("Passed from GetCertsSecretAsync to GetRealmCertsAsync in CertService");
+
+                var result = await _storageService.SetCertsSecretAsync(response.Content.ToJson());
+                if (!result.IsSuccess)
+                {
+                    return MethodResult<KeycloakKeyDto>.Fail($"{result.Error} passed from SetCertsSecretAsync to GetAndStoreRealmCertsAsync in CertsService");
+                }
                 return MethodResult<KeycloakKeyDto>.Success(key);
             }
             else
             {
-                return MethodResult<KeycloakKeyDto>.Fail("Passed from GetCertsSecretAsync to GetRealmCertsAsync in CertService");
-            }
-        }
-        else
-        {
-            keys = await GetAndStoreRealmCertsAsync(cancellationToken);
-            var key = keys.Data.KeycloakKeys.Where(k => k.Alg == "RS256").FirstOrDefault();
-            return MethodResult<KeycloakKeyDto>.Success(key);
-        }
-    }
-    private async Task<MethodResult<KeycloakKeysDto>> GetAndStoreRealmCertsAsync(CancellationToken cancellationToken)
-    {
-        var settings = await _storageService.GetClientSecretAsync();
-        var httpClientName = RealmConstants.HttpClientName;
-        var httpClient = _httpClientFactory.CreateClient(httpClientName);
-        settings.Data.RealmUrl = RealmConstants.RealmUrl;
-        try
-        {
-            var response = await httpClient.GetRealmKeysAsync(settings.Data.RealmUrl, cancellationToken);
-            if (response.IsSuccess)
-            {
-                var result = await _storageService.SetCertsSecretAsync(response.Content.ToJson());
-                if (!result.IsSuccess)
-                {
-                    return MethodResult<KeycloakKeysDto>.Fail($"{result.Error} passed from SetCertsSecretAsync to GetAndStoreRealmCertsAsync in CertsService");
-                }
-                return MethodResult<KeycloakKeysDto>.Success(response.Content);
-            }
-            else
-            {
-                return MethodResult<KeycloakKeysDto>.Fail($"{response.Error} passed from GetClientCertsResponseAsync to GetAndStoreRealmCertsAsync in CertsService");
+                return MethodResult<KeycloakKeyDto>.Fail($"{response.Error} passed from GetClientCertsResponseAsync to GetAndStoreRealmCertsAsync in CertsService");
             }
 
         }
         catch (Exception ex)
         {
-            return MethodResult<KeycloakKeysDto>.Fail($"{ex.Message} exception from GetAndStoreRealmCertsAsync in CertsService");
+            return MethodResult<KeycloakKeyDto>.Fail($"{ex.Message} exception from GetAndStoreRealmCertsAsync in CertsService");
             
         }
     }
